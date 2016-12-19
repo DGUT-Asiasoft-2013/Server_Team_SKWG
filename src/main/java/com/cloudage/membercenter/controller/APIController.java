@@ -22,12 +22,14 @@ import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.Goods;
 import com.cloudage.membercenter.entity.Likes;
+import com.cloudage.membercenter.entity.Orders;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.ILikesRepository;
 import com.cloudage.membercenter.service.IArticleService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IGoodsService;
 import com.cloudage.membercenter.service.ILikesService;
+import com.cloudage.membercenter.service.IOrdersService;
 import com.cloudage.membercenter.service.IUserService;
 
 @RestController
@@ -48,6 +50,10 @@ public class APIController {
 
 	@Autowired
 	IGoodsService goodsService;
+	
+	@Autowired
+	IOrdersService ordersService;
+	
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public @ResponseBody String hello() {
 		return "HELLO WORLD";
@@ -212,9 +218,6 @@ public class APIController {
 		return commentService.save(comment);
 	}
 
-
-
-
 	@RequestMapping("/article/{article_id}/likes")
 	public int countLikes(@PathVariable int article_id){
 		return likesService.countLikes(article_id);
@@ -251,5 +254,28 @@ public class APIController {
 		return articleService.searchArticlWithKeyword(keyword, page);
 	}
 
+	@RequestMapping(value="/goods/{goods_id}/orders", method = RequestMethod.POST)
+    public Orders addOrders(@RequestParam String text, @PathVariable int goods_id, HttpServletRequest request){
+        User me = getCurrentUser(request);
+        Goods goods = goodsService.findById(goods_id);
+        Orders orders = new Orders();
+        orders.setBuyer(me);
+        orders.setGoods(goods);
+        return ordersService.save(orders);
+    }
+	
+	//通过
+	   @RequestMapping("/ordersOfSeller")
+	    public Page<Orders> getOrdersOfSeller(@RequestParam(defaultValue="0") int page,
+	            HttpServletRequest request) {
+	        User me = getCurrentUser(request);
+	        return ordersService.findAllBySellerId(me.getId(), page);
+	    }
 
+	    @RequestMapping("/ordersOfBuyer")
+	    public Page<Orders> getOrdersOfBuyer(@RequestParam(defaultValue="0") int page,
+	            HttpServletRequest request) {
+	        User me = getCurrentUser(request);
+	        return ordersService.findAllByBuyerId(me.getId(), page);
+	    }
 }
