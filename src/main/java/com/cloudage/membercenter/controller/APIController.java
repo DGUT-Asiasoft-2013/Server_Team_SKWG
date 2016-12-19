@@ -20,11 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Comment;
+import com.cloudage.membercenter.entity.Goods;
 import com.cloudage.membercenter.entity.Likes;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.ILikesRepository;
 import com.cloudage.membercenter.service.IArticleService;
 import com.cloudage.membercenter.service.ICommentService;
+import com.cloudage.membercenter.service.IGoodsService;
 import com.cloudage.membercenter.service.ILikesService;
 import com.cloudage.membercenter.service.IUserService;
 
@@ -44,6 +46,8 @@ public class APIController {
 	@Autowired
 	ILikesService likesService;
 
+	@Autowired
+	IGoodsService goodsService;
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public @ResponseBody String hello() {
 		return "HELLO WORLD";
@@ -138,6 +142,31 @@ public class APIController {
 		return articleService.save(article);    
 	}
 
+	@RequestMapping(value="/Goods", method = RequestMethod.POST)
+	public Goods addGoods(@RequestParam String goodsName,
+			@RequestParam String goodsType,
+			@RequestParam String goodsPrice,
+			@RequestParam String goodsCount,
+			@RequestParam String goodsImage,
+			@RequestParam String publisher,
+			@RequestParam String author,
+			@RequestParam String pubDate,
+			@RequestParam String pritime,
+			@RequestParam User seller
+			) {
+		Goods goods = new Goods();
+		goods.setGoodsName(goodsName);
+		goods.setGoodsType(goodsType);
+		goods.setGoodsPrice(goodsPrice);
+		goods.setGoodsCount(goodsCount);
+		goods.setGoodsImage(goodsImage);
+		goods.setPublisher(publisher);
+		goods.setAuthor(author);
+		goods.setPubDate(pubDate);
+		goods.setPritime(pritime);
+		goods.setSeller(seller);
+		return goodsService.save(goods);
+	}
 	@RequestMapping("/feeds/{page}")
 	public Page<Article> getFeeds(@PathVariable int page){
 		return articleService.getFeeds(page);
