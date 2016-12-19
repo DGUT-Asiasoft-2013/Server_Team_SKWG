@@ -20,14 +20,14 @@ public class Goods extends DateRecord{
 	String pritime;
 	User seller;
 	
-	@Column(nullable=true)
+	@Column(nullable=false)
 	public String getGoodsName() {
 		return goodsName;
 	}
 	public void setGoodsName(String goodsName) {
 		this.goodsName = goodsName;
 	}
-	@Column(nullable=true)
+	@Column(nullable=false)
 	public String getGoodsType() {
 		return goodsType;
 	}

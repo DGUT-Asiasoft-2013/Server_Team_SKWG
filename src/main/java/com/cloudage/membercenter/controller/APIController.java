@@ -142,7 +142,7 @@ public class APIController {
 		return articleService.save(article);    
 	}
 
-	@RequestMapping(value="/Goods", method = RequestMethod.POST)
+	@RequestMapping(value="/goods", method = RequestMethod.POST)
 	public Goods addGoods(@RequestParam String goodsName,
 			@RequestParam String goodsType,
 			@RequestParam String goodsPrice,
