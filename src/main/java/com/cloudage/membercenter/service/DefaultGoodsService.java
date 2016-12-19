@@ -18,4 +18,7 @@ public class DefaultGoodsService implements IGoodsService{
 		return goodsRepo.save(goods);
 	}
 
+	public Goods findById(int goodsId) {
+		return goodsRepo.findOne(goodsId);
+	}
 }
