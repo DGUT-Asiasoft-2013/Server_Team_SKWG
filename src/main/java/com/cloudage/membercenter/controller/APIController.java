@@ -141,7 +141,7 @@ public class APIController {
 		article.setText(text);
 		return articleService.save(article);    
 	}
-
+	
 	@RequestMapping(value="/goods", method = RequestMethod.POST)
 	public Goods addGoods(@RequestParam String goodsName,
 			@RequestParam String goodsType,
@@ -167,6 +167,18 @@ public class APIController {
 		goods.setSeller(seller);
 		return goodsService.save(goods);
 	}
+	
+	@RequestMapping(value="/goods/b/{buyerId}")
+	public Page<Goods> getGoodsByUserID(@PathVariable Integer buyerId,
+			@RequestParam int page) {
+		return goodsService.findAllByBuyerId(buyerId, page);
+	}
+	@RequestMapping(value="/goods/s/{sellerId}")
+	public Page<Goods> getGoodsBySellerID(@PathVariable Integer sellerId,
+			@RequestParam int page) {
+		return goodsService.findAllByBuyerId(sellerId, page);
+	}
+	
 	@RequestMapping("/feeds/{page}")
 	public Page<Article> getFeeds(@PathVariable int page){
 		return articleService.getFeeds(page);
