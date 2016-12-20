@@ -43,4 +43,9 @@ public class DefaultOrdersService implements IOrdersService{
                 return ordersRepo.findOrdersByOrdersID(ordersID);
         }
         
+        @Override
+        public void deleteOrders(Orders orders) {
+                ordersRepo.delete(orders);
+        }
+        
 }

@@ -290,4 +290,10 @@ public class APIController {
                 return ordersService.findAllByBuyerId(me.getId(), page);
         }
 
+        @RequestMapping("/deleteOrders")
+        public void deleteOrders(@RequestParam int ordersID , HttpServletRequest request) {
+                Orders orders = ordersService.findOrdersByOrdersID(ordersID);
+                ordersService.deleteOrders(orders);
+        }
+        
 }

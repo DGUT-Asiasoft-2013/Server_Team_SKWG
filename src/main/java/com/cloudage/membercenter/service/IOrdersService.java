@@ -9,4 +9,5 @@ public interface IOrdersService {
         Page<Orders> findAllBySellerId(int sellerId, int page);
         Page<Orders> findAllByBuyerId(int buyerId, int page);
         Orders findOrdersByOrdersID(int ordersID);
+        void deleteOrders(Orders orders);
 }
