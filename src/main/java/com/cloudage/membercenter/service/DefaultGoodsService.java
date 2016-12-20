@@ -32,4 +32,12 @@ public class DefaultGoodsService implements IGoodsService{
         PageRequest pageRequest = new PageRequest(page, 6, sort);
 		return goodsRepo.findAllOfSellerId(SellerId, pageRequest);
 	}
+	
+	@Override
+	public Page<Goods> searchGoodsByKeyword(String keyword, int page) {
+		// TODO Auto-generated method stub
+		Sort sort=new Sort(Direction.DESC,"createDate");
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findAllByKeyword(keyword,pageRequest);
+	}
 }

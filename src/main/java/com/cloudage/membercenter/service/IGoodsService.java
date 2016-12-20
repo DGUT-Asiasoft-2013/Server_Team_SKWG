@@ -8,4 +8,5 @@ public interface IGoodsService {
 	Goods save(Goods goods);
 	Goods findById(int goodsId);
 	Page<Goods> findAllBySellerId(int SellerId, int page);
+	Page<Goods> searchGoodsByKeyword(String keyword, int page);
 }

@@ -185,6 +185,13 @@ public class APIController {
                 return goodsService.findAllBySellerId(sellerId, page);
         }
         
+        @RequestMapping("/goods/search/{keyword}")
+        public Page<Goods> searchGoodsByKeyword(@PathVariable String keyword,
+        		@RequestParam(defaultValue="0") int page){
+        	
+        	return goodsService.searchGoodsByKeyword(keyword,page);
+        }
+        
         @RequestMapping("/feeds/{page}")
         public Page<Article> getFeeds(@PathVariable int page) {
                 return articleService.getFeeds(page);
