@@ -60,31 +60,30 @@ public class APIController {
         }
 
         @RequestMapping(value = "/register", method = RequestMethod.POST)
-        public User register(@RequestParam String account, @RequestParam String passwordHash,
-                        @RequestParam String email, @RequestParam String name, MultipartFile avatar,
-                        HttpServletRequest request) {
+    	public User register(@RequestParam String account, @RequestParam String passwordHash, @RequestParam String email,
+    			@RequestParam String name, @RequestParam String address, @RequestParam String phoneNum,
+    			MultipartFile avatar, HttpServletRequest request) {
 
-                User user = new User();
-                user.setAccount(account);
-                user.setPasswordHash(passwordHash);
-                user.setEmail(email);
-                user.setName(name);
+    		User user = new User();
+    		user.setAccount(account);
+    		user.setPasswordHash(passwordHash);
+    		user.setEmail(email);
+    		user.setName(name);
+    		user.setAddress(address);
+    		user.setPhoneNum(phoneNum);
 
-                if (avatar != null) {
-                        try {
-                                String realPath = request.getSession().getServletContext()
-                                                .getRealPath("/WEB-INF/upload");
-                                FileUtils.copyInputStreamToFile(avatar.getInputStream(),
-                                                new File(realPath, account + ".png"));
-                                user.setAvatar("upload/" + account + ".png");
-                        } catch (Exception e) {
-                                e.printStackTrace();
-                        }
-                }
+    		if (avatar != null) {
+    			try {
+    				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+    				FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath, account + ".png"));
+    				user.setAvatar("upload/" + account + ".png");
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
+    		}
 
-                return userService.save(user);
-        }
-
+    		return userService.save(user);
+    	}
         @RequestMapping(value = "/login", method = RequestMethod.POST)
         public User login(@RequestParam String account, @RequestParam String passwordHash, HttpServletRequest request) {
 
