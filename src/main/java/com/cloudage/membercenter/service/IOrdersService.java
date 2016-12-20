@@ -8,4 +8,5 @@ public interface IOrdersService {
         Orders save(Orders orders);
         Page<Orders> findAllBySellerId(int sellerId, int page);
         Page<Orders> findAllByBuyerId(int buyerId, int page);
+        Orders findOrdersByOrdersID(int ordersID);
 }

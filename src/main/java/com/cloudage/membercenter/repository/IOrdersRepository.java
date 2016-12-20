@@ -18,4 +18,8 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
         //通过买家id找到买家所有订单
         @Query("from Orders orders where orders.buyer.id = ?1")
         Page<Orders> findAllOfBuyer(int buyerId, Pageable page);
+        
+        //通过订单id查找订单
+        @Query("from Orders orders where orders.ordersID = ?1")
+        Orders findOrdersByOrdersID(int ordersID);
 }

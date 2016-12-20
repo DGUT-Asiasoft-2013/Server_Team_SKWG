@@ -37,5 +37,10 @@ public class DefaultOrdersService implements IOrdersService{
                 PageRequest pageRequest = new PageRequest(page, 6, sort);
                 return ordersRepo.findAllOfBuyer(buyerId, pageRequest);
         }
+
+        @Override
+        public Orders findOrdersByOrdersID(int ordersID) {
+                return ordersRepo.findOrdersByOrdersID(ordersID);
+        }
         
 }
