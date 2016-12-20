@@ -19,7 +19,6 @@ public class Goods extends DateRecord{
 	String pubDate;
 	String pritime;
 	User seller;
-	User buyer;
 	
 	@Column(nullable=false)
 	public String getGoodsName() {
@@ -85,14 +84,6 @@ public class Goods extends DateRecord{
 	}
 	public void setSeller(User seller) {
 		this.seller = seller;
-	}
-	@ManyToOne(optional = false)
-    @JsonIgnore
-	public User getBuyer() {
-		return buyer;
-	}
-	public void setBuyer(User buyer) {
-		this.buyer = buyer;
 	}
 	
 	

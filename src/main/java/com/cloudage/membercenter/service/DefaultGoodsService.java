@@ -27,12 +27,6 @@ public class DefaultGoodsService implements IGoodsService{
 	}
 
 	@Override
-	public Page<Goods> findAllByBuyerId(int buyerId, int page) {
-		Sort sort = new Sort(Direction.DESC, "createDate");
-        PageRequest pageRequest = new PageRequest(page, 6, sort);
-		return goodsRepo.findAllOfBuyerId(buyerId, pageRequest);
-	}
-	@Override
 	public Page<Goods> findAllBySellerId(int SellerId, int page) {
 		Sort sort = new Sort(Direction.DESC, "createDate");
         PageRequest pageRequest = new PageRequest(page, 6, sort);

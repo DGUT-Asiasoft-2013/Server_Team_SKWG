@@ -150,30 +150,34 @@ public class APIController {
         				@RequestParam String goodsType,
                         @RequestParam String goodsPrice,
                         @RequestParam String goodsCount,
-                        @RequestParam String goodsImage,
                         @RequestParam String publisher,
                         @RequestParam String author,
                         @RequestParam String pubDate,
                         @RequestParam String pritime,
+                        MultipartFile goodsImage,
                         HttpServletRequest request) {
                 Goods goods = new Goods();
                 User seller = getCurrentUser(request);
+                User buyer = getCurrentUser(request);
                 goods.setGoodsName(goodsName);
                 goods.setGoodsType(goodsType);
                 goods.setGoodsPrice(goodsPrice);
                 goods.setGoodsCount(goodsCount);
-                goods.setGoodsImage(goodsImage);
                 goods.setPublisher(publisher);
                 goods.setAuthor(author);
                 goods.setPubDate(pubDate);
                 goods.setPritime(pritime);
                 goods.setSeller(seller);
+            	if (goodsImage != null) {
+        			try {
+        				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+        				FileUtils.copyInputStreamToFile(goodsImage.getInputStream(), new File(realPath, goodsName + ".png"));
+        				goods.setGoodsImage("upload/" + goodsName + ".png");
+        			} catch (Exception e) {
+        				e.printStackTrace();
+        			}
+        		}
                 return goodsService.save(goods);
-        }
-
-        @RequestMapping(value = "/goods/b/{buyerId}")
-        public Page<Goods> getGoodsByUserID(@PathVariable Integer buyerId, @RequestParam(defaultValue="0") int page) {
-                return goodsService.findAllByBuyerId(buyerId, page);
         }
 
         @RequestMapping(value = "/goods/s/{sellerId}")
