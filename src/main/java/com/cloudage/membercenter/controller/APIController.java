@@ -146,11 +146,18 @@ public class APIController {
         }
 
         @RequestMapping(value = "/goods", method = RequestMethod.POST)
-        public Goods addGoods(@RequestParam String goodsName, @RequestParam String goodsType,
-                        @RequestParam String goodsPrice, @RequestParam String goodsCount,
-                        @RequestParam String goodsImage, @RequestParam String publisher, @RequestParam String author,
-                        @RequestParam String pubDate, @RequestParam String pritime, @RequestParam User seller) {
+        public Goods addGoods(@RequestParam String goodsName,
+        				@RequestParam String goodsType,
+                        @RequestParam String goodsPrice,
+                        @RequestParam String goodsCount,
+                        @RequestParam String goodsImage,
+                        @RequestParam String publisher,
+                        @RequestParam String author,
+                        @RequestParam String pubDate,
+                        @RequestParam String pritime,
+                        HttpServletRequest request) {
                 Goods goods = new Goods();
+                User seller = getCurrentUser(request);
                 goods.setGoodsName(goodsName);
                 goods.setGoodsType(goodsType);
                 goods.setGoodsPrice(goodsPrice);
@@ -165,15 +172,15 @@ public class APIController {
         }
 
         @RequestMapping(value = "/goods/b/{buyerId}")
-        public Page<Goods> getGoodsByUserID(@PathVariable Integer buyerId, @RequestParam int page) {
+        public Page<Goods> getGoodsByUserID(@PathVariable Integer buyerId, @RequestParam(defaultValue="0") int page) {
                 return goodsService.findAllByBuyerId(buyerId, page);
         }
 
         @RequestMapping(value = "/goods/s/{sellerId}")
-        public Page<Goods> getGoodsBySellerID(@PathVariable Integer sellerId, @RequestParam int page) {
-                return goodsService.findAllByBuyerId(sellerId, page);
+        public Page<Goods> getGoodsBySellerID(@PathVariable Integer sellerId, @RequestParam(defaultValue="0") int page) {
+                return goodsService.findAllBySellerId(sellerId, page);
         }
-
+        
         @RequestMapping("/feeds/{page}")
         public Page<Article> getFeeds(@PathVariable int page) {
                 return articleService.getFeeds(page);
