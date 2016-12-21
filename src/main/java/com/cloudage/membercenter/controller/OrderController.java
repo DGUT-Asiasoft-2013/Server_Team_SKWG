@@ -50,9 +50,11 @@ public class OrderController {
 
               User me = userController.getCurrentUser(request);
               Goods goods = goodsService.findById(goods_id);
-              Orders orders = new Orders();
-              if (ordersState == 0) {
+              
+              if (ordersState == 1) {
+                      Orders orders = new Orders();
                       orders.setOrdersID(ordersID);
+                      orders.setOrdersState(ordersState);
                       orders.setBuyer(me);
                       orders.setBuyerName(buyerName);
                       orders.setBuyerPhoneNum(buyerPhoneNum);
@@ -62,11 +64,15 @@ public class OrderController {
                       orders.setGoodsSum(goodsSum);
                       return ordersService.save(orders);
               }
-              if (ordersState == 1) {
+              if (ordersState == 2) {
+                      Orders orders = ordersService.findOrdersByOrdersID(ordersID); 
+                      orders.setOrdersState(ordersState);
                       orders.setPaySum(paySum);
                       return ordersService.save(orders);
               } else {
-                      return null;
+                      Orders orders = ordersService.findOrdersByOrdersID(ordersID); 
+                      orders.setOrdersState(ordersState);
+                      return ordersService.save(orders);
               }
       }
 

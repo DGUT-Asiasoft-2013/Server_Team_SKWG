@@ -19,7 +19,7 @@ public class Goods extends DateRecord{
 	String pubDate;
 	String pritime;
 	User seller;
-	
+	Shop shop;
 	@Column(nullable=false)
 	public String getGoodsName() {
 		return goodsName;
@@ -85,6 +85,14 @@ public class Goods extends DateRecord{
 	public void setSeller(User seller) {
 		this.seller = seller;
 	}
+	@ManyToOne(optional=false)
+	public Shop getShop() {
+		return shop;
+	}
+	public void setShop(Shop shop) {
+		this.shop = shop;
+	}
+	
 	
 	
 }
