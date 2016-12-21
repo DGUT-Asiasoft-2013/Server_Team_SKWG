@@ -1,5 +1,4 @@
 <%@ page language="java"%>
-
 <%@ include file="common/head.jsp"%>
 <html>
 <head>

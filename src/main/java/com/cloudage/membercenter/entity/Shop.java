@@ -19,14 +19,14 @@ public class Shop extends BaseEntity{
 	public void setShopName(String shopName) {
 		this.shopName = shopName;
 	}
-	public String getDecription() {
+	public String getDescription() {
 		return description;
 	}
-	public void setDecription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
-	@OneToOne(optional=false)
-	@JsonIgnore
+	
+	@OneToOne(optional=false)	
 	public User getOwner() {
 		return owner;
 	}

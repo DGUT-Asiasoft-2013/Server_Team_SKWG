@@ -34,7 +34,7 @@ public class ShopController {
 		Shop shop = new Shop();
 		User owner = userController.getCurrentUser(request);
 		shop.setShopName(shopName);
-		shop.setDecription(description);
+		shop.setDescription(description);
 		shop.setOwner(owner);
 		if (shopImage != null) {
 			try {
@@ -45,6 +45,6 @@ public class ShopController {
 				e.printStackTrace();
 			}
 		}
-		return shop;
+		return shopServier.save(shop);
 	}
 }

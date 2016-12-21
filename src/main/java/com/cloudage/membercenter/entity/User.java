@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cloudage.membercenter.util.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User extends BaseEntity {
@@ -17,19 +18,16 @@ public class User extends BaseEntity {
 	String phoneNum;
 	String address;
 
-	boolean isStore;
+	String isStore;
 
 	@Column(nullable = false)
 	public String getPhoneNum() {
 		return phoneNum;
 	}
+
 	@Column(nullable = false)
 	public String getAddress() {
 		return address;
-	}
-
-	public boolean isStore() {
-		return isStore;
 	}
 
 	@Column(unique = true)
@@ -38,6 +36,7 @@ public class User extends BaseEntity {
 	}
 
 	@Column(nullable = false)
+	@JsonIgnore
 	public String getPasswordHash() {
 		return passwordHash;
 	}
@@ -81,7 +80,12 @@ public class User extends BaseEntity {
 		this.phoneNum = phoneNum;
 	}
 
-	public void setStore(boolean isStore) {
+	@Column(nullable = false)
+	public String getIsStore() {
+		return isStore;
+	}
+
+	public void setIsStore(String isStore) {
 		this.isStore = isStore;
 	}
 

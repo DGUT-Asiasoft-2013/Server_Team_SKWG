@@ -56,6 +56,7 @@ public class UserController {
     		user.setName(name);
     		user.setAddress(address);
     		user.setPhoneNum(phoneNum);
+    		user.setIsStore("0");
 
     		if (avatar != null) {
     			try {
@@ -103,7 +104,7 @@ public class UserController {
         }
 
         @RequestMapping(value = "/recover", method = RequestMethod.POST)
-        public Boolean passwordRecover(@RequestParam String email, @RequestParam String passwordHash,
+        public boolean passwordRecover(@RequestParam String email, @RequestParam String passwordHash,
                         HttpServletRequest request) {
                 User user = userService.findByEmail(email);
                 if (user == null) {
@@ -113,6 +114,14 @@ public class UserController {
                         userService.save(user);
                         return true;
                 }
+        }
+        
+        @RequestMapping(value = "/becomeshop", method = RequestMethod.POST)
+        public void becomeShop(HttpServletRequest request) {
+        	User user = getCurrentUser(request);
+        	user.setIsStore("1");
+        	System.out.println("g");
+        	userService.save(user);
         }
 
        
