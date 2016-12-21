@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cloudage.membercenter.entity.BookComment;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.repository.ICommentRepository;
 
@@ -45,5 +46,7 @@ public class DefaultCommentService implements ICommentService {
             PageRequest pageRequest = new PageRequest(page, 6, sort);
 			return commentRepo.findAllOfUserId(userId, pageRequest);
 		}
+
+	
 
 }

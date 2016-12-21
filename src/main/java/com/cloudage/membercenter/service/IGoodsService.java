@@ -9,4 +9,5 @@ public interface IGoodsService {
 	Goods findById(int goodsId);
 	Page<Goods> findAllBySellerId(int SellerId, int page);
 	Page<Goods> searchGoodsByKeyword(String keyword, int page);
+	Page<Goods> findAll(int page);
 }
