@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Orders extends DateRecord {
         int ordersID;                                     // 订单号
-        int ordersState;                              // 订单状态，如：发货中，等待收货等
+        int ordersState;                              // 订单状态，  0：已取消订单   1：已下单   2：已付款   3：已发货   4：已收货  5：完成订单
         
         Goods goods;                                        // 商品
         String goodsQTY;                                //购买数量
