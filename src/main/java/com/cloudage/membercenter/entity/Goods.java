@@ -86,6 +86,7 @@ public class Goods extends DateRecord{
 		this.seller = seller;
 	}
 	@ManyToOne(optional=false)
+	@JsonIgnore
 	public Shop getShop() {
 		return shop;
 	}
