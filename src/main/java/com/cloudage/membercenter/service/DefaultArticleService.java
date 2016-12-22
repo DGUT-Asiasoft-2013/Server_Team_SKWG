@@ -24,6 +24,11 @@ public class DefaultArticleService implements IArticleService{
         @Autowired
         IArticleRepository  articleRepo;
 
+        @Override
+        public Article findArticleById(int article_id){
+        	return articleRepo.findArticleById(article_id);
+        }
+        
         @Override 
         public List<Article> findAllByAuthor(User user) {
                 return articleRepo.findAllByAuthor(user);
@@ -40,7 +45,7 @@ public class DefaultArticleService implements IArticleService{
         }
 
         @Override
-        public Page<Article> getFeeds(int page) {
+        public Page<Article> getForums(int page) {
                 Sort sort = new Sort(Direction.DESC, "createDate");
                 PageRequest pageRequest = new PageRequest(page, 6, sort);
                 return articleRepo.findAll(pageRequest);

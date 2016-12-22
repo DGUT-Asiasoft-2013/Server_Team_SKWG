@@ -47,6 +47,10 @@ public class DefaultCommentService implements ICommentService {
 			return commentRepo.findAllOfUserId(userId, pageRequest);
 		}
 
+		@Override
+		public int getCommentCountOfArticle(int articleId){
+			return commentRepo.commentCountOfArticle(articleId);
+		}
 	
 
 }
