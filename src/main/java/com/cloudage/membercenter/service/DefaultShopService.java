@@ -17,5 +17,10 @@ public class DefaultShopService implements IShopService {
 	public Shop save(Shop shop) {
 		return shopRepo.save(shop);
 	}
+	@Override
+	public Shop findByUserId(int userId) {
+		return shopRepo.findByUserId(userId);
+	}
+	
 
 }

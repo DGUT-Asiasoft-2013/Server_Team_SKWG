@@ -47,4 +47,11 @@ public class ShopController {
 		}
 		return shopServier.save(shop);
 	}
+	
+	// 返回当前用户的店铺
+	@RequestMapping(value= "/shop/myshop")
+	public Shop findByUserId(HttpServletRequest request) {
+		User me = userController.getCurrentUser(request);
+		return shopServier.findByUserId(me.getId());
+	}
 }
