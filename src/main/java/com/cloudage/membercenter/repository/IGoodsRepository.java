@@ -15,4 +15,7 @@ public interface IGoodsRepository extends PagingAndSortingRepository<Goods, Inte
 	
 	@Query("from Goods goods where goods.goodsName like %?1% or goods.author like %?1% " )
 	Page<Goods> findAllByKeyword(String keyword, Pageable pageRequest);
+	
+	@Query("from Goods goods where goods.shop.id = ?1")
+	Page<Goods> findAllByShopId(int shopId, Pageable page);
 }

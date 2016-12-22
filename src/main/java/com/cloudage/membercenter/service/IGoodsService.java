@@ -11,4 +11,5 @@ public interface IGoodsService {
 	Page<Goods> searchGoodsByKeyword(String keyword, int page);
 	Page<Goods> findAll(int page);
 	Page<Goods> sortGoodsBySortStyle(String keyword, String sortStyle, int page);
+	Page<Goods> findAllByShopId(int shopId, int page);
 }

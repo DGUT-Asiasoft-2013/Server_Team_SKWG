@@ -77,6 +77,11 @@ public class GoodsController {
 		return goodsService.findAll( page);
 	}
 
+	// 通过店铺id查询商品
+	@RequestMapping(value = "/goods/get/{shop_id}")
+	public Page<Goods> getGoodsByShopId(@PathVariable int shop_id,@RequestParam(defaultValue = "0") int page) {
+		return goodsService.findAllByShopId(shop_id, page);
+	}
 
 	//商品搜索
 	@RequestMapping("/goods/search/{keyword}")

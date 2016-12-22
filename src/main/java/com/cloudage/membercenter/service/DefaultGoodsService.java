@@ -54,6 +54,12 @@ public class DefaultGoodsService implements IGoodsService{
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findAllByKeyword(keyword,pageRequest);
 	}
+	@Override
+	public Page<Goods> findAllByShopId(int shopId, int page) {
+		Sort sort=new Sort(Direction.ASC, "goodsName");
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findAllByShopId(shopId, pageRequest);
+	}
 
 	
 	
