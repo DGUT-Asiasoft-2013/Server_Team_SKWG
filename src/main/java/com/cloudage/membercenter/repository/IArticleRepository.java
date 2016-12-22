@@ -14,12 +14,15 @@ import com.cloudage.membercenter.entity.User;
 @Repository
 public interface IArticleRepository extends PagingAndSortingRepository<Article, Integer>{
 
-        @Query("from Article article where article.author = ?1")
-        List<Article> findAllByAuthor(User user);
-        
-        @Query("from Article article where article.author.id = ?1")
-        List<Article> findAllByAuthorId(Integer userId);
-        
-        @Query("from Article article where article.text like %?1%")
-        Page<Article> searchArticleWihtKeyword(String keyword, Pageable page);
+	@Query("from Article article where article.id = ?1")
+	Article findArticleById(int article_id);
+	
+	@Query("from Article article where article.author = ?1")
+	List<Article> findAllByAuthor(User user);
+
+	@Query("from Article article where article.author.id = ?1")
+	List<Article> findAllByAuthorId(Integer userId);
+
+	@Query("from Article article where article.text like %?1%")
+	Page<Article> searchArticleWihtKeyword(String keyword, Pageable page);
 }

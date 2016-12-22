@@ -10,4 +10,5 @@ public interface ICommentService {
         Page<Comment> findAllOfAuthorId(int authorId, int page);
         Page<Comment> findAllOfUserId(int userId, int page);
         Comment save(Comment comment);
+        int getCommentCountOfArticle(int articleId);
 }

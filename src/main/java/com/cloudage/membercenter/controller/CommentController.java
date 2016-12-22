@@ -63,4 +63,9 @@ public class CommentController {
 		comment.setText(text);
 		return commentService.save(comment);
 	}
+	
+	@RequestMapping("/article/{article_id}/comments/count")
+	public int getCommentCountOfArticle(@PathVariable int article_id){
+		return commentService.getCommentCountOfArticle(article_id);
+	}
 }

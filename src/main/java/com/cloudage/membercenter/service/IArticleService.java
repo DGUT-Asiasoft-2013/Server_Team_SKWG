@@ -8,9 +8,10 @@ import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.User;
 
 public interface IArticleService {
+	    Article findArticleById(int article_id);
         List<Article> findAllByAuthor(User user);
         List<Article> findAllByAuthorId(Integer userId);
-        Page<Article> getFeeds(int page);
+        Page<Article> getForums(int page);
         Page<Article> searchArticlWithKeyword(String keyword, int page);
         Article save(Article article);
         Article findOne(Integer articleId);
