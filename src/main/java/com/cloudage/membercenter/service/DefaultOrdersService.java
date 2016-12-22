@@ -47,5 +47,15 @@ public class DefaultOrdersService implements IOrdersService{
         public void deleteOrders(Orders orders) {
                 ordersRepo.delete(orders);
         }
+
+        @Override
+        public Orders findPreOrderByID(int buyerId, int goodsId) {
+                return ordersRepo.findPreOrderByID(buyerId, goodsId);
+        }
+
+        @Override
+        public boolean checkPreOrder(int buyerId, int goodsId) {
+                return ordersRepo.checkPreOrderExsists(buyerId, goodsId)>0;
+        }
         
 }

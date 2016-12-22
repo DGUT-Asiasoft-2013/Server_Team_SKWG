@@ -27,74 +27,89 @@ import com.cloudage.membercenter.service.IUserService;
 @RestController
 @RequestMapping("/api")
 public class OrderController {
-	  @Autowired
-      IUserService userService;
+        @Autowired
+        IUserService userService;
 
-      @Autowired
-      IGoodsService goodsService;
+        @Autowired
+        IGoodsService goodsService;
 
-      @Autowired
-      IOrdersService ordersService;
-      
-      @Autowired
- 	 UserController userController;
-      
-     
-      
-   // 生成订单
-      @RequestMapping(value = "/goods/{goods_id}/orders", method = RequestMethod.POST)
-      public Orders addOrders(@RequestParam int ordersID, @RequestParam int ordersState,
-                      @RequestParam String goodsQTY, @RequestParam String goodsSum, @RequestParam String buyerName,
-                      @RequestParam String buyerPhoneNum, @RequestParam String buyerAddress,
-                      @RequestParam String paySum, @PathVariable int goods_id, HttpServletRequest request) {
+        @Autowired
+        IOrdersService ordersService;
 
-              User me = userController.getCurrentUser(request);
-              Goods goods = goodsService.findById(goods_id);
-              
-              if (ordersState == 1) {
-                      Orders orders = new Orders();
-                      orders.setOrdersID(ordersID);
-                      orders.setOrdersState(ordersState);
-                      orders.setBuyer(me);
-                      orders.setBuyerName(buyerName);
-                      orders.setBuyerPhoneNum(buyerPhoneNum);
-                      orders.setBuyerAddress(buyerAddress);
-                      orders.setGoods(goods);
-                      orders.setGoodsQTY(goodsQTY);
-                      orders.setGoodsSum(goodsSum);
-                      return ordersService.save(orders);
-              }
-              if (ordersState == 2) {
-                      Orders orders = ordersService.findOrdersByOrdersID(ordersID); 
-                      orders.setOrdersState(ordersState);
-                      orders.setPaySum(paySum);
-                      return ordersService.save(orders);
-              } else {
-                      Orders orders = ordersService.findOrdersByOrdersID(ordersID); 
-                      orders.setOrdersState(ordersState);
-                      return ordersService.save(orders);
-              }
-      }
+        @Autowired
+        UserController userController;
 
-      @RequestMapping("/ordersOfSeller")
-      public Page<Orders> getOrdersOfSeller(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
-              User me = userController.getCurrentUser(request);
-              return ordersService.findAllBySellerId(me.getId(), page);
-      }
+        // 生成订单
+        @RequestMapping(value = "/goods/{goods_id}/orders", method = RequestMethod.POST)
+        public Orders addOrders(@RequestParam int ordersID, @RequestParam int ordersState,
+                        @RequestParam String goodsQTY, @RequestParam String goodsSum, @RequestParam String buyerName,
+                        @RequestParam String buyerPhoneNum, @RequestParam String buyerAddress,
+                        @RequestParam String paySum, @PathVariable int goods_id, HttpServletRequest request) {
 
-      @RequestMapping("/ordersOfBuyer")
-      public Page<Orders> getOrdersOfBuyer(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
-              User me = userController.getCurrentUser(request);
-              return ordersService.findAllByBuyerId(me.getId(), page);
-      }
+                User me = userController.getCurrentUser(request);
+                Goods goods = goodsService.findById(goods_id);
+                if (ordersState == 1) {
+                        Orders orders;
+                        String qty;
+                        if (ordersService.checkPreOrder(me.getId(), goods_id)) {
+                                orders = ordersService.findPreOrderByID(me.getId(), goods_id);
+                                qty = orders.getGoodsQTY() + 1;
+                                orders.setGoodsQTY(qty);
+                        } else {
+                                orders = new Orders();
+                        }
+                        orders.setBuyer(me);
+                        orders.setGoods(goods);
+                        orders.setGoodsQTY(goodsQTY);
+                        return ordersService.save(orders);
+                }
 
-      @RequestMapping("/deleteOrders")
-      public void deleteOrders(@RequestParam int ordersID , HttpServletRequest request) {
-              Orders orders = ordersService.findOrdersByOrdersID(ordersID);
-              ordersService.deleteOrders(orders);
-      }
-      
-      
+                if (ordersState == 2) {
+                        Orders orders;
+                        if (ordersService.checkPreOrder(me.getId(), goods_id)) {
+                                orders = ordersService.findPreOrderByID(me.getId(), goods_id);
+                        } else {
+                                orders = new Orders();
+                        }
+                        orders.setOrdersID(ordersID);
+                        orders.setOrdersState(ordersState);
+                        orders.setBuyer(me);
+                        orders.setBuyerName(buyerName);
+                        orders.setBuyerPhoneNum(buyerPhoneNum);
+                        orders.setBuyerAddress(buyerAddress);
+                        orders.setGoods(goods);
+                        orders.setGoodsQTY(goodsQTY);
+                        orders.setGoodsSum(goodsSum);
+                        return ordersService.save(orders);
+                }
+                if (ordersState == 3) {
+                        Orders orders = ordersService.findOrdersByOrdersID(ordersID);
+                        orders.setOrdersState(ordersState);
+                        orders.setPaySum(paySum);
+                        return ordersService.save(orders);
+                } else {
+                        Orders orders = ordersService.findOrdersByOrdersID(ordersID);
+                        orders.setOrdersState(ordersState);
+                        return ordersService.save(orders);
+                }
+        }
 
+        @RequestMapping("/ordersOfSeller")
+        public Page<Orders> getOrdersOfSeller(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
+                User me = userController.getCurrentUser(request);
+                return ordersService.findAllBySellerId(me.getId(), page);
+        }
+
+        @RequestMapping("/ordersOfBuyer")
+        public Page<Orders> getOrdersOfBuyer(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
+                User me = userController.getCurrentUser(request);
+                return ordersService.findAllByBuyerId(me.getId(), page);
+        }
+
+        @RequestMapping("/deleteOrders")
+        public void deleteOrders(@RequestParam int ordersID, HttpServletRequest request) {
+                Orders orders = ordersService.findOrdersByOrdersID(ordersID);
+                ordersService.deleteOrders(orders);
+        }
 
 }

@@ -10,4 +10,6 @@ public interface IOrdersService {
         Page<Orders> findAllByBuyerId(int buyerId, int page);
         Orders findOrdersByOrdersID(int ordersID);
         void deleteOrders(Orders orders);
+        Orders findPreOrderByID(int buyerId, int goodsId);
+        boolean checkPreOrder(int buyerId, int goodsId);
 }
