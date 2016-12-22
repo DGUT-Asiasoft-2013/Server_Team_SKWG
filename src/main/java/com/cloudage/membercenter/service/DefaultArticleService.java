@@ -63,4 +63,9 @@ public class DefaultArticleService implements IArticleService{
 			return articleRepo.searchArticleWihtKeyword(keyword, pageRequest);
 		}
 
+		public Page<Article> findAllArticleOfMe(int userId, int page){
+			Sort sort = new Sort(Direction.DESC, "createDate");
+            PageRequest pageRequest = new PageRequest(page, 6, sort);
+			return articleRepo.findAllArticleOfMe(userId, pageRequest);
+		}
 }

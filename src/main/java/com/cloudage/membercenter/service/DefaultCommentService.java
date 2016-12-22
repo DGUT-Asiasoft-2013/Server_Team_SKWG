@@ -23,7 +23,7 @@ public class DefaultCommentService implements ICommentService {
 
         @Override
         public Page<Comment> findCommentOfArticle(int articleId, int page) {
-                Sort sort = new Sort(Direction.DESC, "createDate");
+                Sort sort = new Sort(Direction.ASC, "createDate");
                 PageRequest pageRequest = new PageRequest(page, 6, sort);
                 return commentRepo.findAllOfArticleId(articleId, pageRequest);
         }

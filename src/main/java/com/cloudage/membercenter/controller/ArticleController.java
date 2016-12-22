@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudage.membercenter.entity.Article;
+import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IArticleService;
 import com.cloudage.membercenter.service.ILikesService;
@@ -44,6 +45,12 @@ public class ArticleController {
 		return articleService.save(article);
 	}
 
+	@RequestMapping("/myarticles")
+	public Page<Article> getArticleOfMe(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
+		User me = userController.getCurrentUser(request);
+		return articleService.findAllArticleOfMe(me.getId(), page);
+	}
+	
 	@RequestMapping(value = "/modify/{article_id}", method = RequestMethod.POST)
     public boolean modifyArticle(@RequestParam String title, @RequestParam String text,
    		 @PathVariable int article_id,HttpServletRequest request) {

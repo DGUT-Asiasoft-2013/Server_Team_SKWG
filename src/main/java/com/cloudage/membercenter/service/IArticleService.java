@@ -13,6 +13,7 @@ public interface IArticleService {
         List<Article> findAllByAuthorId(Integer userId);
         Page<Article> getForums(int page);
         Page<Article> searchArticlWithKeyword(String keyword, int page);
+        Page<Article> findAllArticleOfMe(int userId, int page);
         Article save(Article article);
         Article findOne(Integer articleId);
         
