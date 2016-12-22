@@ -8,4 +8,6 @@ public interface IBookCommentService {
 
 	Page<BookComment> findAllCommentsByBookId(int goods_id, int page);
 
+	//Page<BookComment> findAllCommentsByBookName(String goods_name, int page);
+
 }

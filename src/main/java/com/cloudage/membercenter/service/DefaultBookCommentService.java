@@ -28,4 +28,12 @@ public class DefaultBookCommentService implements IBookCommentService {
 		return bookCommentRepo.findBookCommentsByBookId(goods_id,pageRequest);
 	}
 
+//	@Override
+//	public Page<BookComment> findAllCommentsByBookName(String goods_name, int page) {
+//		// TODO Auto-generated method stub
+//		Sort sort = new Sort(Direction.DESC, "createDate");
+//        PageRequest pageRequest = new PageRequest(page, 6, sort);
+//		return bookCommentRepo.findBookCommentsByBookId(goods_name,pageRequest);
+//	}
+
 }

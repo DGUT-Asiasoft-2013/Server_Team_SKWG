@@ -86,13 +86,14 @@ public class Goods extends DateRecord{
 		this.seller = seller;
 	}
 	@ManyToOne(optional=false)
-	@JsonIgnore
 	public Shop getShop() {
 		return shop;
 	}
 	public void setShop(Shop shop) {
 		this.shop = shop;
 	}
+	
+	
 	
 	
 	

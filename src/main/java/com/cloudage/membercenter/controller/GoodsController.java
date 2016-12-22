@@ -85,12 +85,30 @@ public class GoodsController {
 
 		return goodsService.searchGoodsByKeyword(keyword,page);
 	}
-
-	//书本评论
+//商品排序
+	@RequestMapping("/goods/sort/{keyword}/{sortStyle}")
+	public Page<Goods> sortGoods(
+			@PathVariable String keyword,
+			@PathVariable String sortStyle,
+			@RequestParam(defaultValue="0") int page){
+		
+		return goodsService.sortGoodsBySortStyle(keyword,sortStyle,page);
+	}
+	
+	//商品评论
 	@RequestMapping("/goods/{goods_id}/comments")
 	public Page<BookComment> getCommentByGoodsId(
 			@PathVariable int goods_id,
 			@RequestParam(defaultValue="0") int page){
 		return bookCommentService.findAllCommentsByBookId(goods_id,page);
 	}
+	
+	
+	
+//	@RequestMapping("/goods/{goods_name}/comments")
+//	public Page<BookComment> getCommentByGoodsName(
+//			@PathVariable String  goods_name,
+//			@RequestParam(defaultValue="0") int page){
+//		return bookCommentService.findAllCommentsByBookName(goods_name,page);
+//	}
 }

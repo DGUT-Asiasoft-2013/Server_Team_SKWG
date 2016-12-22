@@ -14,4 +14,7 @@ public interface IBookCommentRepository extends PagingAndSortingRepository<BookC
 	@Query("from BookComment bookcomment where bookcomment.goods.id=?1")
 	Page<BookComment> findBookCommentsByBookId(int goods_id, Pageable pageRequest);
 
+//	@Query("from BookComment bookcomment where bookcomment.goods.goodsName=?1")
+//	Page<BookComment> findBookCommentsByBookId(String goods_name, Pageable pageRequest);
+
 }

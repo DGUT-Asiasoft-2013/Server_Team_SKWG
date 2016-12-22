@@ -47,6 +47,14 @@ public class DefaultGoodsService implements IGoodsService{
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findAll(pageRequest);
 	}
+	@Override
+	public Page<Goods> sortGoodsBySortStyle(String keyword, String sortStyle, int page) {
+		// TODO Auto-generated method stub
+		Sort sort=new Sort(Direction.ASC,sortStyle);
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findAllByKeyword(keyword,pageRequest);
+	}
+
 	
 	
 }
