@@ -48,11 +48,16 @@ public class UserController {
     	public User register(@RequestParam String account, @RequestParam String passwordHash, @RequestParam String email,
     			@RequestParam String name, @RequestParam String address, @RequestParam String phoneNum,
     			MultipartFile avatar, HttpServletRequest request) {
-
+        	//判断用户是否存在
+//        	User isuser = userService.findByAccount(account);
+//        	User ismail = userService.findByEmail(email);
+//        	if(isuser!=null||ismail!=null){
+//        		return null;
+//        	}
     		User user = new User();
     		user.setAccount(account);
-    		user.setPasswordHash(passwordHash);
     		user.setEmail(email);
+    		user.setPasswordHash(passwordHash);
     		user.setName(name);
     		user.setAddress(address);
     		user.setPhoneNum(phoneNum);
@@ -124,14 +129,19 @@ public class UserController {
         	userService.save(user);
         }
 
-       
+        @RequestMapping(value = "/exit")
+       public void exitServer(HttpServletRequest request){
+        	User me = getCurrentUser(request);
+        	if(me!=null){
+        	request.getSession(true).removeAttribute("uid");
+        	}
+        }
 
         
         
        
 
         
-
        
 
         
