@@ -40,37 +40,32 @@ public class OrderController {
         UserController userController;
 
         // 生成订单
-        @RequestMapping(value = "/goods/{goods_id}/orders", method = RequestMethod.POST)
-        public Orders addOrders(@RequestParam int ordersID, @RequestParam int ordersState,
+        @RequestMapping(value = "/orders", method = RequestMethod.POST)
+        public Orders addOrders(@RequestParam String ordersID, @RequestParam int ordersState,
                         @RequestParam String goodsQTY, @RequestParam String goodsSum, @RequestParam String buyerName,
                         @RequestParam String buyerPhoneNum, @RequestParam String buyerAddress,
-                        @RequestParam String paySum, @PathVariable int goods_id, HttpServletRequest request) {
+                        @RequestParam String postCode,
+                        @RequestParam int goodsId, HttpServletRequest request) {
 
                 User me = userController.getCurrentUser(request);
-                Goods goods = goodsService.findById(goods_id);
+                Goods goods = goodsService.findById(goodsId);
                 if (ordersState == 1) {
-                        Orders orders;
+                        Orders orders = ordersService.findPreOrderByID(me.getId(), goodsId);
                         String qty;
-                        if (ordersService.checkPreOrder(me.getId(), goods_id)) {
-                                orders = ordersService.findPreOrderByID(me.getId(), goods_id);
-                                qty = orders.getGoodsQTY() + 1;
+                        if (orders != null) {
+                                qty = orders.getGoodsQTY() + goodsQTY;
                                 orders.setGoodsQTY(qty);
                         } else {
                                 orders = new Orders();
+                                orders.setBuyer(me);
+                                orders.setGoods(goods);
+                                orders.setGoodsQTY(goodsQTY);
                         }
-                        orders.setBuyer(me);
-                        orders.setGoods(goods);
-                        orders.setGoodsQTY(goodsQTY);
                         return ordersService.save(orders);
                 }
 
                 if (ordersState == 2) {
-                        Orders orders;
-                        if (ordersService.checkPreOrder(me.getId(), goods_id)) {
-                                orders = ordersService.findPreOrderByID(me.getId(), goods_id);
-                        } else {
-                                orders = new Orders();
-                        }
+                       Orders orders = new Orders();
                         orders.setOrdersID(ordersID);
                         orders.setOrdersState(ordersState);
                         orders.setBuyer(me);
@@ -80,43 +75,43 @@ public class OrderController {
                         orders.setGoods(goods);
                         orders.setGoodsQTY(goodsQTY);
                         orders.setGoodsSum(goodsSum);
+                        orders.setPostCode(postCode);
                         return ordersService.save(orders);
                 }
-                if (ordersState == 3) {
-                        Orders orders = ordersService.findOrdersByOrdersID(ordersID);
-                        orders.setOrdersState(ordersState);
-                        orders.setPaySum(paySum);
-                        return ordersService.save(orders);
-                } else {
-                        Orders orders = ordersService.findOrdersByOrdersID(ordersID);
-                        orders.setOrdersState(ordersState);
-                        return ordersService.save(orders);
-                }
+                return null;
         }
 
-        @RequestMapping("/ordersOfSeller")
+        @RequestMapping("/orders/ordersOfSeller")
         public Page<Orders> getOrdersOfSeller(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
                 User me = userController.getCurrentUser(request);
                 return ordersService.findAllBySellerId(me.getId(), page);
         }
 
-        @RequestMapping("/ordersOfBuyer")
+        @RequestMapping("/orders/ordersOfBuyer")
         public Page<Orders> getOrdersOfBuyer(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
                 User me = userController.getCurrentUser(request);
                 return ordersService.findAllByBuyerId(me.getId(), page);
         }
         
-        @RequestMapping(value = "/ordersOfOrdersID", method = RequestMethod.POST)
-        public Orders getOrdersOfOrdersID(@RequestParam int ordersID, HttpServletRequest request) {
-                return ordersService.findOrdersByOrdersID(ordersID);
+        @RequestMapping(value = "/orders/getorders/{orders_id}")
+        public Orders getOrdersOfOrdersID(@RequestParam String orders_id) {
+                return ordersService.findOrdersByOrdersID(orders_id);
         }
         
 
-        @RequestMapping(value="/goods/{goods_id}/deleteOrders", method = RequestMethod.POST)
-        public void deleteOrders( @PathVariable int goods_id, HttpServletRequest request) {
+        @RequestMapping(value="/orders/delete", method = RequestMethod.POST)
+        public void deleteOrders(@RequestParam String ordersID, HttpServletRequest request) {
                 User me = userController.getCurrentUser(request);
-                Orders orders = ordersService.findPreOrderByID(me.getId(), goods_id);
+                Orders orders = ordersService.findOrdersByOrdersID(ordersID);
                 ordersService.deleteOrders(orders);
+        }
+        
+        // 修改订单状态
+        @RequestMapping(value="/order/{orders_id}")
+        public void changeStateByOrdersId(@PathVariable String orders_id, @RequestParam int state) {
+        	Orders orders = getOrdersOfOrdersID(orders_id);
+        	orders.setOrdersState(state);
+        	ordersService.save(orders);
         }
 
 }

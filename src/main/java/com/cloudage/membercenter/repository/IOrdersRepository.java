@@ -21,11 +21,9 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
         
         //通过订单id查找订单
         @Query("from Orders orders where orders.ordersID = ?1")
-        Orders findOrdersByOrdersID(int ordersID);
+        Orders findOrdersByOrdersID(String ordersID);
         
-        @Query("from Orders orders where orders.buyer.id =?1 and orders.goods.id =?2")
+        @Query("from Orders orders where orders.buyer.id =?1 and orders.goods.id =?2 and ordersState = 1")
         Orders findPreOrderByID(int buyerId, int goodsId);
         
-        @Query("from Orders orders where orders.buyer.id =?1 and orders.goods.id =?2")
-        int checkPreOrderExsists(int buyerId, int goodsId);
 }

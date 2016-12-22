@@ -39,7 +39,7 @@ public class DefaultOrdersService implements IOrdersService{
         }
 
         @Override
-        public Orders findOrdersByOrdersID(int ordersID) {
+        public Orders findOrdersByOrdersID(String ordersID) {
                 return ordersRepo.findOrdersByOrdersID(ordersID);
         }
         
@@ -53,9 +53,4 @@ public class DefaultOrdersService implements IOrdersService{
                 return ordersRepo.findPreOrderByID(buyerId, goodsId);
         }
 
-        @Override
-        public boolean checkPreOrder(int buyerId, int goodsId) {
-                return ordersRepo.checkPreOrderExsists(buyerId, goodsId)>0;
-        }
-        
 }

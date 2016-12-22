@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Orders extends DateRecord {
-        int ordersID;                                     // 订单号
+        String ordersID;                                     // 订单号
         int ordersState;                              // 订单状态，  0：已取消订单   1：放进购物车   2：已下单   3：已付款   4：已发货  5：已收货  6：完成订单
         
         Goods goods;                                        // 商品
@@ -21,17 +21,17 @@ public class Orders extends DateRecord {
         String buyerName;                            //客户姓名
         String buyerPhoneNum;                 //联系方式
         String buyerAddress;                       //客户地址
-        
+        String postCode;		// 邮政编码
         String paySum;                                  // 实付款
 
         
         //订单号
         @Column(unique = true, nullable=false)
-        public int getOrdersID() {
+        public String getOrdersID() {
                 return ordersID;
         }
 
-        public void setOrdersID(int ordersID) {
+        public void setOrdersID(String ordersID) {
                 this.ordersID = ordersID;
         }
 
@@ -138,4 +138,14 @@ public class Orders extends DateRecord {
                 this.buyerAddress = buyerAddress;
         }
 
+        @Column(nullable=false)
+		public String getPostCode() {
+			return postCode;
+		}
+
+		public void setPostCode(String postCode) {
+			this.postCode = postCode;
+		}
+        
+        
 }
