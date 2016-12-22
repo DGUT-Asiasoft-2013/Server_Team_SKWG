@@ -105,10 +105,17 @@ public class OrderController {
                 User me = userController.getCurrentUser(request);
                 return ordersService.findAllByBuyerId(me.getId(), page);
         }
+        
+        @RequestMapping(value = "/ordersOfOrdersID", method = RequestMethod.POST)
+        public Orders getOrdersOfOrdersID(@RequestParam int ordersID, HttpServletRequest request) {
+                return ordersService.findOrdersByOrdersID(ordersID);
+        }
+        
 
-        @RequestMapping("/deleteOrders")
-        public void deleteOrders(@RequestParam int ordersID, HttpServletRequest request) {
-                Orders orders = ordersService.findOrdersByOrdersID(ordersID);
+        @RequestMapping(value="/goods/{goods_id}/deleteOrders", method = RequestMethod.POST)
+        public void deleteOrders( @PathVariable int goods_id, HttpServletRequest request) {
+                User me = userController.getCurrentUser(request);
+                Orders orders = ordersService.findPreOrderByID(me.getId(), goods_id);
                 ordersService.deleteOrders(orders);
         }
 
