@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.cloudage.membercenter.util.BaseEntity;
 import com.cloudage.membercenter.util.DateRecord;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
