@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,5 +68,11 @@ public class CommentController {
 	@RequestMapping("/article/{article_id}/comments/count")
 	public int getCommentCountOfArticle(@PathVariable int article_id){
 		return commentService.getCommentCountOfArticle(article_id);
+	}
+	
+	@Modifying
+	@RequestMapping(value="/article/{article_id}/deletecomment",method=RequestMethod.DELETE)
+	public int deleteCommentByArticleId(@PathVariable int article_id){
+		return commentService.deleteCommentByArticleId(article_id);
 	}
 }

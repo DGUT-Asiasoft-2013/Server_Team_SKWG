@@ -10,4 +10,5 @@ public interface ILikesService {
 	void removeLike(User user, Article article);
 	int countLikes(int articleId);
 	boolean checkLiked(int userId, int articleId);
+	int deleteLikeByArticleId(int article_id);
 }

@@ -36,4 +36,6 @@ public interface IArticleRepository extends PagingAndSortingRepository<Article, 
 	@Modifying
 	@Query("delete Article article where article.id =?1")
 	int deleteArticleById(int article_id);
+	
+
 }

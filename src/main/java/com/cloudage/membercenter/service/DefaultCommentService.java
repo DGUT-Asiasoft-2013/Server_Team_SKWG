@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cloudage.membercenter.entity.BookComment;
 import com.cloudage.membercenter.entity.Comment;
@@ -52,5 +53,8 @@ public class DefaultCommentService implements ICommentService {
 			return commentRepo.commentCountOfArticle(articleId);
 		}
 	
+		public int deleteCommentByArticleId(int article_id){
+			return commentRepo.deleteCommentByArticleId(article_id);
+		}
 
 }

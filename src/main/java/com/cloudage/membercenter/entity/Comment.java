@@ -2,10 +2,13 @@ package com.cloudage.membercenter.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
 
 import com.cloudage.membercenter.util.DateRecord;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,7 +48,7 @@ public class Comment extends DateRecord {
                 this.author = author;
         }
 
-        @ManyToOne(optional = false)
+        @ManyToOne(optional = false,cascade={CascadeType.ALL})
         @JsonIgnore
         public Article getArticle() {
                 return article;
