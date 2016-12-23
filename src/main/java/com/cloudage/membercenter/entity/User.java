@@ -30,7 +30,7 @@ public class User extends BaseEntity {
 		return address;
 	}
 
-	@Column(unique = true)
+	@Column(unique = true,nullable = false)
 	public String getAccount() {
 		return account;
 	}
