@@ -16,10 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.BookComment;
 import com.cloudage.membercenter.entity.Goods;
+import com.cloudage.membercenter.entity.Shop;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookCommentService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IGoodsService;
+import com.cloudage.membercenter.service.IShopService;
 
 @RestController
 @RequestMapping("/api")
@@ -32,6 +34,9 @@ public class GoodsController {
 
 	@Autowired 
 	IBookCommentService bookCommentService;
+	
+	@Autowired
+	ShopController shopController;
 
 	@RequestMapping(value = "/goods", method = RequestMethod.POST)
 	public Goods addGoods(@RequestParam String goodsName,
@@ -46,6 +51,7 @@ public class GoodsController {
 			HttpServletRequest request) {
 		Goods goods = new Goods();
 		User seller = userController.getCurrentUser(request);
+		Shop shop = shopController.findByUserId(request);
 		goods.setGoodsName(goodsName);
 		goods.setGoodsType(goodsType);
 		goods.setGoodsPrice(goodsPrice);
@@ -55,6 +61,7 @@ public class GoodsController {
 		goods.setPubDate(pubDate);
 		goods.setPritime(pritime);
 		goods.setSeller(seller);
+		goods.setShop(shop);
 		if (goodsImage != null) {
 			try {
 				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
