@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Comment;
@@ -29,4 +32,8 @@ public interface IArticleRepository extends PagingAndSortingRepository<Article, 
 
 	@Query("from Article article where article.text like %?1%")
 	Page<Article> searchArticleWihtKeyword(String keyword, Pageable page);
+	
+	@Modifying
+	@Query("delete Article article where article.id =?1")
+	int deleteArticleById(int article_id);
 }

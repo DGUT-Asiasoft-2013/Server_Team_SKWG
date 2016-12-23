@@ -3,6 +3,7 @@ package com.cloudage.membercenter.service;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.User;
@@ -16,5 +17,6 @@ public interface IArticleService {
         Page<Article> findAllArticleOfMe(int userId, int page);
         Article save(Article article);
         Article findOne(Integer articleId);
+        int deleteArticleById(int article_id);
         
 }

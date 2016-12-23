@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.User;
@@ -65,7 +66,11 @@ public class DefaultArticleService implements IArticleService{
 
 		public Page<Article> findAllArticleOfMe(int userId, int page){
 			Sort sort = new Sort(Direction.DESC, "createDate");
-            PageRequest pageRequest = new PageRequest(page, 6, sort);
+            PageRequest pageRequest = new PageRequest(page, 10, sort);
 			return articleRepo.findAllArticleOfMe(userId, pageRequest);
+		}
+		
+		public int deleteArticleById(@PathVariable int article_id){
+			return articleRepo.deleteArticleById(article_id);
 		}
 }

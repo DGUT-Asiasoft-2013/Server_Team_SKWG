@@ -18,8 +18,19 @@ public class Article extends DateRecord {
         User author;
         String title;
         String text;
+        String articlesImage;
+        
+        
 
-        @ManyToOne(optional = false)
+        public String getArticlesImage() {
+			return articlesImage;
+		}
+
+		public void setArticlesImage(String articlesImage) {
+			this.articlesImage = articlesImage;
+		}
+
+		@ManyToOne(optional = false)
         @JsonIgnore
         public User getAuthor() {
                 return author;
