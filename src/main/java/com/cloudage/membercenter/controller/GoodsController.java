@@ -89,6 +89,15 @@ public class GoodsController {
 	public Page<Goods> getGoodsByShopId(@PathVariable int shop_id,@RequestParam(defaultValue = "0") int page) {
 		return goodsService.findAllByShopId(shop_id, page);
 	}
+	
+	//返回当前用户店铺的所有商品
+	@RequestMapping("/goods/mygoods")
+	public Page<Goods> searchGoodsOfMine(HttpServletRequest request,
+			@RequestParam(defaultValue="0") int page){
+		Shop shop=shopController.findByUserId(request);
+		return goodsService.findAllByShopId(shop.getId(),page);
+	}
+	
 
 	//商品搜索
 	@RequestMapping("/goods/search/{keyword}")

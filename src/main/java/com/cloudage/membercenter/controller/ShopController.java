@@ -6,14 +6,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudage.membercenter.entity.Goods;
 import com.cloudage.membercenter.entity.Shop;
 import com.cloudage.membercenter.entity.User;
+import com.cloudage.membercenter.service.IGoodsService;
 import com.cloudage.membercenter.service.IShopService;
 
 
@@ -24,6 +28,9 @@ public class ShopController {
 	IShopService shopServier;
 	@Autowired
 	UserController userController;
+	@Autowired
+	IGoodsService goodsService;
+	
 	
 	@RequestMapping(value = "/openshop", method = RequestMethod.POST)
 	public Shop openShop(@RequestParam String shopName,
@@ -54,4 +61,6 @@ public class ShopController {
 		User me = userController.getCurrentUser(request);
 		return shopServier.findByUserId(me.getId());
 	}
+	
+
 }
