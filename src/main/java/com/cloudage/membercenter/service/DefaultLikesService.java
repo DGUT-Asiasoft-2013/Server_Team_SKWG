@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Likes;
@@ -18,6 +19,9 @@ public class DefaultLikesService implements ILikesService {
 
         @Autowired
         ILikesRepository likesRepo;
+        
+        @Autowired
+    	IArticleService articleService;
 
 		@Override
 		public void addLike(User user, Article article) {
@@ -49,7 +53,9 @@ public class DefaultLikesService implements ILikesService {
 			return likesRepo.checkLikesExsists(userId, articleId)>0;
 		}
 
-		
-        
+		@Override
+		public int deleteLikeByArticleId(int article_id){
+			return likesRepo.deleteLikeByArticleId(article_id);
+		}
 
 }

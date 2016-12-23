@@ -18,17 +18,18 @@ public class CommomInfoController {
 	ICommomInfoService commomInfoService;
 	@Autowired
 	UserController userController;
-	@RequestMapping(value="/commominfo")
-	public CommomInfo addCommomInfo(@RequestParam String name, @RequestParam String adress,
+	@RequestMapping(value="/commominfo/add")
+	public CommomInfo addCommomInfo(@RequestParam String name, @RequestParam String address,
 			@RequestParam String tel, @RequestParam String postCode,
 			HttpServletRequest request) {
 		CommomInfo commomInfo = new CommomInfo();
 		User me = userController.getCurrentUser(request);
 		commomInfo.setName(name);
-		commomInfo.setAdress(adress);
+		commomInfo.setAddress(address);
 		commomInfo.setTel(tel);
 		commomInfo.setPostCode(postCode);
 		commomInfo.setUser(me);
-		return commomInfoService.Save(commomInfo);
+		commomInfo.setDefaultInfo(true);
+		return commomInfoService.save(commomInfo);
 	}
 }

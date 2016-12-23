@@ -1,7 +1,10 @@
 package com.cloudage.membercenter.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import com.cloudage.membercenter.util.DateRecord;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,9 +12,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class CommomInfo extends DateRecord{
 	String name;
-	String adress;
+	String address;
 	String postCode;
 	String tel;
+	boolean isDefaultInfo;
 	User user;
 	public String getName() {
 		return name;
@@ -19,11 +23,11 @@ public class CommomInfo extends DateRecord{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getPostCode() {
 		return postCode;
@@ -44,6 +48,12 @@ public class CommomInfo extends DateRecord{
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public boolean isDefaultInfo() {
+		return isDefaultInfo;
+	}
+	public void setDefaultInfo(boolean isDefaultInfo) {
+		this.isDefaultInfo = isDefaultInfo;
 	}
 	
 	

@@ -70,7 +70,9 @@ public class DefaultArticleService implements IArticleService{
 			return articleRepo.findAllArticleOfMe(userId, pageRequest);
 		}
 		
-		public int deleteArticleById(@PathVariable int article_id){
+		public int deleteArticleById(int article_id){
 			return articleRepo.deleteArticleById(article_id);
 		}
+		
+		
 }

@@ -127,4 +127,10 @@ public class ArticleController {
 	public int deleteArticleById(@PathVariable int article_id){
 		return articleService.deleteArticleById(article_id);
 	}
+	
+	@Modifying
+	@RequestMapping(value="/article/{article_id}/deletelike",method=RequestMethod.DELETE)
+	public int deleteLikeByArticleId(@PathVariable int article_id){
+		return likesService.deleteLikeByArticleId(article_id);
+	}
 }
