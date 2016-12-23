@@ -78,7 +78,7 @@ public class Orders extends DateRecord {
         }
 
         //购买数量
-        @Column(nullable=false)
+        @Column(nullable=true)
         public String getGoodsQTY() {
                 return goodsQTY;
         }
@@ -88,7 +88,7 @@ public class Orders extends DateRecord {
         }
         
         //商品总额
-        @Column(nullable=false)
+        @Column(nullable=true)
         public String getGoodsSum() {
                 return goodsSum;
         }
@@ -109,7 +109,7 @@ public class Orders extends DateRecord {
         }
         
         //客户姓名
-        @Column(nullable=false)
+        @Column(nullable=true)
         public String getBuyerName() {
                 return buyerName;
         }
@@ -119,7 +119,7 @@ public class Orders extends DateRecord {
         }
         
         //联系方式
-        @Column(nullable=false)
+        @Column(nullable=true)
         public String getBuyerPhoneNum() {
                 return buyerPhoneNum;
         }
@@ -129,7 +129,7 @@ public class Orders extends DateRecord {
         }
         
         //客户地址
-        @Column(nullable=false)
+        @Column(nullable=true)
         public String getBuyerAddress() {
                 return buyerAddress;
         }
@@ -138,7 +138,7 @@ public class Orders extends DateRecord {
                 this.buyerAddress = buyerAddress;
         }
 
-        @Column(nullable=false)
+        @Column(nullable=true)
 		public String getPostCode() {
 			return postCode;
 		}
