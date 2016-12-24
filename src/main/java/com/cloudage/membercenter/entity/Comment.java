@@ -48,7 +48,7 @@ public class Comment extends DateRecord {
                 this.author = author;
         }
 
-        @ManyToOne(optional = false,cascade={CascadeType.ALL})
+        @ManyToOne(optional = false)
         @JsonIgnore
         public Article getArticle() {
                 return article;
