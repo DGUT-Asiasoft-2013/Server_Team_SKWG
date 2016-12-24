@@ -1,6 +1,7 @@
 package com.cloudage.membercenter.repository;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -18,4 +19,7 @@ public interface IGoodsRepository extends PagingAndSortingRepository<Goods, Inte
 	
 	@Query("from Goods goods where goods.shop.id = ?1")
 	Page<Goods> findAllByShopId(int shopId, Pageable page);
+	
+	@Query("from Goods goods where goods.goodsType= ?1")
+	Page<Goods> findAllByType(String type, Pageable pageRequest);
 }
