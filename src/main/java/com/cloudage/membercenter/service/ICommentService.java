@@ -13,4 +13,5 @@ public interface ICommentService {
         Comment save(Comment comment);
         int getCommentCountOfArticle(int articleId);
         int deleteCommentByArticleId(int article_id);
+        int deleteCommentById(int comment_id);
 }

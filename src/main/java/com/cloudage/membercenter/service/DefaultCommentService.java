@@ -52,9 +52,16 @@ public class DefaultCommentService implements ICommentService {
 		public int getCommentCountOfArticle(int articleId){
 			return commentRepo.commentCountOfArticle(articleId);
 		}
-	
+
+		@Override
 		public int deleteCommentByArticleId(int article_id){
 			return commentRepo.deleteCommentByArticleId(article_id);
+		}
+		
+		@Override
+		public int deleteCommentById(int comment_id){
+			commentRepo.delete(comment_id);
+			return 1;
 		}
 
 }

@@ -75,4 +75,10 @@ public class CommentController {
 	public int deleteCommentByArticleId(@PathVariable int article_id){
 		return commentService.deleteCommentByArticleId(article_id);
 	}
+	
+	@Modifying
+	@RequestMapping(value="/deletecomment/{comment_id}",method=RequestMethod.DELETE)
+	public int deleteCommentById(@PathVariable int comment_id){
+		return commentService.deleteCommentById(comment_id);
+	}
 }
