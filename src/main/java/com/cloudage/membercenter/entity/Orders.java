@@ -11,11 +11,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Orders extends DateRecord {
         String ordersID;                                     // 订单号
-        int ordersState;                              // 订单状态，  0：已取消订单   1：放进购物车   2：已下单   3：已付款   4：已发货  5：已收货  6：完成订单
+        int ordersState;                              // 订单状态，  0：已取消订单  2：已下单   3：已付款   4：已发货  5：已收货 1完成订单
         
         Goods goods;                                        // 商品
         String goodsQTY;                                //购买数量
-        String goodsSum;                               //商品总额
+        double goodsSum;                               //商品总额
         
         User buyer;                                          // 用户
         String buyerName;                            //客户姓名
@@ -89,11 +89,11 @@ public class Orders extends DateRecord {
         
         //商品总额
         @Column(nullable=true)
-        public String getGoodsSum() {
+        public double getGoodsSum() {
                 return goodsSum;
         }
         
-        public void setGoodsSum(String goodsSum) {
+        public void setGoodsSum(double goodsSum) {
                 this.goodsSum = goodsSum;
         }
         
