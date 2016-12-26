@@ -85,13 +85,13 @@ public class GoodsController {
 			) {
 		return goodsService.findAll(page);
 	}
-	@RequestMapping(value = "/goods/s/{sort_style}")
-	public Page<Goods> getGoodsBySellerID( 
-			@RequestParam(defaultValue="0") int page,
-			@PathVariable String sort_style
-			) {
-		return goodsService.findAllWithSortStyle(sort_style,page);
-	}
+//	@RequestMapping(value = "/goods/s/{sort_style}")
+//	public Page<Goods> getGoodsBySellerID( 
+//			@RequestParam(defaultValue="0") int page,
+//			@PathVariable String sort_style
+//			) {
+//		return goodsService.findAllWithSortStyle(sort_style,page);
+//	}
 
 
 	// 通过店铺id查询商品
@@ -117,13 +117,12 @@ public class GoodsController {
 		return goodsService.searchGoodsByKeyword(keyword,page);
 	}
 	//商品排序
-	@RequestMapping("/goods/sort/{keyword}/{sortStyle}")
+	@RequestMapping("/goods/sort/{sortStyle}")
 	public Page<Goods> sortGoods(
-			@PathVariable String keyword,
 			@PathVariable String sortStyle,
 			@RequestParam(defaultValue="0") int page){
 
-		return goodsService.sortGoodsBySortStyle(keyword,sortStyle,page);
+		return goodsService.sortGoodsBySortStyle(sortStyle,page);
 	}
 	//商品分类
 	@RequestMapping("/goods/classify/{type}")
@@ -132,6 +131,35 @@ public class GoodsController {
 			@RequestParam(defaultValue="0") int page){
 
 		return goodsService.classifyGoodsByType(type,page);
+	}
+	//商品查找+分类
+	@RequestMapping("/goods/search/{keyword}/classify/{goodsType}")
+	public Page<Goods> searchAndClassify(@PathVariable String keyword,
+			@PathVariable String goodsType,
+			@RequestParam(defaultValue="0") int page){
+		return goodsService.searchAndClassify(keyword,goodsType,page);
+	}
+	//查找+排序
+	@RequestMapping("/goods/search/{keyword}/sort/{sortStyle}")
+	public Page<Goods> searchAndSort(@PathVariable String keyword,
+			@PathVariable String sortStyle,
+			@RequestParam(defaultValue="0") int page){
+		return goodsService.searchAndSort(keyword,sortStyle,page);
+	}
+	//分类+排序
+	@RequestMapping("/goods/classify/{goodsType}/sort/{sortStyle}")
+	public Page<Goods> classifyAndSort(@PathVariable String goodsType,
+			@PathVariable String sortStyle,
+			@RequestParam(defaultValue="0") int page){
+		return goodsService.classifyAndSort(goodsType,sortStyle,page);
+	}
+	//商品查找+分类+排序
+	@RequestMapping("/goods/search/{keyword}/classify/{goodsType}/sort/{sortStyle}")
+	public Page<Goods> searchAndClassify(@PathVariable String keyword,
+			@PathVariable String goodsType,
+			@PathVariable String sortStyle,
+			@RequestParam(defaultValue="0") int page){
+		return goodsService.searchAndClassifyAndSort(keyword,goodsType,sortStyle,page);
 	}
 
 	//商品评论

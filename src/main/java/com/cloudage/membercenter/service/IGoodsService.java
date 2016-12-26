@@ -10,8 +10,17 @@ public interface IGoodsService {
 	Page<Goods> findAllBySellerId(int SellerId, int page);
 	Page<Goods> searchGoodsByKeyword(String keyword, int page);
 	Page<Goods> findAll(int page);
-	Page<Goods> sortGoodsBySortStyle(String keyword, String sortStyle, int page);
+	//排序
+	Page<Goods> sortGoodsBySortStyle(String sortStyle, int page);
+	
 	Page<Goods> findAllByShopId(int shopId, int page);
 	Page<Goods> classifyGoodsByType(String type, int page);
-	Page<Goods> findAllWithSortStyle(String sort_style, int page);
+	//查找+分类
+	Page<Goods> searchAndClassify(String keyword, String goodsType, int page);
+	//查找+排序
+	Page<Goods> searchAndSort(String keyword, String sortStyle, int page);
+	//分类+排序
+	Page<Goods> classifyAndSort(String goodsType, String sortStyle, int page);
+	//查找+分类+排序
+	Page<Goods> searchAndClassifyAndSort(String keyword, String goodsType, String sortStyle, int page);
 }
