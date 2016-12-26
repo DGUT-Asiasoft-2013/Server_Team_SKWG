@@ -25,7 +25,7 @@ public class DefaultCommentService implements ICommentService {
         @Override
         public Page<Comment> findCommentOfArticle(int articleId, int page) {
                 Sort sort = new Sort(Direction.ASC, "createDate");
-                PageRequest pageRequest = new PageRequest(page, 6, sort);
+                PageRequest pageRequest = new PageRequest(page, 10, sort);
                 return commentRepo.findAllOfArticleId(articleId, pageRequest);
         }
 
@@ -37,14 +37,14 @@ public class DefaultCommentService implements ICommentService {
 		@Override
 		public Page<Comment> findAllOfAuthorId(int authorId, int page) {
 			Sort sort = new Sort(Direction.DESC, "createDate");
-            PageRequest pageRequest = new PageRequest(page, 6, sort);
+            PageRequest pageRequest = new PageRequest(page, 10, sort);
 			return commentRepo.findAllOfAuthorId(authorId, pageRequest);
 		}
 
 		@Override
 		public Page<Comment> findAllOfUserId(int userId, int page) {
 			Sort sort = new Sort(Direction.DESC, "createDate");
-            PageRequest pageRequest = new PageRequest(page, 6, sort);
+            PageRequest pageRequest = new PageRequest(page, 10, sort);
 			return commentRepo.findAllOfUserId(userId, pageRequest);
 		}
 

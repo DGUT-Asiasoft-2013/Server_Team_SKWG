@@ -29,10 +29,10 @@ public class DefaultGoodsService implements IGoodsService{
 	@Override
 	public Page<Goods> findAllBySellerId(int SellerId, int page) {
 		Sort sort = new Sort(Direction.DESC, "createDate");
-        PageRequest pageRequest = new PageRequest(page, 6, sort);
+		PageRequest pageRequest = new PageRequest(page, 6, sort);
 		return goodsRepo.findAllOfSellerId(SellerId, pageRequest);
 	}
-	
+
 	@Override
 	public Page<Goods> searchGoodsByKeyword(String keyword, int page) {
 		// TODO Auto-generated method stub
@@ -44,9 +44,19 @@ public class DefaultGoodsService implements IGoodsService{
 	public Page<Goods> findAll(int page) {
 		// TODO Auto-generated method stub
 		Sort sort=new Sort(Direction.DESC,"createDate");
+
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findAll(pageRequest);
 	}
+	@Override
+	public Page<Goods> findAllWithSortStyle(String sort_style, int page) {
+		// TODO Auto-generated method stub
+		Sort sort=new Sort(Direction.DESC,sort_style);
+
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findAll(pageRequest);
+	}
+
 	@Override
 	public Page<Goods> sortGoodsBySortStyle(String keyword, String sortStyle, int page) {
 		// TODO Auto-generated method stub
@@ -60,7 +70,14 @@ public class DefaultGoodsService implements IGoodsService{
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findAllByShopId(shopId, pageRequest);
 	}
+	@Override
+	public Page<Goods> classifyGoodsByType(String type, int page) {
+		Sort sort=new Sort(Direction.ASC,"createDate");
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findAllByType(type, pageRequest);
+	}
 
-	
-	
+
+
+
 }

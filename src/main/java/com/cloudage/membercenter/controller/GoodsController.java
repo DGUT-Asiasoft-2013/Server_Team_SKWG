@@ -34,7 +34,7 @@ public class GoodsController {
 
 	@Autowired 
 	IBookCommentService bookCommentService;
-	
+
 	@Autowired
 	ShopController shopController;
 
@@ -78,18 +78,28 @@ public class GoodsController {
 	public Page<Goods> getGoodsBySellerID(@PathVariable Integer sellerId, @RequestParam(defaultValue="0") int page) {
 		return goodsService.findAllBySellerId(sellerId, page);
 	}
-
+	//获取所有商品
 	@RequestMapping(value = "/goods/s")
-	public Page<Goods> getGoodsBySellerID( @RequestParam(defaultValue="0") int page) {
-		return goodsService.findAll( page);
+	public Page<Goods> getGoodsBySellerID( 
+			@RequestParam(defaultValue="0") int page
+			) {
+		return goodsService.findAll(page);
 	}
+	@RequestMapping(value = "/goods/s/{sort_style}")
+	public Page<Goods> getGoodsBySellerID( 
+			@RequestParam(defaultValue="0") int page,
+			@PathVariable String sort_style
+			) {
+		return goodsService.findAllWithSortStyle(sort_style,page);
+	}
+
 
 	// 通过店铺id查询商品
 	@RequestMapping(value = "/goods/get/{shop_id}")
 	public Page<Goods> getGoodsByShopId(@PathVariable int shop_id,@RequestParam(defaultValue = "0") int page) {
 		return goodsService.findAllByShopId(shop_id, page);
 	}
-	
+
 	//返回当前用户店铺的所有商品
 	@RequestMapping("/goods/mygoods")
 	public Page<Goods> searchGoodsOfMine(HttpServletRequest request,
@@ -97,7 +107,7 @@ public class GoodsController {
 		Shop shop=shopController.findByUserId(request);
 		return goodsService.findAllByShopId(shop.getId(),page);
 	}
-	
+
 
 	//商品搜索
 	@RequestMapping("/goods/search/{keyword}")
@@ -106,16 +116,24 @@ public class GoodsController {
 
 		return goodsService.searchGoodsByKeyword(keyword,page);
 	}
-//商品排序
+	//商品排序
 	@RequestMapping("/goods/sort/{keyword}/{sortStyle}")
 	public Page<Goods> sortGoods(
 			@PathVariable String keyword,
 			@PathVariable String sortStyle,
 			@RequestParam(defaultValue="0") int page){
-		
+
 		return goodsService.sortGoodsBySortStyle(keyword,sortStyle,page);
 	}
-	
+	//商品分类
+	@RequestMapping("/goods/classify/{type}")
+	public Page<Goods> classifyGoods(
+			@PathVariable String type,
+			@RequestParam(defaultValue="0") int page){
+
+		return goodsService.classifyGoodsByType(type,page);
+	}
+
 	//商品评论
 	@RequestMapping("/goods/{goods_id}/comments")
 	public Page<BookComment> getCommentByGoodsId(
@@ -123,13 +141,13 @@ public class GoodsController {
 			@RequestParam(defaultValue="0") int page){
 		return bookCommentService.findAllCommentsByBookId(goods_id,page);
 	}
-	
-	
-	
-//	@RequestMapping("/goods/{goods_name}/comments")
-//	public Page<BookComment> getCommentByGoodsName(
-//			@PathVariable String  goods_name,
-//			@RequestParam(defaultValue="0") int page){
-//		return bookCommentService.findAllCommentsByBookName(goods_name,page);
-//	}
+
+
+
+	//	@RequestMapping("/goods/{goods_name}/comments")
+	//	public Page<BookComment> getCommentByGoodsName(
+	//			@PathVariable String  goods_name,
+	//			@RequestParam(defaultValue="0") int page){
+	//		return bookCommentService.findAllCommentsByBookName(goods_name,page);
+	//	}
 }
