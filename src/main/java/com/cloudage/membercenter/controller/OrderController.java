@@ -64,32 +64,6 @@ public class OrderController {
         	return ordersService.save(orders);
         }
         
-        @RequestMapping(value = "/orders/preorder", method = RequestMethod.POST)
-        public Orders addPreorder(@RequestParam String ordersID, 
-        		@RequestParam int goodsId, 
-        		@RequestParam String count,
-        		HttpServletRequest request) {
-        	User me = userController.getCurrentUser(request);
-        	Orders orders;
-        	Goods goods = goodsService.findById(goodsId);
-        	
-        	if(ordersService.findPreOrderByID(me.getId(), goodsId) != null) {
-        		orders = ordersService.findPreOrderByID(me.getId(), goodsId);
-        		int gCount = Integer.parseInt(count);
-            	int gCount2 = Integer.parseInt(orders.getGoodsQTY());
-                orders.setGoodsQTY(gCount + gCount2 + "");
-        	} else {
-        		orders = new Orders();
-        		orders.setGoods(goods);
-        		orders.setGoodsQTY(count);
-        		orders.setBuyer(me);
-        		orders.setOrdersID(ordersID);
-        		orders.setOrdersState(1);
-        	}
-        	
-        	return ordersService.save(orders);
-        }
-        
         @RequestMapping("/orders/ordersOfSeller")
         public Page<Orders> getOrdersOfSeller(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
                 User me = userController.getCurrentUser(request);
