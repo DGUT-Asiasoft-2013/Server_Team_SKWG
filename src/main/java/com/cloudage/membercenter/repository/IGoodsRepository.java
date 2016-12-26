@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cloudage.membercenter.entity.Goods;
 
@@ -13,13 +14,30 @@ import com.cloudage.membercenter.entity.Goods;
 public interface IGoodsRepository extends PagingAndSortingRepository<Goods, Integer> {
 	@Query("from Goods goods where goods.seller.id = ?1")
 	Page<Goods> findAllOfSellerId(int sellerId, Pageable page);
-	
+
 	@Query("from Goods goods where goods.goodsName like %?1% or goods.author like %?1% " )
 	Page<Goods> findAllByKeyword(String keyword, Pageable pageRequest);
-	
+
 	@Query("from Goods goods where goods.shop.id = ?1")
 	Page<Goods> findAllByShopId(int shopId, Pageable page);
-	
+
 	@Query("from Goods goods where goods.goodsType= ?1")
 	Page<Goods> findAllByType(String type, Pageable pageRequest);
+	//查找+分类
+	@Query("from Goods goods where goods.goodsName like %?1% or goods.author like %?1%  and goods.goodsType=?2")
+	Page<Goods> findSearchAndClassify(String keyword, String goodsType, Pageable pageRequest);
+	//Page<Goods> findSearchAndClassify(String keyword, String goodsType, Pageable pageRequest);
+//查找+排序
+	@Query("from Goods goods where goods.goodsName like %?1% or goods.author like %?1% " )
+	Page<Goods> findSearchAndSort(String keyword, Pageable pageRequest);
+//分类+排序
+	@Query("from Goods goods where goods.goodsType=?1")
+	Page<Goods> findclassifyAndSort(String goodsType,Pageable pageRequest);
+//查找+分类+排序
+	@Query("from Goods goods where goods.goodsName like %?1% or goods.author like %?1%  and goods.goodsType=?2")
+	Page<Goods> findSearchAndClassifyAndSort(String keyword, String goodsType, Pageable pageRequest);
+
+
+	
+	
 }

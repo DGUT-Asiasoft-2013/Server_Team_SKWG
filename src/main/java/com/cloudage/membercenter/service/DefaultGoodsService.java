@@ -48,21 +48,14 @@ public class DefaultGoodsService implements IGoodsService{
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findAll(pageRequest);
 	}
-	@Override
-	public Page<Goods> findAllWithSortStyle(String sort_style, int page) {
-		// TODO Auto-generated method stub
-		Sort sort=new Sort(Direction.DESC,sort_style);
 
-		PageRequest pageRequest=new PageRequest(page,6,sort);
-		return goodsRepo.findAll(pageRequest);
-	}
-
+//排序
 	@Override
-	public Page<Goods> sortGoodsBySortStyle(String keyword, String sortStyle, int page) {
+	public Page<Goods> sortGoodsBySortStyle(String sortStyle, int page) {
 		// TODO Auto-generated method stub
 		Sort sort=new Sort(Direction.ASC,sortStyle);
 		PageRequest pageRequest=new PageRequest(page,6,sort);
-		return goodsRepo.findAllByKeyword(keyword,pageRequest);
+		return goodsRepo.findAll(pageRequest);
 	}
 	@Override
 	public Page<Goods> findAllByShopId(int shopId, int page) {
@@ -75,6 +68,36 @@ public class DefaultGoodsService implements IGoodsService{
 		Sort sort=new Sort(Direction.ASC,"createDate");
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findAllByType(type, pageRequest);
+	}
+	//查找+分类
+	@Override
+	public Page<Goods> searchAndClassify(String keyword, String goodsType, int page) {
+		// TODO Auto-generated method stub
+		Sort sort=new Sort(Direction.ASC,"createDate");
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findSearchAndClassify(keyword,goodsType, pageRequest);
+		
+	}
+	//查找+排序
+	@Override
+	public Page<Goods> searchAndSort(String keyword, String sortStyle, int page) {
+		Sort sort=new Sort(Direction.ASC,sortStyle);
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findSearchAndSort(keyword, pageRequest);
+	}
+	//分类+排序
+	@Override
+	public Page<Goods> classifyAndSort(String goodsType, String sortStyle, int page) {
+		Sort sort=new Sort(Direction.ASC,sortStyle);
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findclassifyAndSort(goodsType, pageRequest);
+	}
+	//查找+分类+排序
+	@Override
+	public Page<Goods> searchAndClassifyAndSort(String keyword, String goodsType, String sortStyle, int page) {
+		Sort sort=new Sort(Direction.ASC,sortStyle);
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findSearchAndClassifyAndSort(keyword,goodsType, pageRequest);
 	}
 
 
