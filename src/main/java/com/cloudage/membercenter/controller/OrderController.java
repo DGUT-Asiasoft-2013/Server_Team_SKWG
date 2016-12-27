@@ -101,7 +101,7 @@ public class OrderController {
         
         //支付订单
         @RequestMapping(value="/order/payfor/{orders_id}")
-        public void payForOrders(@PathVariable String orders_id, @RequestParam int state,
+        public boolean  payForOrders(@PathVariable String orders_id, @RequestParam int state,
         		HttpServletRequest request) {
         	Orders orders = getOrdersOfOrdersID(orders_id);
         	orders.setOrdersState(state);
@@ -109,6 +109,13 @@ public class OrderController {
         	User me=userController.getCurrentUser(request);
         	me.setMoney(me.getMoney()-orders.getGoodsSum());
         	userService.save(me);
+        	
+        	if(orders.getOrdersState()==3){
+        		return true;
+        	}
+        	else{
+        		return false;
+        	}
         }
         
         
