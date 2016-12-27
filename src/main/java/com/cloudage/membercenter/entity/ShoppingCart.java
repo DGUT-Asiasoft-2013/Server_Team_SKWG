@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.persistence.Transient;
 
 import org.springframework.data.annotation.Persistent;
 
@@ -29,7 +30,6 @@ public class ShoppingCart {
 		public void setBuyer(User buyer) {
 			this.buyer = buyer;
 		}
-		@JsonIgnore
 		@ManyToOne(optional=false)
 		public Goods getGoods() {
 			return goods;
@@ -69,5 +69,13 @@ public class ShoppingCart {
 		createDate = new Date();
 	}
 	
-	
+//	@Transient
+//	public String getGoodsName() {
+//		return id.goods.getGoodsName();
+//	}
+//	
+//	@Transient
+//	public String getGoodsPrice() {
+//		return id.goods.getGoodsPrice();
+//	}
 }

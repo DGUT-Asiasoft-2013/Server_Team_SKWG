@@ -154,7 +154,22 @@ public class UserController {
         	return userService.save(me);
         }
         
+        //设置支付密码
+        @RequestMapping(value="user/setPayPassword",method=RequestMethod.POST)
+        public boolean setPayPassword(HttpServletRequest request,
+        		@RequestParam String payPassword){
+        	User me=getCurrentUser(request);
+        	if(me.getPayPassword()!=null){
+        		me.setPayPassword(payPassword);
+        		userService.save(me);
+        		return true;
+       	}
+        	else{
+        		return false;
+        	}
+        }
         
+        //验证支付密码是否正确
         @RequestMapping(value = "/payPassword", method = RequestMethod.POST)
         public boolean ensurePayPassword(@RequestParam String payPassword,
         		HttpServletRequest request) {

@@ -3,6 +3,7 @@ package com.cloudage.membercenter.service;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.BookComment;
 import com.cloudage.membercenter.entity.Comment;
 
@@ -14,4 +15,5 @@ public interface ICommentService {
         int getCommentCountOfArticle(int articleId);
         int deleteCommentByArticleId(int article_id);
         int deleteCommentById(int comment_id);
+        Comment findOne(Integer commentId);
 }

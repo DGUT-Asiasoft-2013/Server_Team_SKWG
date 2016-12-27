@@ -58,10 +58,13 @@ public class CommentController {
 			HttpServletRequest request) {
 		User me = userController.getCurrentUser(request);
 		Article article = articleService.findOne(article_id);
+		int commentnum=article.getCommentNum()+1;
+		article.setCommentNum(commentnum);
 		Comment comment = new Comment();
 		comment.setAuthor(me);
 		comment.setArticle(article);
 		comment.setText(text);
+		articleService.save(article);
 		return commentService.save(comment);
 	}
 	
@@ -79,6 +82,12 @@ public class CommentController {
 	@Modifying
 	@RequestMapping(value="/deletecomment/{comment_id}",method=RequestMethod.DELETE)
 	public int deleteCommentById(@PathVariable int comment_id){
+		Comment comment = commentService.findOne(comment_id);
+		int article_id=comment.getArticle().getId();
+		Article article=articleService.findOne(article_id);
+		int commentnum=article.getCommentNum()-1;
+		article.setCommentNum(commentnum);
+		articleService.save(article);
 		return commentService.deleteCommentById(comment_id);
 	}
 }
