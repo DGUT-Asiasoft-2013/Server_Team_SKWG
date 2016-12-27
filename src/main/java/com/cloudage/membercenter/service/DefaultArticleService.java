@@ -48,7 +48,7 @@ public class DefaultArticleService implements IArticleService{
         @Override
         public Page<Article> getForums(int page) {
                 Sort sort = new Sort(Direction.DESC, "createDate");
-                PageRequest pageRequest = new PageRequest(page, 6, sort);
+                PageRequest pageRequest = new PageRequest(page, 10, sort);
                 return articleRepo.findAll(pageRequest);
         }
 
@@ -60,7 +60,7 @@ public class DefaultArticleService implements IArticleService{
 		@Override
 		public Page<Article> searchArticlWithKeyword(String keyword, int page) {
 			Sort sort = new Sort(Direction.DESC, "createDate");
-            PageRequest pageRequest = new PageRequest(page, 6, sort);
+            PageRequest pageRequest = new PageRequest(page, 10, sort);
 			return articleRepo.searchArticleWihtKeyword(keyword, pageRequest);
 		}
 

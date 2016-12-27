@@ -30,6 +30,11 @@ public class DefaultCommentService implements ICommentService {
         }
 
         @Override
+        public Comment findOne(Integer commentId){
+        	return commentRepo.findOne(commentId);
+        }
+        
+        @Override
         public Comment save(Comment comment) {
                 return commentRepo.save(comment);
         }

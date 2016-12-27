@@ -19,10 +19,18 @@ public class Article extends DateRecord {
         String title;
         String text;
         String articlesImage;
-        
+        int commentNum;
         
 
-        public String getArticlesImage() {
+        public int getCommentNum() {
+			return commentNum;
+		}
+
+		public void setCommentNum(int commentNum) {
+			this.commentNum = commentNum;
+		}
+
+		public String getArticlesImage() {
 			return articlesImage;
 		}
 
