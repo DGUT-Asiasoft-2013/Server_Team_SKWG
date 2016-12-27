@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User extends BaseEntity {
 	String account;
 	String passwordHash;
+	String payPassword;
+	double money;
 	String email;
 	String name;
 	String avatar;
@@ -20,6 +22,21 @@ public class User extends BaseEntity {
 
 	String isStore;
 
+	public String getPayPassword() {
+		return payPassword;
+	}
+
+	public void setPayPassword(String payPassword) {
+		this.payPassword = payPassword;
+	}
+
+	public double getMoney() {
+		return money;
+	}
+
+	public void setMoney(double money) {
+		this.money = money;
+	}
 	@Column(nullable = false)
 	public String getPhoneNum() {
 		return phoneNum;

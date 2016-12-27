@@ -3,6 +3,7 @@ package com.cloudage.membercenter.controller;
 import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class OrderController {
                         @RequestParam String postCode,
                         @RequestParam int goodsId, HttpServletRequest request) {
 
+        	double goodsSums= Double.parseDouble(goodsSum);
         	User me = userController.getCurrentUser(request);
         	Goods goods = goodsService.findById(goodsId);
 
@@ -59,7 +61,7 @@ public class OrderController {
         	orders.setBuyerAddress(buyerAddress);
         	orders.setGoods(goods);
         	orders.setGoodsQTY(goodsQTY);
-        	orders.setGoodsSum(goodsSum);
+        	orders.setGoodsSum(goodsSums);
         	orders.setPostCode(postCode);
         	return ordersService.save(orders);
         }
@@ -96,5 +98,20 @@ public class OrderController {
         	orders.setOrdersState(state);
         	ordersService.save(orders);
         }
+        
+        //支付订单
+        @RequestMapping(value="/order/payfor/{orders_id}")
+        public void payForOrders(@PathVariable String orders_id, @RequestParam int state,
+        		HttpServletRequest request) {
+        	Orders orders = getOrdersOfOrdersID(orders_id);
+        	orders.setOrdersState(state);
+        	ordersService.save(orders);
+        	User me=userController.getCurrentUser(request);
+        	me.setMoney(me.getMoney()-orders.getGoodsSum());
+        	userService.save(me);
+        }
+        
+        
+   
 
 }

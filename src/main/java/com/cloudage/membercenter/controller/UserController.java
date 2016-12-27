@@ -155,7 +155,16 @@ public class UserController {
         }
         
         
-       
+        @RequestMapping(value = "/payPassword", method = RequestMethod.POST)
+        public boolean ensurePayPassword(@RequestParam String payPassword,
+        		HttpServletRequest request) {
+        	User user =getCurrentUser(request);
+        	if (user != null && user.getPayPassword().equals(payPassword)) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+        }
 
         
        
