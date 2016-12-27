@@ -3,6 +3,7 @@ package com.cloudage.membercenter.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,7 @@ public class ShoppingCartController {
 	@Autowired
 	UserController userController;
 	
+	// 添加至购物车
 	@RequestMapping(value="/shoppingcart/add/{goods_id}", method = RequestMethod.POST)
 	public ShoppingCart addCart(@PathVariable int goods_id, @RequestParam int quantity,
 			HttpServletRequest request) {
@@ -45,5 +47,12 @@ public class ShoppingCartController {
 			cart.setQuantity(quantity);
 			return shoppingCartService.save(cart);
 		}
+	}
+	
+	// 返回当前用户购物车
+	@RequestMapping(value="/shoppingcart/get/{page}")
+	public Page<ShoppingCart> getAllByUserId(@PathVariable int page, HttpServletRequest request) {
+		User me = userController.getCurrentUser(request);
+		return shoppingCartService.findAllByUserId(me.getId(), page);
 	}
 }

@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -13,4 +15,6 @@ public interface IShoppingCartRepository extends PagingAndSortingRepository<Shop
 	int checkCartExsist(int userId, int goodsId);
 	@Query("from ShoppingCart cart where cart.id.buyer.id = ?1 and cart.id.goods.id = ?2")
 	ShoppingCart findbyKey(int userId, int goodsId);
+	@Query("from ShoppingCart cart where cart.id.buyer.id = ?1")
+	Page<ShoppingCart> findAllByUserId(int userId, Pageable page);
 }
