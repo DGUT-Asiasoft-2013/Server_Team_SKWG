@@ -137,6 +137,22 @@ public class UserController {
         	}
         }
 
+        @RequestMapping(value = "/changeMessage",method = RequestMethod.POST)
+        public User changeMessage(@RequestParam String type,@RequestParam String value,
+        		HttpServletRequest request){
+        	User me = getCurrentUser(request);
+        	
+        	if(type.equals("changeName")){
+        		me.setName(value);
+    		}else if(type.equals("changeEmail")){
+    			me.setEmail(value);
+    		}else if(type.equals("changePhone")){
+    			me.setPhoneNum(value);
+    		}else if(type.equals("changeAddress")){
+    			me.setAddress(value);
+    		}
+        	return userService.save(me);
+        }
         
         
        
