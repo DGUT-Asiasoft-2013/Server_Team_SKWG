@@ -19,48 +19,72 @@ import com.cloudage.membercenter.entity.Shop;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IGoodsService;
 import com.cloudage.membercenter.service.IShopService;
-
+import com.cloudage.membercenter.service.ISubscribeService;
 
 @RestController
 @RequestMapping("/api")
 public class ShopController {
-	@Autowired
-	IShopService shopServier;
-	@Autowired
-	UserController userController;
-	@Autowired
-	IGoodsService goodsService;
-	
-	
-	@RequestMapping(value = "/openshop", method = RequestMethod.POST)
-	public Shop openShop(@RequestParam String shopName,
-			@RequestParam String description,
-			MultipartFile shopImage,
-			HttpServletRequest request
-			) {
-		Shop shop = new Shop();
-		User owner = userController.getCurrentUser(request);
-		shop.setShopName(shopName);
-		shop.setDescription(description);
-		shop.setOwner(owner);
-		if (shopImage != null) {
-			try {
-				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-				FileUtils.copyInputStreamToFile(shopImage.getInputStream(), new File(realPath, shopName + ".png"));
-				shop.setShopImage("upload/" + shopName + ".png");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return shopServier.save(shop);
-	}
-	
-	// 返回当前用户的店铺
-	@RequestMapping(value= "/shop/myshop")
-	public Shop findByUserId(HttpServletRequest request) {
-		User me = userController.getCurrentUser(request);
-		return shopServier.findByUserId(me.getId());
-	}
-	
+        @Autowired
+        IShopService shopServier;
+        @Autowired
+        UserController userController;
+        @Autowired
+        IGoodsService goodsService;
+        @Autowired
+        ISubscribeService subscribeService;
+
+        @RequestMapping(value = "/openshop", method = RequestMethod.POST)
+        public Shop openShop(@RequestParam String shopName, @RequestParam String description, MultipartFile shopImage,
+                        HttpServletRequest request) {
+                Shop shop = new Shop();
+                User owner = userController.getCurrentUser(request);
+                shop.setShopName(shopName);
+                shop.setDescription(description);
+                shop.setOwner(owner);
+                if (shopImage != null) {
+                        try {
+                                String realPath = request.getSession().getServletContext()
+                                                .getRealPath("/WEB-INF/upload");
+                                FileUtils.copyInputStreamToFile(shopImage.getInputStream(),
+                                                new File(realPath, shopName + ".png"));
+                                shop.setShopImage("upload/" + shopName + ".png");
+                        } catch (Exception e) {
+                                e.printStackTrace();
+                        }
+                }
+                return shopServier.save(shop);
+        }
+
+        // 返回当前用户的店铺
+        @RequestMapping(value = "/shop/myshop")
+        public Shop findByUserId(HttpServletRequest request) {
+                User me = userController.getCurrentUser(request);
+                return shopServier.findByUserId(me.getId());
+        }
+
+        @RequestMapping("/shop/{shop_id)/subscribe")
+        public int countSubscribe(@PathVariable int shop_id) {
+                return subscribeService.countSubscribe(shop_id);
+        }
+
+        @RequestMapping("/shop/{shop_id}/issubscribed")
+        public boolean checkSubscribed(@PathVariable int shop_id, HttpServletRequest request) {
+                User me = userController.getCurrentUser(request);
+                return subscribeService.checkSubscribed(me.getId(), shop_id);
+        }
+
+        @RequestMapping(value = "/shop/{shop_id}/subscribe", method = RequestMethod.POST)
+        public int changeSubscribe(@PathVariable int shop_id, @RequestParam boolean subscribe,
+                        HttpServletRequest request) {
+                User me = userController.getCurrentUser(request);
+                Shop shop = shopServier.findOne(shop_id);
+
+                if (subscribe) {
+                        subscribeService.addSubscribe(me, shop);
+                } else {
+                        subscribeService.removeSubscribe(me, shop);
+                }
+                return subscribeService.countSubscribe(shop_id);
+        }
 
 }
