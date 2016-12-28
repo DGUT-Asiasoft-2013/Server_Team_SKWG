@@ -50,11 +50,24 @@ public class DefaultShoppingCartService implements IShoppingCartService {
 		return shoppingCartRepo.save(cart);
 	}
 
+	
 	@Override
 	public Page<ShoppingCart> findAllByUserId(int userId, int page) {
 		 Sort sort = new Sort(Direction.DESC, "createDate");
          PageRequest pageRequest = new PageRequest(page, 6, sort);
 		return shoppingCartRepo.findAllByUserId(userId, pageRequest);
 	}
+
+	@Override
+	public void delete(Key cartKey) {
+		shoppingCartRepo.delete(cartKey);
+	}
+
+	@Override
+	public ShoppingCart findById(int cartId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

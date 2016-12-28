@@ -55,4 +55,14 @@ public class ShoppingCartController {
 		User me = userController.getCurrentUser(request);
 		return shoppingCartService.findAllByUserId(me.getId(), page);
 	}
+	
+	@RequestMapping(value="/shoppingcart/delete/{goods_id}")
+	public void deleteCart(@PathVariable int goods_id, HttpServletRequest request) {
+		Key id = new Key();
+		Goods goods = goodsService.findById(goods_id);
+		User me = userController.getCurrentUser(request);
+		id.setGoods(goods);
+		id.setBuyer(me);
+		shoppingCartService.delete(id);
+	}
 }
