@@ -98,6 +98,14 @@ public class OrderController {
         	User me=userController.getCurrentUser(request);
         	return ordersService.findAllOfMine(me.getId(),page);
         }
+        //删除选中的订单
+        @RequestMapping(value="/orders/delete/{orders_id}")
+       public boolean deleteOrder(@PathVariable String orders_id){
+           	Orders orders = getOrdersOfOrdersID(orders_id);
+           	ordersService.deleteOrders(orders);
+    	   return true;
+       }
+        
         // 修改订单状态
         @RequestMapping(value="/order/{orders_id}")
         public void changeStateByOrdersId(@PathVariable String orders_id, @RequestParam int state) {
