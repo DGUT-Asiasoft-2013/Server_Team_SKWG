@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Orders extends DateRecord {
         String ordersID;                                     // 订单号
-        int ordersState;                              // 订单状态，  0：已取消订单  2：已下单   3：已付款   4：已发货  5：已收货 1完成订单
+        int ordersState;                              // 订单状态，  0：已取消订单  1完成订单,2：已下单   3：已付款   4：已发货  5：已收货 
         
         Goods goods;                                        // 商品
         String goodsQTY;                                //购买数量
@@ -56,7 +56,6 @@ public class Orders extends DateRecord {
 
         //商品
         @ManyToOne(optional = false)
-        @JsonIgnore
         public Goods getGoods() {
                 return goods;
         }
@@ -65,17 +64,17 @@ public class Orders extends DateRecord {
                 this.goods = goods;
         }
         
-        // 商品编号
-        @Transient
-        public Integer getGoodsID() {
-                return goods.getId();
-        }
-
-        //商品名
-        @Transient
-        public String getGoodsName() {
-                return goods.getGoodsName();
-        }
+//        // 商品编号
+//        @Transient
+//        public Integer getGoodsID() {
+//                return goods.getId();
+//        }
+//
+//        //商品名
+//        @Transient
+//        public String getGoodsName() {
+//                return goods.getGoodsName();
+//        }
 
         //购买数量
         @Column(nullable=true)

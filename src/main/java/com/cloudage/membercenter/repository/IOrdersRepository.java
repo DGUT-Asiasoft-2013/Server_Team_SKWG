@@ -2,6 +2,7 @@ package com.cloudage.membercenter.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -25,5 +26,9 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
         
         @Query("from Orders orders where orders.buyer.id =?1 and orders.goods.id =?2 and ordersState = 1")
         Orders findPreOrderByID(int buyerId, int goodsId);
+
+        //获取当前用户的所有订单
+        @Query("from Orders orders where orders.buyer.id=?1")
+		Page<Orders> findAllOfMine(Integer id, Pageable rePageRequest);
         
 }

@@ -91,6 +91,13 @@ public class OrderController {
                 ordersService.deleteOrders(orders);
         }
         
+        //获取当前用户的所有订单
+        @RequestMapping(value="/orders/findall")
+        public Page<Orders> findAllOfUser(HttpServletRequest request,
+        		@RequestParam(defaultValue="0") int page){
+        	User me=userController.getCurrentUser(request);
+        	return ordersService.findAllOfMine(me.getId(),page);
+        }
         // 修改订单状态
         @RequestMapping(value="/order/{orders_id}")
         public void changeStateByOrdersId(@PathVariable String orders_id, @RequestParam int state) {

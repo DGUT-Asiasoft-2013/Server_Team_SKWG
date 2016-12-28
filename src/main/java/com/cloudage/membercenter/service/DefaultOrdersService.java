@@ -52,6 +52,14 @@ public class DefaultOrdersService implements IOrdersService{
         public Orders findPreOrderByID(int buyerId, int goodsId) {
                 return ordersRepo.findPreOrderByID(buyerId, goodsId);
         }
+
+        //获取当前用户的订单
+		@Override
+		public Page<Orders> findAllOfMine(Integer id, int page) {
+			Sort sort=new Sort(Direction.DESC,"createDate");
+			PageRequest rePageRequest=new PageRequest(page, 5,sort);
+			return ordersRepo.findAllOfMine(id,rePageRequest);
+		}
         
 
 }
