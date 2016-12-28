@@ -41,8 +41,8 @@ public class GoodsController {
 	@RequestMapping(value = "/goods", method = RequestMethod.POST)
 	public Goods addGoods(@RequestParam String goodsName,
 			@RequestParam String goodsType,
-			@RequestParam String goodsPrice,
-			@RequestParam String goodsCount,
+			@RequestParam double goodsPrice,
+			@RequestParam int goodsCount,
 			@RequestParam String publisher,
 			@RequestParam String author,
 			@RequestParam String pubDate,

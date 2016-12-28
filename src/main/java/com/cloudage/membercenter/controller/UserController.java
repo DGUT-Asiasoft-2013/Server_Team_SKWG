@@ -154,6 +154,17 @@ public class UserController {
         	return userService.save(me);
         }
         
+        //充值()
+       @RequestMapping(value="user/mywallet/charge") 
+        public double chargePocketMoney(HttpServletRequest request,
+        		@RequestParam double charge_num){
+        	User me =getCurrentUser(request);
+    	//   User me=userService.findById(39);
+        	me.setMoney(me.getMoney()+charge_num);
+        	userService.save(me);
+        	return me.getMoney();
+        }
+        
         //设置支付密码
         @RequestMapping(value="user/setPayPassword",method=RequestMethod.POST)
         public boolean setPayPassword(HttpServletRequest request,

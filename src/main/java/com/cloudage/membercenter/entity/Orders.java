@@ -14,7 +14,7 @@ public class Orders extends DateRecord {
         int ordersState;                              // 订单状态，  0：已取消订单  1完成订单,2：已下单   3：已付款   4：已发货  5：已收货 
         
         Goods goods;                                        // 商品
-        String goodsQTY;                                //购买数量
+        int goodsQTY;                                //购买数量
         double goodsSum;                               //商品总额
         
         User buyer;                                          // 用户
@@ -78,11 +78,11 @@ public class Orders extends DateRecord {
 
         //购买数量
         @Column(nullable=true)
-        public String getGoodsQTY() {
+        public int getGoodsQTY() {
                 return goodsQTY;
         }
 
-        public void setGoodsQTY(String goodsQTY) {
+        public void setGoodsQTY(int goodsQTY) {
                 this.goodsQTY = goodsQTY;
         }
         
