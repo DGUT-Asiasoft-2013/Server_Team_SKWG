@@ -19,14 +19,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.Article;
 import com.cloudage.membercenter.entity.Comment;
+import com.cloudage.membercenter.entity.Orders;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IArticleService;
 import com.cloudage.membercenter.service.ILikesService;
+import com.cloudage.membercenter.service.IUserService;
 
 @RestController
 @RequestMapping("/api")
 public class ArticleController {
 
+	@Autowired
+    IUserService userService;
+	
 	@Autowired
 	IArticleService articleService;
 
@@ -133,4 +138,19 @@ public class ArticleController {
 	public int deleteLikeByArticleId(@PathVariable int article_id){
 		return likesService.deleteLikeByArticleId(article_id);
 	}
+	
+	//支付打赏
+    @RequestMapping(value="/article/reward",method=RequestMethod.POST)
+    public boolean  payForReward(@RequestParam double money,
+    		HttpServletRequest request) {
+    	User me=userController.getCurrentUser(request);
+    	if(me.getMoney()>=money){
+    		me.setMoney(me.getMoney()-money);
+        	userService.save(me);
+    		return true;
+    	}
+    	else{
+    		return false;
+    	}
+    }
 }
