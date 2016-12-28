@@ -13,7 +13,7 @@ public interface ISubscribesRepository extends PagingAndSortingRepository<Subscr
         @Query("select count(*) from Subscribe s where s.id.shop.id = ?1")
         int subscribeCountsOfShop(int shopId);
         
-        @Query("select count(*) from Subscribe s where s.id.user.id =?1 and s.id.shop.id = ?2")
+        @Query("select count(*) from Subscribe s where s.id.user.id = ?1 and s.id.shop.id = ?2")
         int checkSubscribeExsists(int userId, int shopId);
         
 }

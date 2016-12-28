@@ -62,7 +62,7 @@ public class ShopController {
                 return shopServier.findByUserId(me.getId());
         }
 
-        @RequestMapping("/shop/{shop_id)/subscribe")
+        @RequestMapping("/shop/{shop_id}/subscribe")
         public int countSubscribe(@PathVariable int shop_id) {
                 return subscribeService.countSubscribe(shop_id);
         }
