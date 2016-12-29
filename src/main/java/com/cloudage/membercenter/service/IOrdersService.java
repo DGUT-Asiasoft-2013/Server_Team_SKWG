@@ -11,4 +11,7 @@ public interface IOrdersService {
         Orders findOrdersByOrdersID(String ordersID);
         void deleteOrders(Orders orders);
         Orders findPreOrderByID(int buyerId, int goodsId);
+        
+        //获取当前用户的订单
+		Page<Orders> findAllOfMine(Integer id, int page);
 }

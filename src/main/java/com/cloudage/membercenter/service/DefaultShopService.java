@@ -21,6 +21,10 @@ public class DefaultShopService implements IShopService {
 	public Shop findByUserId(int userId) {
 		return shopRepo.findByUserId(userId);
 	}
+        @Override
+        public Shop findOne(Integer shopId) {
+                return shopRepo.findOne(shopId);
+        }
 	
 
 }

@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Goods extends DateRecord{
 	String goodsName;
 	String goodsType;
-	String goodsPrice;
-	String goodsCount;
+	double goodsPrice;
+	int goodsCount;
 	String goodsImage;
 	String publisher;
 	String author;
@@ -35,16 +35,16 @@ public class Goods extends DateRecord{
 		this.goodsType = goodsType;
 	}
 	
-	public String getGoodsPrice() {
+	public double getGoodsPrice() {
 		return goodsPrice;
 	}
-	public void setGoodsPrice(String goodsPrice) {
+	public void setGoodsPrice(double goodsPrice) {
 		this.goodsPrice = goodsPrice;
 	}
-	public String getGoodsCount() {
+	public int getGoodsCount() {
 		return goodsCount;
 	}
-	public void setGoodsCount(String goodsCount) {
+	public void setGoodsCount(int goodsCount) {
 		this.goodsCount = goodsCount;
 	}
 	public String getGoodsImage() {
