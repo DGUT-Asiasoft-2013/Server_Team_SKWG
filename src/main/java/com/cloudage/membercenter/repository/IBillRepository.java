@@ -10,6 +10,6 @@ import com.cloudage.membercenter.entity.Bill;
 
 public interface IBillRepository extends PagingAndSortingRepository<Bill, Integer> {
 
-	@Query("from Bill b where b.user.ID = ?1")
+	@Query("from Bill b where b.user.id = ?1")
 	Page<Bill> findBillByUserID(int ID , Pageable page);
 }

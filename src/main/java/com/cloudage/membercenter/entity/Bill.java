@@ -29,7 +29,7 @@ public class Bill extends BaseEntity {
 	}
 
 	@ManyToOne(optional = false)
-	@JsonIgnore
+//	@JsonIgnore
 	public User getUser() {
 		return user;
 	}
