@@ -48,6 +48,7 @@ public class ArticleController {
 	@RequestMapping(value = "/article", method = RequestMethod.POST)
 	public Article addArticle(@RequestParam String title, 
 			@RequestParam String text,
+			@RequestParam String articleImgName,
 			MultipartFile articlesImage,
 			HttpServletRequest request) {
 		User currentUser = userController.getCurrentUser(request);
@@ -58,8 +59,8 @@ public class ArticleController {
 		if (articlesImage != null) {
 			try {
 				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-				FileUtils.copyInputStreamToFile(articlesImage.getInputStream(), new File(realPath, title + ".png"));
-				article.setArticlesImage("upload/" + title + ".png");
+				FileUtils.copyInputStreamToFile(articlesImage.getInputStream(), new File(realPath, articleImgName + ".png"));
+				article.setArticlesImage("upload/" + articleImgName + ".png");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
