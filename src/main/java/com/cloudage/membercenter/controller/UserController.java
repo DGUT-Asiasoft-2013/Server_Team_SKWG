@@ -36,160 +36,174 @@ import com.cloudage.membercenter.service.IUserService;
 @RequestMapping("/api")
 public class UserController {
 
-        @Autowired
-		IUserService userService;
+	@Autowired
+	IUserService userService;
 
-        @RequestMapping(value = "/hello", method = RequestMethod.GET)
-        public @ResponseBody String hello() {
-                return "HELLO WORLD";
-        }
+	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	public @ResponseBody String hello() {
+		return "HELLO WORLD";
+	}
 
-        @RequestMapping(value = "/register", method = RequestMethod.POST)
-    	public User register(@RequestParam String account, @RequestParam String passwordHash, @RequestParam String email,
-    			@RequestParam String name, @RequestParam String address, @RequestParam String phoneNum,
-    			MultipartFile avatar, HttpServletRequest request) {
-        	//判断用户是否存在
-//        	User isuser = userService.findByAccount(account);
-//        	User ismail = userService.findByEmail(email);
-//        	if(isuser!=null||ismail!=null){
-//        		return null;
-//        	}
-    		User user = new User();
-    		user.setAccount(account);
-    		user.setEmail(email);
-    		user.setPasswordHash(passwordHash);
-    		user.setName(name);
-    		user.setAddress(address);
-    		user.setPhoneNum(phoneNum);
-    		user.setIsStore("0");
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public User register(@RequestParam String account, @RequestParam String passwordHash, @RequestParam String email,
+			@RequestParam String name, @RequestParam String address, @RequestParam String phoneNum,
+			MultipartFile avatar, HttpServletRequest request) {
+		//判断用户是否存在
+		//        	User isuser = userService.findByAccount(account);
+		//        	User ismail = userService.findByEmail(email);
+		//        	if(isuser!=null||ismail!=null){
+		//        		return null;
+		//        	}
+		User user = new User();
+		user.setAccount(account);
+		user.setEmail(email);
+		user.setPasswordHash(passwordHash);
+		user.setName(name);
+		user.setAddress(address);
+		user.setPhoneNum(phoneNum);
+		user.setIsStore("0");
 
-    		if (avatar != null) {
-    			try {
-    				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-    				FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath, account + ".png"));
-    				user.setAvatar("upload/" + account + ".png");
-    			} catch (Exception e) {
-    				e.printStackTrace();
-    			}
-    		}
+		if (avatar != null) {
+			try {
+				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+				FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath, account + ".png"));
+				user.setAvatar("upload/" + account + ".png");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
-    		return userService.save(user);
-    	}
-        @RequestMapping(value = "/login", method = RequestMethod.POST)
-        public User login(@RequestParam String account, @RequestParam String passwordHash, HttpServletRequest request) {
+		return userService.save(user);
+	}
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public User login(@RequestParam String account, @RequestParam String passwordHash, HttpServletRequest request) {
 
-                User user = userService.findByAccount(account);
-                if (user != null && user.getPasswordHash().equals(passwordHash)) {
-                        HttpSession session = request.getSession(true);
-                        session.setAttribute("uid", user.getId());
-                        return user;
-                } else {
-                        return null;
-                }
-        }
+		User user = userService.findByAccount(account);
+		if (user != null && user.getPasswordHash().equals(passwordHash)) {
+			HttpSession session = request.getSession(true);
+			session.setAttribute("uid", user.getId());
+			return user;
+		} else {
+			return null;
+		}
+	}
 
-        @RequestMapping(value = "/change", method = RequestMethod.POST)
-        public boolean changePassword(@RequestParam String passwordHash, @RequestParam String newPasswordHash,
-                        HttpServletRequest request) {
-                User user = getCurrentUser(request);
-                if (user.getPasswordHash().equals(passwordHash)) {
-                        user.setPasswordHash(newPasswordHash);
-                        userService.save(user);
-                        return true;
-                } else {
-                        return false;
-                }
-        }
+	@RequestMapping(value = "/change", method = RequestMethod.POST)
+	public boolean changePassword(@RequestParam String passwordHash, @RequestParam String newPasswordHash,
+			HttpServletRequest request) {
+		User user = getCurrentUser(request);
+		if (user.getPasswordHash().equals(passwordHash)) {
+			user.setPasswordHash(newPasswordHash);
+			userService.save(user);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-        @RequestMapping(value = "/me", method = RequestMethod.GET)
-        public  User getCurrentUser(HttpServletRequest request) {
-                HttpSession session = request.getSession(true);
-                Integer uid = (Integer) session.getAttribute("uid");
-                return userService.findById(uid);
-        }
+	@RequestMapping(value = "/me", method = RequestMethod.GET)
+	public  User getCurrentUser(HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		Integer uid = (Integer) session.getAttribute("uid");
+		return userService.findById(uid);
+	}
 
-        @RequestMapping(value = "/recover", method = RequestMethod.POST)
-        public boolean passwordRecover(@RequestParam String email, @RequestParam String passwordHash,
-                        HttpServletRequest request) {
-                User user = userService.findByEmail(email);
-                if (user == null) {
-                        return false;
-                } else {
-                        user.setPasswordHash(passwordHash);
-                        userService.save(user);
-                        return true;
-                }
-        }
-        
-        @RequestMapping(value = "/becomeshop", method = RequestMethod.POST)
-        public void becomeShop(HttpServletRequest request) {
-        	User user = getCurrentUser(request);
-        	user.setIsStore("1");
-        	System.out.println("g");
-        	userService.save(user);
-        }
+	@RequestMapping(value = "/recover", method = RequestMethod.POST)
+	public boolean passwordRecover(@RequestParam String email, @RequestParam String passwordHash,
+			HttpServletRequest request) {
+		User user = userService.findByEmail(email);
+		if (user == null) {
+			return false;
+		} else {
+			user.setPasswordHash(passwordHash);
+			userService.save(user);
+			return true;
+		}
+	}
 
-        @RequestMapping(value = "/exit")
-       public void exitServer(HttpServletRequest request){
-        	User me = getCurrentUser(request);
-        	if(me!=null){
-        	request.getSession(true).removeAttribute("uid");
-        	}
-        }
+	@RequestMapping(value = "/becomeshop", method = RequestMethod.POST)
+	public void becomeShop(HttpServletRequest request) {
+		User user = getCurrentUser(request);
+		user.setIsStore("1");
+		System.out.println("g");
+		userService.save(user);
+	}
 
-        @RequestMapping(value = "/changeMessage",method = RequestMethod.POST)
-        public User changeMessage(@RequestParam String type,@RequestParam String value,
-        		HttpServletRequest request){
-        	User me = getCurrentUser(request);
-        	
-        	if(type.equals("changeName")){
-        		me.setName(value);
-    		}else if(type.equals("changeEmail")){
-    			me.setEmail(value);
-    		}else if(type.equals("changePhone")){
-    			me.setPhoneNum(value);
-    		}else if(type.equals("changeAddress")){
-    			me.setAddress(value);
-    		}
-        	return userService.save(me);
-        }
-        
-        //充值()
-       @RequestMapping(value="user/mywallet/charge") 
-        public double chargePocketMoney(HttpServletRequest request,
-        		@RequestParam double charge_num){
-        	User me =getCurrentUser(request);
-    	//   User me=userService.findById(39);
-        	me.setMoney(me.getMoney()+charge_num);
-        	userService.save(me);
-        	return me.getMoney();
-        }
-        
-        //设置支付密码
-        @RequestMapping(value="user/setPayPassword",method=RequestMethod.POST)
-        public boolean setPayPassword(HttpServletRequest request,
-        		@RequestParam String payPassword){
-        	User me=getCurrentUser(request);
-        	if(me.getPayPassword()!=null){
-        		me.setPayPassword(payPassword);
-        		userService.save(me);
-        		return true;
-       	}
-        	else{
-        		return false;
-        	}
-        }
-        
-        //验证支付密码是否正确
-        @RequestMapping(value = "/payPassword", method = RequestMethod.POST)
-        public boolean ensurePayPassword(@RequestParam String payPassword,
-        		HttpServletRequest request) {
-        	User user =getCurrentUser(request);
-        	if (user != null && user.getPayPassword().equals(payPassword)) {
-        		return true;
-        	} else {
-        		return false;
-        	}
-        }
+	@RequestMapping(value = "/exit")
+	public void exitServer(HttpServletRequest request){
+		User me = getCurrentUser(request);
+		if(me!=null){
+			request.getSession(true).removeAttribute("uid");
+		}
+	}
+
+	@RequestMapping(value = "/changeMessage",method = RequestMethod.POST)
+	public User changeMessage(@RequestParam String type,@RequestParam String value,
+			HttpServletRequest request){
+		User me = getCurrentUser(request);
+
+		if(type.equals("changeName")){
+			me.setName(value);
+		}else if(type.equals("changeEmail")){
+			me.setEmail(value);
+		}else if(type.equals("changePhone")){
+			me.setPhoneNum(value);
+		}else if(type.equals("changeAddress")){
+			me.setAddress(value);
+		}
+		return userService.save(me);
+	}
+
+	//充值()
+	@RequestMapping(value="user/mywallet/charge") 
+	public double chargePocketMoney(HttpServletRequest request,
+			@RequestParam double charge_num){
+		User me =getCurrentUser(request);
+		//   User me=userService.findById(39);
+		me.setMoney(me.getMoney()+charge_num);
+		userService.save(me);
+		return me.getMoney();
+	}
+
+
+	//检查支付密码是否存在
+@RequestMapping(value="/user/PayPasswordIsExist")
+	public boolean checkPayPasswordIsExisted(HttpServletRequest request){
+		User me=getCurrentUser(request);
+		if(me.getPayPassword()==null){
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+
+	//设置支付密码
+	@RequestMapping(value="user/setPayPassword",method=RequestMethod.POST)
+	public boolean setPayPassword(HttpServletRequest request,
+			@RequestParam String payPassword){
+		User me=getCurrentUser(request);
+		if(me.getPayPassword()==null){
+			me.setPayPassword(payPassword);
+			userService.save(me);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	//验证支付密码是否正确
+	@RequestMapping(value = "/payPassword", method = RequestMethod.POST)
+	public boolean ensurePayPassword(@RequestParam String payPassword,
+			HttpServletRequest request) {
+		User user =getCurrentUser(request);
+		if (user != null && user.getPayPassword().equals(payPassword)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
