@@ -165,6 +165,13 @@ public class UserController {
         	return me.getMoney();
         }
         
+       // 获得当前用户的余额
+       @RequestMapping(value="user/mywallet/getremain")
+       public double getRemainMoner(HttpServletRequest request) {
+    	   User me = getCurrentUser(request);
+    	   return me.getMoney();
+       }
+       
         //设置支付密码
         @RequestMapping(value="user/setPayPassword",method=RequestMethod.POST)
         public boolean setPayPassword(HttpServletRequest request,
