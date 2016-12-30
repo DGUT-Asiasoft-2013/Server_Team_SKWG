@@ -2,6 +2,7 @@ package com.cloudage.membercenter.controller;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.Article;
+import com.cloudage.membercenter.entity.Bill;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.Goods;
 import com.cloudage.membercenter.entity.Likes;
@@ -26,6 +28,7 @@ import com.cloudage.membercenter.entity.Orders;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.repository.ILikesRepository;
 import com.cloudage.membercenter.service.IArticleService;
+import com.cloudage.membercenter.service.IBillService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IGoodsService;
 import com.cloudage.membercenter.service.ILikesService;
@@ -38,7 +41,8 @@ public class UserController {
 
 	@Autowired
 	IUserService userService;
-
+	@Autowired
+	IBillService billService;
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public @ResponseBody String hello() {
 		return "HELLO WORLD";
@@ -148,12 +152,20 @@ public class UserController {
 
 	//充值()
 	@RequestMapping(value="user/mywallet/charge") 
-	public double chargePocketMoney(HttpServletRequest request,
+	public double chargePocketMoney(HttpServletRequest request,@RequestParam UUID uuid,
 			@RequestParam double charge_num){
 		User me =getCurrentUser(request);
 		//   User me=userService.findById(39);
 		me.setMoney(me.getMoney()+charge_num);
 		userService.save(me);
+		Bill bill = new Bill();
+		bill.setBillNumber(uuid);
+		bill.setBillState(1);
+		bill.setItem(charge_num);
+		bill.setMoney(me.getMoney() + charge_num);
+		bill.setUser(me);
+		bill.setDetial("充值");
+		billService.save(bill);
 		return me.getMoney();
 	}
 
