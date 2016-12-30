@@ -60,6 +60,14 @@ public class DefaultOrdersService implements IOrdersService{
 			PageRequest rePageRequest=new PageRequest(page, 5,sort);
 			return ordersRepo.findAllOfMine(id,rePageRequest);
 		}
+
+		// 获取当前用户不同状态的订单
+		@Override
+		public Page<Orders> findAllofMineWithState(int userId, int state, int page) {
+			Sort sort=new Sort(Direction.DESC,"createDate");
+			PageRequest pageRequest=new PageRequest(page, 10,sort);
+			return ordersRepo.findAllOfMineWithState(userId, state, pageRequest);
+		}
         
 
 }

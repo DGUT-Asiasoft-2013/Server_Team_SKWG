@@ -83,6 +83,13 @@ public class OrderController {
 		return ordersService.findOrdersByOrdersID(orders_id);
 	}
 
+	// 根据订单状态获取当前用户的订单
+	@RequestMapping(value = "/orders/findall/{state}")
+	public Page<Orders> getOrdersOfMeWithOrdersState(@PathVariable int state, @RequestParam int page,
+			HttpServletRequest request) {
+		User me = userController.getCurrentUser(request);
+		return ordersService.findAllofMineWithState(me.getId(), state, page);
+	}
 
 	@RequestMapping(value="/orders/delete", method = RequestMethod.POST)
 	public void deleteOrders(@RequestParam String ordersID, HttpServletRequest request) {

@@ -31,4 +31,7 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
         @Query("from Orders orders where orders.buyer.id=?1")
 		Page<Orders> findAllOfMine(Integer id, Pageable rePageRequest);
         
+        // 获取当前用户不同状态的订单
+        @Query("from Orders orders where orders.buyer.id = ?1 and orders.ordersState = ?2")
+        Page<Orders> findAllOfMineWithState(int userId, int state, Pageable page);
 }

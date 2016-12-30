@@ -14,4 +14,6 @@ public interface IOrdersService {
         
         //获取当前用户的订单
 		Page<Orders> findAllOfMine(Integer id, int page);
+		// 或取当前用户不同状态的订单
+		Page<Orders> findAllofMineWithState(int userId, int state, int page);
 }
