@@ -1,6 +1,7 @@
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudage.membercenter.entity.Bill;
 import com.cloudage.membercenter.entity.Goods;
 import com.cloudage.membercenter.entity.Orders;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IArticleService;
+import com.cloudage.membercenter.service.IBillService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IGoodsService;
 import com.cloudage.membercenter.service.ILikesService;
@@ -36,6 +39,9 @@ public class OrderController {
 
 	@Autowired
 	IOrdersService ordersService;
+	
+	@Autowired
+	IBillService billService;
 
 	@Autowired
 	UserController userController;
@@ -123,18 +129,33 @@ public class OrderController {
 
 	//支付订单
 	@RequestMapping(value="/order/payfor/{orders_id}")
-	public boolean  payForOrders(@PathVariable String orders_id, @RequestParam int state,
+	public boolean  payForOrders(@PathVariable String orders_id, 
+			@RequestParam int state,
+			@RequestParam UUID uuid,
 			HttpServletRequest request) {
+		//修改订单状态
 		Orders orders = getOrdersOfOrdersID(orders_id);
 		orders.setOrdersState(state);
 		ordersService.save(orders);
+		//修改用户余额
 		User me=userController.getCurrentUser(request);
 		me.setMoney(me.getMoney()-orders.getGoodsSum());
 		userService.save(me);
-
+		//修改商品库存
 		Goods goods =orders.getGoods();
 		goods.setGoodsCount(goods.getGoodsCount()-orders.getGoodsQTY());   
 		goodsService.save(goods);
+		//添加支出
+		Bill bill=new Bill();
+		bill.setBillNumber(uuid);
+		bill.setBillState(0);
+		bill.setItem(orders.getGoodsSum());
+		bill.setMoney(me.getMoney());
+		bill.setUser(me);
+		bill.setDetial("购买"+orders_id+"花费"+orders.getGoodsSum());
+		billService.save(bill);
+		
+		
 		if(orders.getOrdersState()==3){
 			return true;
 		}
