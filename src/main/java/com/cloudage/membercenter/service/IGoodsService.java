@@ -23,4 +23,6 @@ public interface IGoodsService {
 	Page<Goods> classifyAndSort(String goodsType, String sortStyle, int page);
 	//查找+分类+排序
 	Page<Goods> searchAndClassifyAndSort(String keyword, String goodsType, String sortStyle, int page);
+	//按价格范围查找
+	Page<Goods> searchGoodsBetweenMinAndMax(double minprice, double maxprice, int page);
 }

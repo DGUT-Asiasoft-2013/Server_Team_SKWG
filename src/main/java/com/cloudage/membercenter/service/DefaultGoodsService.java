@@ -99,6 +99,14 @@ public class DefaultGoodsService implements IGoodsService{
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findSearchAndClassifyAndSort(keyword,goodsType, pageRequest);
 	}
+	
+	//按价格范围查找
+	@Override
+	public Page<Goods> searchGoodsBetweenMinAndMax(double minprice, double maxprice, int page) {
+		Sort sort=new Sort(Direction.ASC,"createDate");
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findSearchAndClassify(minprice,maxprice, pageRequest);
+	}
 
 
 
