@@ -43,6 +43,7 @@ public class UserController {
 	IUserService userService;
 	@Autowired
 	IBillService billService;
+
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public @ResponseBody String hello() {
 		return "HELLO WORLD";
@@ -52,12 +53,12 @@ public class UserController {
 	public User register(@RequestParam String account, @RequestParam String passwordHash, @RequestParam String email,
 			@RequestParam String name, @RequestParam String address, @RequestParam String phoneNum,
 			MultipartFile avatar, HttpServletRequest request) {
-		//		//		判断用户是否存在
-		//		User isuser = userService.findByAccount(account);  //根据输入的用户名找存在用户
-		//		User ismail = userService.findByEmail(email);      //根据输入的邮箱找存在用户
-		//		if(isuser!=null||ismail!=null){                    //如果用户已存在返回空
-		//			return null;
-		//		}else{
+		// // 判断用户是否存在
+		// User isuser = userService.findByAccount(account); //根据输入的用户名找存在用户
+		// User ismail = userService.findByEmail(email); //根据输入的邮箱找存在用户
+		// if(isuser!=null||ismail!=null){ //如果用户已存在返回空
+		// return null;
+		// }else{
 		User user = new User();
 		user.setAccount(account);
 		user.setEmail(email);
@@ -78,8 +79,9 @@ public class UserController {
 		}
 
 		return userService.save(user);
-		//		}
+		// }
 	}
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public User login(@RequestParam String account, @RequestParam String passwordHash, HttpServletRequest request) {
 
@@ -107,7 +109,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/me", method = RequestMethod.GET)
-	public  User getCurrentUser(HttpServletRequest request) {
+	public User getCurrentUser(HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
 		Integer uid = (Integer) session.getAttribute("uid");
 		return userService.findById(uid);
@@ -134,30 +136,29 @@ public class UserController {
 		userService.save(user);
 	}
 
-	@RequestMapping(value = "/changeMessage",method = RequestMethod.POST)
-	public User changeMessage(@RequestParam String type,@RequestParam String value,
-			HttpServletRequest request){
+	@RequestMapping(value = "/changeMessage", method = RequestMethod.POST)
+	public User changeMessage(@RequestParam String type, @RequestParam String value, HttpServletRequest request) {
 		User me = getCurrentUser(request);
 
-		if(type.equals("changeName")){
+		if (type.equals("changeName")) {
 			me.setName(value);
-		}else if(type.equals("changeEmail")){
+		} else if (type.equals("changeEmail")) {
 			me.setEmail(value);
-		}else if(type.equals("changePhone")){
+		} else if (type.equals("changePhone")) {
 			me.setPhoneNum(value);
-		}else if(type.equals("changeAddress")){
+		} else if (type.equals("changeAddress")) {
 			me.setAddress(value);
 		}
 		return userService.save(me);
 	}
 
-	//充值()
-	@RequestMapping(value="user/mywallet/charge") 
-	public double chargePocketMoney(HttpServletRequest request,@RequestParam UUID uuid,
-			@RequestParam double charge_num){
-		User me =getCurrentUser(request);
-		//   User me=userService.findById(39);
-		me.setMoney(me.getMoney()+charge_num);
+	// 充值()
+	@RequestMapping(value = "user/mywallet/charge")
+	public double chargePocketMoney(HttpServletRequest request, @RequestParam UUID uuid,
+			@RequestParam double charge_num) {
+		User me = getCurrentUser(request);
+		// User me=userService.findById(39);
+		me.setMoney(me.getMoney() + charge_num);
 		userService.save(me);
 		Bill bill = new Bill();
 		bill.setBillNumber(uuid);
@@ -171,32 +172,29 @@ public class UserController {
 	}
 
 	// 获得当前用户的余额
-	@RequestMapping(value="user/mywallet/getremain")
+	@RequestMapping(value = "user/mywallet/getremain")
 	public double getRemainMoner(HttpServletRequest request) {
 		User me = getCurrentUser(request);
 		return me.getMoney();
 	}
 
-	//设置支付密码
-	@RequestMapping(value="user/setPayPassword",method=RequestMethod.POST)
-	public boolean setPayPassword(HttpServletRequest request,
-			@RequestParam String payPassword){
-		User me=getCurrentUser(request);
-		if(me.getPayPassword()!=null){
+	// 设置支付密码
+	@RequestMapping(value = "user/setPayPassword", method = RequestMethod.POST)
+	public boolean setPayPassword(HttpServletRequest request, @RequestParam String payPassword) {
+		User me = getCurrentUser(request);
+		if (me.getPayPassword() != null) {
 			me.setPayPassword(payPassword);
 			userService.save(me);
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
 
-	//验证支付密码是否正确
+	// 验证支付密码是否正确
 	@RequestMapping(value = "/payPassword", method = RequestMethod.POST)
-	public boolean ensurePayPassword(@RequestParam String payPassword,
-			HttpServletRequest request) {
-		User user =getCurrentUser(request);
+	public boolean ensurePayPassword(@RequestParam String payPassword, HttpServletRequest request) {
+		User user = getCurrentUser(request);
 		if (user != null && user.getPayPassword().equals(payPassword)) {
 			return true;
 		} else {
@@ -204,34 +202,40 @@ public class UserController {
 		}
 	}
 
-
-	//检查支付密码是否存在
-	@RequestMapping(value="/user/PayPasswordIsExist")
-	public boolean checkPayPasswordIsExisted(HttpServletRequest request){
-		User me=getCurrentUser(request);
-		if(me.getPayPassword()==null){
+	// 检查支付密码是否存在
+	@RequestMapping(value = "/user/PayPasswordIsExist")
+	public boolean checkPayPasswordIsExisted(HttpServletRequest request) {
+		User me = getCurrentUser(request);
+		if (me.getPayPassword() == null) {
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}
 
-	//判断用户名是否存在
-	@RequestMapping(value="/isuser")
-	public boolean checkIsUser(@RequestParam String account){
+	// 判断用户名是否存在
+	@RequestMapping(value = "/isuser")
+	public boolean checkIsUser(@RequestParam String account) {
 		return userService.checkIsUser(account);
 	}
 
-	//判断邮箱是否被使用
-	@RequestMapping(value="/isemail")
-	public boolean checkIsEmail(@RequestParam String email){
+	// 判断邮箱是否被使用
+	@RequestMapping(value = "/isemail")
+	public boolean checkIsEmail(@RequestParam String email) {
 		return userService.checkIsEmail(email);
 	}
 
-	//判断用户名密码是否一致
-	@RequestMapping(value="/ismatch")
-	public boolean checkIsMatch(@RequestParam String account,@RequestParam String passwordHash){
-		return userService.checkIsMatch(account,passwordHash);
+	// 判断用户名密码是否一致
+	@RequestMapping(value = "/ismatch")
+	public boolean checkIsMatch(@RequestParam String account, @RequestParam String passwordHash) {
+		return userService.checkIsMatch(account, passwordHash);
+	}
+
+	@RequestMapping(value = "/exit")
+	public void exitServer(HttpServletRequest request) {
+		User me = getCurrentUser(request);
+		if (me != null) {
+			request.getSession(true).removeAttribute("uid");
+		}
 	}
 }
