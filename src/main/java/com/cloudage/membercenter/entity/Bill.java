@@ -29,10 +29,10 @@ public class Bill extends BaseEntity {
 	}
 
 	@ManyToOne(optional = false)
-//	@JsonIgnore
 	public User getUser() {
 		return user;
 	}
+//	@JsonIgnore
 
 	@Column(updatable = false)
 	public UUID getBillNumber() {

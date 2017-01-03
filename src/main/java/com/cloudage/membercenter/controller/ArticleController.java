@@ -2,6 +2,7 @@ package com.cloudage.membercenter.controller;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.Article;
+import com.cloudage.membercenter.entity.Bill;
 import com.cloudage.membercenter.entity.Comment;
 import com.cloudage.membercenter.entity.Orders;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IArticleService;
+import com.cloudage.membercenter.service.IBillService;
 import com.cloudage.membercenter.service.ILikesService;
 import com.cloudage.membercenter.service.IUserService;
 
@@ -30,10 +33,13 @@ import com.cloudage.membercenter.service.IUserService;
 public class ArticleController {
 
 	@Autowired
-    IUserService userService;
-	
+	IUserService userService;
+
 	@Autowired
 	IArticleService articleService;
+	
+	@Autowired
+	IBillService billService;
 
 	@Autowired
 	UserController userController;
@@ -48,6 +54,7 @@ public class ArticleController {
 	@RequestMapping(value = "/article", method = RequestMethod.POST)
 	public Article addArticle(@RequestParam String title, 
 			@RequestParam String text,
+			@RequestParam String articleImgName,
 			MultipartFile articlesImage,
 			HttpServletRequest request) {
 		User currentUser = userController.getCurrentUser(request);
@@ -58,8 +65,8 @@ public class ArticleController {
 		if (articlesImage != null) {
 			try {
 				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-				FileUtils.copyInputStreamToFile(articlesImage.getInputStream(), new File(realPath, title + ".png"));
-				article.setArticlesImage("upload/" + title + ".png");
+				FileUtils.copyInputStreamToFile(articlesImage.getInputStream(), new File(realPath, articleImgName + ".png"));
+				article.setArticlesImage("upload/" + articleImgName + ".png");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -72,21 +79,21 @@ public class ArticleController {
 		User me = userController.getCurrentUser(request);
 		return articleService.findAllArticleOfMe(me.getId(), page);
 	}
-	
+
 	@RequestMapping(value = "/modify/{article_id}", method = RequestMethod.POST)
-    public boolean modifyArticle(@RequestParam String title, @RequestParam String text,
-   		 @PathVariable int article_id,HttpServletRequest request) {
-   	     Article article=articleService.findArticleById(article_id);
-            if (!(article.getTitle().equals(title))||!(article.getText().equals(text))) {
-           	 article.setTitle(title);
-                article.setText(text);
-                    articleService.save(article);
-                    return true;
-            } else {
-                    return false;
-            }
-    }
-	
+	public boolean modifyArticle(@RequestParam String title, @RequestParam String text,
+			@PathVariable int article_id,HttpServletRequest request) {
+		Article article=articleService.findArticleById(article_id);
+		if (!(article.getTitle().equals(title))||!(article.getText().equals(text))) {
+			article.setTitle(title);
+			article.setText(text);
+			articleService.save(article);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	@RequestMapping("/forums/{page}")
 	public Page<Article> getForums(@PathVariable int page) {
 		return articleService.getForums(page);
@@ -126,31 +133,41 @@ public class ArticleController {
 			@RequestParam(defaultValue = "0") int page) {
 		return articleService.searchArticlWithKeyword(keyword, page);
 	}
-	
+
 	@Modifying
 	@RequestMapping(value="/article/{article_id}/delete",method=RequestMethod.DELETE)
 	public int deleteArticleById(@PathVariable int article_id){
 		return articleService.deleteArticleById(article_id);
 	}
-	
+
 	@Modifying
 	@RequestMapping(value="/article/{article_id}/deletelike",method=RequestMethod.DELETE)
 	public int deleteLikeByArticleId(@PathVariable int article_id){
 		return likesService.deleteLikeByArticleId(article_id);
 	}
-	
+
 	//支付打赏
-    @RequestMapping(value="/article/reward",method=RequestMethod.POST)
-    public boolean  payForReward(@RequestParam double money,
-    		HttpServletRequest request) {
-    	User me=userController.getCurrentUser(request);
-    	if(me.getMoney()>=money){
-    		me.setMoney(me.getMoney()-money);
-        	userService.save(me);
-    		return true;
-    	}
-    	else{
-    		return false;
-    	}
-    }
+	@RequestMapping(value="/article/reward",method=RequestMethod.POST)
+	public boolean  payForReward(@RequestParam double money,
+			@RequestParam UUID uuid,
+			HttpServletRequest request) {
+		User me=userController.getCurrentUser(request);
+		if(me.getMoney()>=money){
+			me.setMoney(me.getMoney()-money);
+			userService.save(me);
+			//添加支出
+			Bill bill=new Bill();
+			bill.setBillNumber(uuid);
+			bill.setBillState(0);
+			bill.setItem(money);
+			bill.setMoney(me.getMoney());
+			bill.setUser(me);
+			bill.setDetial("打赏花费"+money);
+			billService.save(bill);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

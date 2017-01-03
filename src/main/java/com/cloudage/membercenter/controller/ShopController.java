@@ -16,10 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.Goods;
 import com.cloudage.membercenter.entity.Shop;
+import com.cloudage.membercenter.entity.Subscribe;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IGoodsService;
 import com.cloudage.membercenter.service.IShopService;
 import com.cloudage.membercenter.service.ISubscribeService;
+import com.cloudage.membercenter.service.IUserService;
 
 
 @RestController
@@ -93,4 +95,14 @@ public class ShopController {
 		return subscribeService.countSubscribe(shop_id);
 	}
 
+        @RequestMapping("/shop/{shop_id}/findsubscribe")
+        public Page<Subscribe> findSubscribeByShopId(@PathVariable int shop_id, @RequestParam(defaultValue = "0") int page){
+                return subscribeService.findSubscribeByShopId(shop_id, page);
+        }
+        
+        @RequestMapping(value = "/shop/{othersId}/findshop")
+        public Shop findByOthersId(@PathVariable int othersId) {
+                return shopServier.findByUserId(othersId);
+        }
+        
 }

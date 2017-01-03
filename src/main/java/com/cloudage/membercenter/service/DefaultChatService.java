@@ -27,8 +27,15 @@ public class DefaultChatService implements IChatService{
 
         @Override
         public Page<Chat> findChatById(int senderId, int receiverId, int page) {
-                Sort sort = new Sort(Direction.DESC, "createDate");
-                PageRequest pageRequest = new PageRequest(page, 50, sort);
+                Sort sort = new Sort(Direction.ASC, "createDate");
+                PageRequest pageRequest = new PageRequest(page, 100, sort);
                 return chatRepo.findChatById(senderId, receiverId, pageRequest);
+        }
+
+        @Override
+        public Page<Chat> findChatByUserId(int userId, int page) {
+                Sort sort = new Sort(Direction.DESC, "createDate");
+                PageRequest pageRequest = new PageRequest(page, 100, sort);
+                return chatRepo.findChatByUserId(userId, pageRequest);
         }
 }

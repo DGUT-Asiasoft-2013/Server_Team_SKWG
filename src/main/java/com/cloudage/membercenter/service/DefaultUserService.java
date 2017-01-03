@@ -38,5 +38,19 @@ public class DefaultUserService implements IUserService {
         public User findById(Integer id) {
             return userRepo.findOne(id);
         }
-
+        
+        @Override
+		public boolean checkIsUser(String account) {
+			return userRepo.checkIsUser(account)>0;
+		}
+        
+        @Override
+		public boolean checkIsEmail(String email) {
+			return userRepo.checkIsEmail(email)>0;
+		}
+        
+        @Override
+		public boolean checkIsMatch(String account,String passwordHash) {
+			return userRepo.checkIsMatch(account,passwordHash)>0;
+		}
 }
