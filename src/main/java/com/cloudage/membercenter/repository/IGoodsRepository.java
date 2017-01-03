@@ -37,6 +37,10 @@ public interface IGoodsRepository extends PagingAndSortingRepository<Goods, Inte
 	@Query("from Goods goods where goods.goodsName like %?1% or goods.author like %?1%  and goods.goodsType=?2")
 	Page<Goods> findSearchAndClassifyAndSort(String keyword, String goodsType, Pageable pageRequest);
 
+	//按价格范围查找
+	@Query("from Goods goods where goods.goodsPrice between ?1 and ?2")
+	Page<Goods> findSearchAndClassify(double minprice, double maxprice, Pageable pageRequest);
+
 
 	
 	

@@ -116,6 +116,14 @@ public class GoodsController {
 
 		return goodsService.searchGoodsByKeyword(keyword,page);
 	}
+	//商品搜索(价格范围)
+	@RequestMapping("/goods/search/{minprice}/{maxprice}")
+	public Page<Goods> searchGoodsBetweenMinAndMax(@PathVariable double minprice,
+			@PathVariable double maxprice,
+			@RequestParam(defaultValue="0") int page){
+
+		return goodsService.searchGoodsBetweenMinAndMax(minprice,maxprice,page);
+	}
 	//商品排序
 	@RequestMapping("/goods/sort/{sortStyle}")
 	public Page<Goods> sortGoods(
@@ -161,6 +169,7 @@ public class GoodsController {
 			@RequestParam(defaultValue="0") int page){
 		return goodsService.searchAndClassifyAndSort(keyword,goodsType,sortStyle,page);
 	}
+	
 
 	//商品评论
 	@RequestMapping("/goods/{goods_id}/comments")
