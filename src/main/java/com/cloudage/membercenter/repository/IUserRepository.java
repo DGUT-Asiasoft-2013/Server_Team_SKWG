@@ -15,4 +15,13 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Intege
         
         @Query("select u from User u where u.email = ?1")
         public User findUserByEmail(String email);
+        
+        @Query("select count(*) from User u where u.account=?1")
+    	int checkIsUser(String account);
+        
+        @Query("select count(*) from User u where u.email=?1")
+    	int checkIsEmail(String email);
+        
+        @Query("select count(*) from User u where u.account=?1 and u.passwordHash=?2")
+    	int checkIsMatch(String account,String passwordHash);
 }

@@ -7,5 +7,7 @@ public interface IUserService {
         User findByAccount(String account);
         User findByEmail(String email);
         User findById(Integer id);
-        
+        boolean checkIsUser(String account);
+        boolean checkIsEmail(String email);
+        boolean checkIsMatch(String account,String passwordHash);
 }

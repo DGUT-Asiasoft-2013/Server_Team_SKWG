@@ -52,12 +52,12 @@ public class UserController {
 	public User register(@RequestParam String account, @RequestParam String passwordHash, @RequestParam String email,
 			@RequestParam String name, @RequestParam String address, @RequestParam String phoneNum,
 			MultipartFile avatar, HttpServletRequest request) {
-		//判断用户是否存在
-		//        	User isuser = userService.findByAccount(account);
-		//        	User ismail = userService.findByEmail(email);
-		//        	if(isuser!=null||ismail!=null){
-		//        		return null;
-		//        	}
+		//		//		判断用户是否存在
+		//		User isuser = userService.findByAccount(account);  //根据输入的用户名找存在用户
+		//		User ismail = userService.findByEmail(email);      //根据输入的邮箱找存在用户
+		//		if(isuser!=null||ismail!=null){                    //如果用户已存在返回空
+		//			return null;
+		//		}else{
 		User user = new User();
 		user.setAccount(account);
 		user.setEmail(email);
@@ -78,6 +78,7 @@ public class UserController {
 		}
 
 		return userService.save(user);
+		//		}
 	}
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public User login(@RequestParam String account, @RequestParam String passwordHash, HttpServletRequest request) {
@@ -216,7 +217,21 @@ public class UserController {
 		}
 	}
 
+	//判断用户名是否存在
+	@RequestMapping(value="/isuser")
+	public boolean checkIsUser(@RequestParam String account){
+		return userService.checkIsUser(account);
+	}
 
+	//判断邮箱是否被使用
+	@RequestMapping(value="/isemail")
+	public boolean checkIsEmail(@RequestParam String email){
+		return userService.checkIsEmail(email);
+	}
 
-
+	//判断用户名密码是否一致
+	@RequestMapping(value="/ismatch")
+	public boolean checkIsMatch(@RequestParam String account,@RequestParam String passwordHash){
+		return userService.checkIsMatch(account,passwordHash);
+	}
 }
