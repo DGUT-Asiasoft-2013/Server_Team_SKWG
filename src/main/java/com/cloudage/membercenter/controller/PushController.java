@@ -43,7 +43,7 @@ public class PushController {
                 return pushService.save(push);
         }
         
-        @RequestMapping("/findpush/{userId}")
+        @RequestMapping("/findpush")
         public Page<Push> getPushByUserId(@RequestParam(defaultValue = "0") int page, HttpServletRequest request){
                 User me = userController.getCurrentUser(request);
                 return pushService.findPushByUserId(me.getId(), page);

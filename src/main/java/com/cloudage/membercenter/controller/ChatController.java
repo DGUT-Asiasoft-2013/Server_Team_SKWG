@@ -48,4 +48,11 @@ public class ChatController {
                 return chatService.findChatById(me.getId(), receiverId, page);
         }
         
+        @RequestMapping("/findmychat")
+        public Page<Chat> getChatByUserId(@RequestParam(defaultValue = "0") int page,
+                        HttpServletRequest request){
+                User me = userController.getCurrentUser(request);
+                return chatService.findChatByUserId(me.getId(), page);
+        }
+        
 }
