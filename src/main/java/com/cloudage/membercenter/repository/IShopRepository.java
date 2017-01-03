@@ -9,4 +9,7 @@ import com.cloudage.membercenter.entity.Shop;
 public interface IShopRepository extends PagingAndSortingRepository<Shop, Integer>{
 	@Query("from Shop shop where shop.owner.id = ?1")
 	public Shop findByUserId(int userId);
+	
+	@Query("from Shop shop where shop.shopName = ?1")
+	public Shop findOne(String shopname);
 }

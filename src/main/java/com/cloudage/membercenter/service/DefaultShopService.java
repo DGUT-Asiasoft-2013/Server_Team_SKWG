@@ -7,24 +7,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cloudage.membercenter.entity.Shop;
 import com.cloudage.membercenter.repository.IShopRepository;
+
 @Component
 @Service
 @Transactional
 public class DefaultShopService implements IShopService {
 	@Autowired
 	IShopRepository shopRepo;
+
 	@Override
 	public Shop save(Shop shop) {
 		return shopRepo.save(shop);
 	}
+
 	@Override
 	public Shop findByUserId(int userId) {
 		return shopRepo.findByUserId(userId);
 	}
-        @Override
-        public Shop findOne(Integer shopId) {
-                return shopRepo.findOne(shopId);
-        }
-	
+
+	@Override
+	public Shop findOne(Integer shopId) {
+		return shopRepo.findOne(shopId);
+	}
+
+	@Override
+	public Shop findOne(String shopname) {
+		// TODO Auto-generated method stub
+		return shopRepo.findOne(shopname);
+	}
 
 }

@@ -6,4 +6,5 @@ public interface IShopService {
 	Shop save(Shop shop);
 	Shop findByUserId(int userId);
 	Shop findOne(Integer shopId);
+	Shop findOne(String shopname);
 }
