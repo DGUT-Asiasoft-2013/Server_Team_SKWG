@@ -127,6 +127,26 @@ public class UserController {
 			return true;
 		}
 	}
+	
+	//更改头像
+	@RequestMapping(value = "/changeAvatar", method = RequestMethod.POST)
+	public boolean changeAvatar(MultipartFile avatar,
+			HttpServletRequest request) {
+		User me = getCurrentUser(request);
+		if (avatar != null) {
+			try {
+				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+				FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath, me.getAccount() + ".png"));
+				me.setAvatar("upload/" + me.getAccount() + ".png");
+				userService.save(me);
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+		}else return false;
+	}
+	
 
 	@RequestMapping(value = "/becomeshop", method = RequestMethod.POST)
 	public void becomeShop(HttpServletRequest request) {
