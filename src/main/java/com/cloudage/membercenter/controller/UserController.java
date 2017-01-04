@@ -130,7 +130,7 @@ public class UserController {
 	
 	//更改头像
 	@RequestMapping(value = "/changeAvatar", method = RequestMethod.POST)
-	public boolean changeAvatar(MultipartFile avatar,
+	public User changeAvatar(MultipartFile avatar,
 			HttpServletRequest request) {
 		User me = getCurrentUser(request);
 		if (avatar != null) {
@@ -139,12 +139,12 @@ public class UserController {
 				FileUtils.copyInputStreamToFile(avatar.getInputStream(), new File(realPath, me.getAccount() + ".png"));
 				me.setAvatar("upload/" + me.getAccount() + ".png");
 				userService.save(me);
-				return true;
+				return me;
 			} catch (Exception e) {
 				e.printStackTrace();
-				return false;
+				return null;
 			}
-		}else return false;
+		}else return null;
 	}
 	
 
