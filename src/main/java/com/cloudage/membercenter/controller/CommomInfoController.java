@@ -38,17 +38,24 @@ public class CommomInfoController {
 	}
 	
 	// 设置默认地址
-	public CommomInfo setDefault(@RequestParam int infoId, HttpServletRequest request) {
+	@RequestMapping("/commominfo/setdefault/{infoId}")
+	public CommomInfo setDefault(@PathVariable int infoId, HttpServletRequest request) {
 		User me = userController.getCurrentUser(request);
 		CommomInfo beforeDefaut = commomInfoService.findDefaultOfUser(me.getId());
 		CommomInfo newDefault = commomInfoService.findCommomInfoByID(infoId);
 		if(beforeDefaut != null) {
 			beforeDefaut.setDefaultInfo(false);
+			commomInfoService.save(beforeDefaut);
 		}
 		newDefault.setDefaultInfo(true);
+		commomInfoService.save(newDefault);
 		return newDefault;
 	}
 	
+	@RequestMapping("/commominfo/delete/{infoId}")
+	public void deleteCommomInfo(@PathVariable int infoId) {
+		commomInfoService.deleteCommomInfo(infoId);
+	}
 	// 返回当前用户的默认收货地址
 	@RequestMapping(value="/commominfo/default")
 	public CommomInfo getDefaultCommomInfoOfUser(HttpServletRequest request) {
@@ -56,12 +63,11 @@ public class CommomInfoController {
 		return commomInfoService.findDefaultOfUser(me.getId());
 	}
 	
-	
-	
 	// 返回当前用户保存的所有收货地址
 	@RequestMapping(value = "/commominfo/myinfo/{page}")
 	public Page<CommomInfo> getAllOfUser(@PathVariable int page, HttpServletRequest request) {
 		User me = userController.getCurrentUser(request);
 		return commomInfoService.findAllOfUser(me.getId(), page);
 	}
+	
 }

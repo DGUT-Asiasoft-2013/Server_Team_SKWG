@@ -40,4 +40,9 @@ public class DefaultCommomInfoService implements ICommomInfoService{
 	public CommomInfo findCommomInfoByID(int commomInfoId) {
 		return commomInfoRepo.findOne(commomInfoId);
 	}
+
+	@Override
+	public void deleteCommomInfo(int infoId) {
+		commomInfoRepo.delete(infoId);
+	}
 }

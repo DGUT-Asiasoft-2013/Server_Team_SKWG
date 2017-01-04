@@ -9,4 +9,5 @@ public interface ICommomInfoService {
 	CommomInfo findDefaultOfUser(int userId);
 	CommomInfo findCommomInfoByID(int commomInfoId);
 	Page<CommomInfo> findAllOfUser(int userId, int page);
+	void deleteCommomInfo(int infoId);
 }
