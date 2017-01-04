@@ -152,7 +152,8 @@ public class OrderController {
 		bill.setItem(orders.getGoodsSum());
 		bill.setMoney(me.getMoney());
 		bill.setUser(me);
-		bill.setDetial("购买"+orders_id+"花费"+orders.getGoodsSum());
+		bill.setDetial("从"+orders.getGoods().getShop().getShopName()+
+				"买了"+orders.getGoodsSum()+"件"+orders.getGoods().getGoodsName());
 		billService.save(bill);
 		
 		
