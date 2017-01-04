@@ -179,6 +179,17 @@ public class GoodsController {
 		return bookCommentService.findAllCommentsByBookId(goods_id,page);
 	}
 
+	@RequestMapping(value="/goods/{goods_id}/addcomments", method = RequestMethod.POST)
+	public void addComment(@PathVariable int goods_id, @RequestParam String commentText,
+			HttpServletRequest request) {
+		BookComment comment = new BookComment();
+		Goods goods = goodsService.findById(goods_id);
+		User me = userController.getCurrentUser(request);
+		comment.setAuthor(me);
+		comment.setText(commentText);
+		comment.setGoods(goods);
+		bookCommentService.save(comment);
+	}
 
 
 	//	@RequestMapping("/goods/{goods_name}/comments")

@@ -28,6 +28,11 @@ public class DefaultBookCommentService implements IBookCommentService {
 		return bookCommentRepo.findBookCommentsByBookId(goods_id,pageRequest);
 	}
 
+	@Override
+	public void save(BookComment comment) {
+		bookCommentRepo.save(comment);
+	}
+
 //	@Override
 //	public Page<BookComment> findAllCommentsByBookName(String goods_name, int page) {
 //		// TODO Auto-generated method stub
