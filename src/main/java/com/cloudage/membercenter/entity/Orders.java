@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -23,8 +25,9 @@ public class Orders extends DateRecord {
         String buyerAddress;                       //客户地址
         String postCode;		// 邮政编码
         String paySum;                                  // 实付款
-
-        
+        Date deliverDate;	// 发货时间
+        Date payDate;		// 付款时间
+        Date completeDate;	// 订单完成时间
         //订单号
         @Column(unique = true, nullable=false)
         public String getOrdersID() {
@@ -64,18 +67,6 @@ public class Orders extends DateRecord {
                 this.goods = goods;
         }
         
-//        // 商品编号
-//        @Transient
-//        public Integer getGoodsID() {
-//                return goods.getId();
-//        }
-//
-//        //商品名
-//        @Transient
-//        public String getGoodsName() {
-//                return goods.getGoodsName();
-//        }
-
         //购买数量
         @Column(nullable=true)
         public int getGoodsQTY() {
@@ -144,6 +135,30 @@ public class Orders extends DateRecord {
 
 		public void setPostCode(String postCode) {
 			this.postCode = postCode;
+		}
+
+		public Date getDeliverDate() {
+			return deliverDate;
+		}
+
+		public void setDeliverDate(Date deliverDate) {
+			this.deliverDate = deliverDate;
+		}
+
+		public Date getPayDate() {
+			return payDate;
+		}
+
+		public void setPayDate(Date payDate) {
+			this.payDate = payDate;
+		}
+
+		public Date getCompleteDate() {
+			return completeDate;
+		}
+
+		public void setCompleteDate(Date completeDate) {
+			this.completeDate = completeDate;
 		}
         
         

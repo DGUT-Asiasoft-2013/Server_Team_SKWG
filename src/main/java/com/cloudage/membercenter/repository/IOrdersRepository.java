@@ -13,7 +13,7 @@ import com.cloudage.membercenter.entity.Orders;
 public interface IOrdersRepository extends PagingAndSortingRepository<Orders, Integer>{
 
         //通过卖家id找到卖家所有订单
-        @Query("from Orders orders where orders.goods.seller.id = ?1")
+        @Query("from Orders orders where orders.goods.shop.owner.id = ?1")
         Page<Orders> findAllOfSeller(int sellerId, Pageable page);
         
         //通过买家id找到买家所有订单
@@ -34,4 +34,7 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
         // 获取当前用户不同状态的订单
         @Query("from Orders orders where orders.buyer.id = ?1 and orders.ordersState = ?2")
         Page<Orders> findAllOfMineWithState(int userId, int state, Pageable page);
+
+        @Query("from Orders orders where orders.goods.shop.owner.id = ?1 and orders.ordersState = ?2")
+        Page<Orders> findBySellerWithState(int userId, int state, Pageable page);
 }
