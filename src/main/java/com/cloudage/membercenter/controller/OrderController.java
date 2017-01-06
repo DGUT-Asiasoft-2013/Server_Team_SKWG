@@ -40,7 +40,7 @@ public class OrderController {
 
 	@Autowired
 	IOrdersService ordersService;
-	
+
 	@Autowired
 	IBillService billService;
 
@@ -49,13 +49,12 @@ public class OrderController {
 
 	// 生成订单
 	@RequestMapping(value = "/orders", method = RequestMethod.POST)
-	public Orders addOrders(@RequestParam String ordersID, @RequestParam int ordersState,
-			@RequestParam int goodsQTY, @RequestParam double goodsSum, @RequestParam String buyerName,
-			@RequestParam String buyerPhoneNum, @RequestParam String buyerAddress,
-			@RequestParam String postCode,
-			@RequestParam int goodsId, HttpServletRequest request) {
+	public Orders addOrders(@RequestParam String ordersID, @RequestParam int ordersState, @RequestParam int goodsQTY,
+			@RequestParam double goodsSum, @RequestParam String buyerName, @RequestParam String buyerPhoneNum,
+			@RequestParam String buyerAddress, @RequestParam String postCode, @RequestParam int goodsId,
+			HttpServletRequest request) {
 
-		//double goodsSums= Double.parseDouble(goodsSum);
+		// double goodsSums= Double.parseDouble(goodsSum);
 		User me = userController.getCurrentUser(request);
 		Goods goods = goodsService.findById(goodsId);
 
@@ -78,14 +77,14 @@ public class OrderController {
 		User me = userController.getCurrentUser(request);
 		return ordersService.findAllBySellerId(me.getId(), page);
 	}
+
 	@RequestMapping("/orders/ordersOfSeller/{state}")
-	public Page<Orders> getOrdersOfSellerWithState(@PathVariable int state,
-			@RequestParam(defaultValue = "0") int page,
+	public Page<Orders> getOrdersOfSellerWithState(@PathVariable int state, @RequestParam(defaultValue = "0") int page,
 			HttpServletRequest request) {
 		User me = userController.getCurrentUser(request);
 		return ordersService.findOfSellerWithState(me.getId(), state, page);
 	}
-	
+
 	@RequestMapping("/orders/ordersOfBuyer")
 	public Page<Orders> getOrdersOfBuyer(@RequestParam(defaultValue = "0") int page, HttpServletRequest request) {
 		User me = userController.getCurrentUser(request);
@@ -105,30 +104,30 @@ public class OrderController {
 		return ordersService.findAllofMineWithState(me.getId(), state, page);
 	}
 
-	@RequestMapping(value="/orders/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/orders/delete", method = RequestMethod.POST)
 	public void deleteOrders(@RequestParam String ordersID, HttpServletRequest request) {
 		User me = userController.getCurrentUser(request);
 		Orders orders = ordersService.findOrdersByOrdersID(ordersID);
 		ordersService.deleteOrders(orders);
 	}
 
-	//获取当前用户的所有订单
-	@RequestMapping(value="/orders/findall")
-	public Page<Orders> findAllOfUser(HttpServletRequest request,
-			@RequestParam(defaultValue="0") int page){
-		User me=userController.getCurrentUser(request);
-		return ordersService.findAllOfMine(me.getId(),page);
+	// 获取当前用户的所有订单
+	@RequestMapping(value = "/orders/findall")
+	public Page<Orders> findAllOfUser(HttpServletRequest request, @RequestParam(defaultValue = "0") int page) {
+		User me = userController.getCurrentUser(request);
+		return ordersService.findAllOfMine(me.getId(), page);
 	}
-	//删除选中的订单
-	@RequestMapping(value="/orders/delete/{orders_id}")
-	public boolean deleteOrder(@PathVariable String orders_id){
+
+	// 删除选中的订单
+	@RequestMapping(value = "/orders/delete/{orders_id}")
+	public boolean deleteOrder(@PathVariable String orders_id) {
 		Orders orders = getOrdersOfOrdersID(orders_id);
 		ordersService.deleteOrders(orders);
 		return true;
 	}
 
 	// 修改订单状态
-	@RequestMapping(value="/order/{orders_id}")
+	@RequestMapping(value = "/order/{orders_id}")
 	public void changeStateByOrdersId(@PathVariable String orders_id, @RequestParam int state,
 			HttpServletRequest request) {
 		Orders orders = getOrdersOfOrdersID(orders_id);
@@ -144,13 +143,13 @@ public class OrderController {
 			orders.setCompleteDate(new Date());
 			User seller = orders.getGoods().getShop().getOwner();
 			UUID uuid = UUID.randomUUID();
-			Bill bill=new Bill();
+			Bill bill = new Bill();
 			bill.setBillNumber(uuid);
 			bill.setBillState(1);
 			bill.setItem(orders.getGoodsSum());
 			bill.setMoney(seller.getMoney());
 			bill.setUser(seller);
-			bill.setDetial("卖出"+orders.getGoods().getGoodsName());
+			bill.setDetial("卖出" + orders.getGoods().getGoodsName());
 			billService.save(bill);
 			break;
 		default:
@@ -159,46 +158,45 @@ public class OrderController {
 		ordersService.save(orders);
 	}
 
-	//支付订单
-	@RequestMapping(value="/order/payfor/{orders_id}")
-	public boolean  payForOrders(@PathVariable String orders_id, 
-			@RequestParam int state,
-			@RequestParam UUID uuid,
+	// 支付订单
+	@RequestMapping(value = "/order/payfor/{orders_id}")
+	public boolean payForOrders(@PathVariable String orders_id, @RequestParam int state, @RequestParam UUID uuid,
 			HttpServletRequest request) {
-		//修改订单状态
+		// 判断余额是否足够支付
+
 		Orders orders = getOrdersOfOrdersID(orders_id);
-		orders.setOrdersState(state);
-		orders.setPayDate(new Date());
-		ordersService.save(orders);
-		//修改用户余额
-		User me=userController.getCurrentUser(request);
-		me.setMoney(me.getMoney()-orders.getGoodsSum());
-		userService.save(me);
-		//修改商品库存
-		Goods goods =orders.getGoods();
-		goods.setGoodsCount(goods.getGoodsCount()-orders.getGoodsQTY());   
-		goodsService.save(goods);
-		//添加支出
-		Bill bill=new Bill();
-		bill.setBillNumber(uuid);
-		bill.setBillState(0);
-		bill.setItem(orders.getGoodsSum());
-		bill.setMoney(me.getMoney());
-		bill.setUser(me);
-		bill.setDetial("从"+orders.getGoods().getShop().getShopName()+
-				"买了"+orders.getGoodsQTY()+"件"+orders.getGoods().getGoodsName());
-		billService.save(bill);
-		
-		
-		if(orders.getOrdersState()==3){
-			return true;
-		}
-		else{
-			return false;
+		User me = userController.getCurrentUser(request);
+		if (me.getMoney() < orders.getGoodsSum()) {
+			return false;     
+		} else {
+			 // 修改订单状态
+			 orders.setOrdersState(state);
+			 orders.setPayDate(new Date());
+			 ordersService.save(orders);
+			 //修改用户余额
+			me.setMoney(me.getMoney() - orders.getGoodsSum());
+			userService.save(me);
+			// 修改商品库存
+			Goods goods = orders.getGoods();
+			goods.setGoodsCount(goods.getGoodsCount() - orders.getGoodsQTY());
+			goodsService.save(goods);
+			// 添加支出
+			Bill bill = new Bill();
+			bill.setBillNumber(uuid);
+			bill.setBillState(0);
+			bill.setItem(orders.getGoodsSum());
+			bill.setMoney(me.getMoney());
+			bill.setUser(me);
+			bill.setDetial("从" + orders.getGoods().getShop().getShopName() + "买了" + orders.getGoodsQTY() + "件"
+					+ orders.getGoods().getGoodsName());
+			billService.save(bill);
+
+			if (orders.getOrdersState() == 3) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
-
-
-
 
 }
