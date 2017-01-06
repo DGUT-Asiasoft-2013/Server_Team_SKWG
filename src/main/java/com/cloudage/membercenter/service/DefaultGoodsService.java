@@ -107,8 +107,17 @@ public class DefaultGoodsService implements IGoodsService{
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findSearchAndClassify(minprice,maxprice, pageRequest);
 	}
-
-
-
-
+	@Override
+	public Page<Goods> findAllOnSaleByShopId(int shopId, int page) {
+		Sort sort=new Sort(Direction.ASC,"createDate");
+		PageRequest pageRequest=new PageRequest(page,8,sort);
+		return goodsRepo.findAllOnSaleByShopId(shopId, pageRequest);
+	}
+	@Override
+	public Page<Goods> findAllOffSaleByShopId(int shopId, int page) {
+		Sort sort=new Sort(Direction.ASC,"createDate");
+		PageRequest pageRequest=new PageRequest(page,8,sort);
+		return goodsRepo.findAllOffSaleByShopId(shopId, pageRequest);
+	}
+	
 }

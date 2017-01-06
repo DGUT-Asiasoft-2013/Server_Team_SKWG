@@ -57,6 +57,7 @@ public class GoodsController {
 		goods.setGoodsPrice(goodsPrice);
 		goods.setGoodsCount(goodsCount);
 		goods.setGoodsSales(0); 				//新上架商品时初始销量为0
+		goods.setOnSale(true);
 		goods.setPublisher(publisher);
 		goods.setAuthor(author);
 		goods.setPubDate(pubDate);
@@ -109,6 +110,22 @@ public class GoodsController {
 		return goodsService.findAllByShopId(shop.getId(),page);
 	}
 
+	//返回当前用户店铺已上架的商品
+	@RequestMapping("/goods/mygoods/onsale")
+	public Page<Goods> searchOnSaleGoodsOfMine(HttpServletRequest request,
+			@RequestParam(defaultValue="0") int page){
+		Shop shop=shopController.findByUserId(request);
+		return goodsService.findAllOnSaleByShopId(shop.getId(),page);
+	}
+	
+	//返回当前用户店铺已下架的商品
+		@RequestMapping("/goods/mygoods/offsale")
+		public Page<Goods> searchOffSaleGoodsOfMine(HttpServletRequest request,
+				@RequestParam(defaultValue="0") int page){
+			Shop shop=shopController.findByUserId(request);
+			return goodsService.findAllOffSaleByShopId(shop.getId(),page);
+		}
+	
 
 	//商品搜索
 	@RequestMapping("/goods/search/{keyword}")
@@ -192,6 +209,14 @@ public class GoodsController {
 		bookCommentService.save(comment);
 	}
 
+	@RequestMapping("/goods/setonsale/{goods_id}")
+	public void changeOnSaleState(@PathVariable int goods_id, @RequestParam boolean state) {
+		Goods goods = goodsService.findById(goods_id);
+		goods.setOnSale(state);
+		goodsService.save(goods);
+	}
+	
+	
 
 	//	@RequestMapping("/goods/{goods_name}/comments")
 	//	public Page<BookComment> getCommentByGoodsName(

@@ -14,6 +14,7 @@ public class Goods extends DateRecord {
 	double goodsPrice;
 	int goodsCount;
 	int goodsSales; // 商品销量
+	boolean isOnSale;  // true销售中  false已下架
 	String goodsImage;
 	String publisher;
 	String author;
@@ -122,6 +123,14 @@ public class Goods extends DateRecord {
 
 	public void setGoodsSales(int goodsSales) {
 		this.goodsSales = goodsSales;
+	}
+
+	public boolean isOnSale() {
+		return isOnSale;
+	}
+
+	public void setOnSale(boolean isOnSale) {
+		this.isOnSale = isOnSale;
 	}
 
 }

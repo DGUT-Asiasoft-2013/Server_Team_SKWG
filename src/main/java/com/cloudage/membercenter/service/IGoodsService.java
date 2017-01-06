@@ -14,6 +14,8 @@ public interface IGoodsService {
 	Page<Goods> sortGoodsBySortStyle(String sortStyle, int page);
 	
 	Page<Goods> findAllByShopId(int shopId, int page);
+	Page<Goods> findAllOnSaleByShopId(int shopId, int page);
+	Page<Goods> findAllOffSaleByShopId(int shopId, int page);
 	Page<Goods> classifyGoodsByType(String type, int page);
 	//查找+分类
 	Page<Goods> searchAndClassify(String keyword, String goodsType, int page);

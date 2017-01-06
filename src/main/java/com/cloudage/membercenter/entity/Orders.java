@@ -29,7 +29,7 @@ public class Orders extends DateRecord {
         Date payDate;		// 付款时间
         Date completeDate;	// 订单完成时间
         //订单号
-        @Column(unique = true, nullable=false)
+        @Column(nullable=false)
         public String getOrdersID() {
                 return ordersID;
         }

@@ -12,15 +12,26 @@ import com.cloudage.membercenter.entity.Goods;
 
 @Repository
 public interface IGoodsRepository extends PagingAndSortingRepository<Goods, Integer> {
-	@Query("from Goods goods where goods.seller.id = ?1")
+	@Query("from Goods goods where goods.shop.owner.id = ?1")
 	Page<Goods> findAllOfSellerId(int sellerId, Pageable page);
 
+	@Query("from Goods goods where goods.shop.owner.id = ?1 and goods.onSale = 1")
+	Page<Goods> findAllOnSaleOfSellerId(int sellerId, Pageable page);
+	
 	@Query("from Goods goods where goods.goodsName like %?1% or goods.author like %?1% " )
 	Page<Goods> findAllByKeyword(String keyword, Pageable pageRequest);
 
 	@Query("from Goods goods where goods.shop.id = ?1")
 	Page<Goods> findAllByShopId(int shopId, Pageable page);
 
+	// 查询当前店铺所有正在销售的商品
+	@Query("from Goods goods where goods.shop.id = ?1 and goods.onSale = 1")
+	Page<Goods> findAllOnSaleByShopId(int shopId, Pageable page);
+	
+	// 查询当前店铺所有已下架的商品
+	@Query("from Goods goods where goods.shop.id = ?1 and goods.onSale = 0")
+	Page<Goods> findAllOffSaleByShopId(int shopId, Pageable page);
+	
 	@Query("from Goods goods where goods.goodsType= ?1")
 	Page<Goods> findAllByType(String type, Pageable pageRequest);
 	//查找+分类
