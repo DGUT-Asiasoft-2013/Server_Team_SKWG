@@ -61,4 +61,11 @@ public class DefaultSubscribeService implements ISubscribeService{
                 return subscribeRepo.findSubscribeByShopId(shopId, pageRequest);
         }
 
+        @Override
+        public Page<Subscribe> findSubscribeByUserId(int userId, int page) {
+                Sort sort = new Sort(Direction.DESC, "createDate");
+                PageRequest pageRequest = new PageRequest(page, 20, sort);
+                return subscribeRepo.findSubscribeByUserid(userId, pageRequest);
+        }
+
 }

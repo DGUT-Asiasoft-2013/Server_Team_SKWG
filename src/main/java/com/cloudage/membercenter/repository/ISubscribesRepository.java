@@ -20,4 +20,7 @@ public interface ISubscribesRepository extends PagingAndSortingRepository<Subscr
         
         @Query("from Subscribe s where s.id.shop.id = ?1")
         Page<Subscribe> findSubscribeByShopId(int shopId, Pageable page);
+        
+        @Query("from Subscribe s where s.id.user.id = ?1")
+        Page<Subscribe> findSubscribeByUserid(int userId, Pageable page);
 }

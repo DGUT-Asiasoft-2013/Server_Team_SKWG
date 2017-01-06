@@ -100,9 +100,14 @@ public class ShopController {
                 return subscribeService.findSubscribeByShopId(shop_id, page);
         }
         
-        @RequestMapping(value = "/shop/{othersId}/findshop")
+        @RequestMapping("/shop/{othersId}/findshop")
         public Shop findByOthersId(@PathVariable int othersId) {
                 return shopServier.findByUserId(othersId);
         }
         
+        @RequestMapping("/shop/mysubscribe")
+        public Page<Subscribe> findMySubscribe(@RequestParam(defaultValue = "0") int page, HttpServletRequest request){
+                User me = userController.getCurrentUser(request);
+                return subscribeService.findSubscribeByUserId(me.getId(), page);
+        }
 }

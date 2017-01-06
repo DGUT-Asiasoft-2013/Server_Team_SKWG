@@ -13,4 +13,5 @@ public interface ISubscribeService {
         int countSubscribe(int shopId);
         boolean checkSubscribed(int userId, int shopId);
         Page<Subscribe> findSubscribeByShopId(int shopId, int page);
+        Page<Subscribe> findSubscribeByUserId(int userId, int page);
 }
