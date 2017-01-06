@@ -37,6 +37,11 @@ public class BookComment extends DateRecord {
         public String getAuthorName() {
                 return author.name;
         }
+        @Transient
+        public String getAuthorAvatar(){
+        	return author.avatar;
+        }
+        
 
         @ManyToOne(optional = false)
         @JsonIgnore
