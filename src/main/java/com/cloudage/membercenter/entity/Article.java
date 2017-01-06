@@ -37,6 +37,9 @@ public class Article extends DateRecord {
 		public void setArticlesImage(String articlesImage) {
 			this.articlesImage = articlesImage;
 		}
+		public void addArticlesImage(String add) {
+			this.articlesImage = this.articlesImage + add;
+		}
 
 		@ManyToOne(optional = false)
         @JsonIgnore

@@ -37,7 +37,7 @@ public class ArticleController {
 
 	@Autowired
 	IArticleService articleService;
-	
+
 	@Autowired
 	IBillService billService;
 
@@ -55,20 +55,28 @@ public class ArticleController {
 	public Article addArticle(@RequestParam String title, 
 			@RequestParam String text,
 			@RequestParam String articleImgName,
-			MultipartFile articlesImage,
+			MultipartFile[] listImage,
 			HttpServletRequest request) {
 		User currentUser = userController.getCurrentUser(request);
 		Article article = new Article();
 		article.setAuthor(currentUser);
 		article.setTitle(title);
 		article.setText(text);
-		if (articlesImage != null) {
-			try {
-				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-				FileUtils.copyInputStreamToFile(articlesImage.getInputStream(), new File(realPath, articleImgName + ".png"));
-				article.setArticlesImage("upload/" + articleImgName + ".png");
-			} catch (Exception e) {
-				e.printStackTrace();
+		if (listImage != null) {
+			for (int i = 0; i < listImage.length; i++) {
+				try {
+					String realPath = request.getSession().getServletContext()
+							.getRealPath("/WEB-INF/upload/articleimage");
+					FileUtils.copyInputStreamToFile(listImage[i].getInputStream(),
+							new File(realPath, articleImgName + "_" + i + ".png"));
+					if ((i==0)) {
+						article.setArticlesImage("upload/articleimage/" + articleImgName +"_"+ i + ".png|");
+					}else{
+						article.addArticlesImage("upload/articleimage/" + articleImgName +"_"+ i + ".png|");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return articleService.save(article);
