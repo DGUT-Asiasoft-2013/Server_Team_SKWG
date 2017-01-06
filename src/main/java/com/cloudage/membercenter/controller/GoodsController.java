@@ -56,6 +56,7 @@ public class GoodsController {
 		goods.setGoodsType(goodsType);
 		goods.setGoodsPrice(goodsPrice);
 		goods.setGoodsCount(goodsCount);
+		goods.setGoodsSales(0); 				//新上架商品时初始销量为0
 		goods.setPublisher(publisher);
 		goods.setAuthor(author);
 		goods.setPubDate(pubDate);

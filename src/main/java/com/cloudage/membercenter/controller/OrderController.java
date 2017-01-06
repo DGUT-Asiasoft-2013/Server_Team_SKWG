@@ -179,6 +179,7 @@ public class OrderController {
 			// 修改商品库存
 			Goods goods = orders.getGoods();
 			goods.setGoodsCount(goods.getGoodsCount() - orders.getGoodsQTY());
+			goods.setGoodsSales(goods.getGoodsSales()+orders.getGoodsQTY());
 			goodsService.save(goods);
 			// 添加支出
 			Bill bill = new Bill();
