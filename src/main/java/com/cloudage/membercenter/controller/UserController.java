@@ -202,7 +202,7 @@ public class UserController {
 	@RequestMapping(value = "user/setPayPassword", method = RequestMethod.POST)
 	public boolean setPayPassword(HttpServletRequest request, @RequestParam String payPassword) {
 		User me = getCurrentUser(request);
-		if (me.getPayPassword() != null) {
+		if (me.getPayPassword()== null) {
 			me.setPayPassword(payPassword);
 			userService.save(me);
 			return true;
