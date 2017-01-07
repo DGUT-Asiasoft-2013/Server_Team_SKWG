@@ -110,4 +110,37 @@ public class ShopController {
                 User me = userController.getCurrentUser(request);
                 return subscribeService.findSubscribeByUserId(me.getId(), page);
         }
+        
+        
+        //修改商铺信息
+        @RequestMapping(value = "/changeShopMessage", method = RequestMethod.POST)
+    	public Shop changeMessage(@RequestParam String type, @RequestParam String value, HttpServletRequest request) {
+    		Shop me = findByUserId(request);
+
+    		if (type.equals("changeShopName")) {
+    			me.setShopName(value);;
+    		} else if (type.equals("changeShopDescription")) {
+    			me.setDescription(value);
+    		} 
+    		return shopServier.save(me);
+    	}
+        
+    	//更改头像
+    	@RequestMapping(value = "/changeShopAvatar", method = RequestMethod.POST)
+    	public Shop changeShopAvatar(MultipartFile shopImage,
+    			HttpServletRequest request) {
+    		Shop me = findByUserId(request);
+    		if (shopImage != null) {
+    			try {
+    				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+    				FileUtils.copyInputStreamToFile(shopImage.getInputStream(), new File(realPath, me.getShopName() + ".png"));
+    				me.setShopImage("upload/" + me.getShopName() + ".png");
+    				shopServier.save(me);
+    				return me;
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    				return null;
+    			}
+    		}else return null;
+    	}
 }
