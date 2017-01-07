@@ -1,5 +1,7 @@
 package com.cloudage.membercenter.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -75,6 +77,12 @@ public class DefaultOrdersService implements IOrdersService{
 			Sort sort=new Sort(Direction.DESC,"createDate");
 			PageRequest pageRequest=new PageRequest(page, 10,sort);
 			return ordersRepo.findBySellerWithState(sellerId, state, pageRequest);
+		}
+
+		@Override
+		public List<Orders> findAllByOrdersId(String ordersId) {
+			
+			return ordersRepo.findAllByOrdersId(ordersId);
 		}
         
 
