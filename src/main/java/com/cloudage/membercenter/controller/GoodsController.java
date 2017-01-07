@@ -16,11 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudage.membercenter.entity.BookComment;
 import com.cloudage.membercenter.entity.Goods;
+import com.cloudage.membercenter.entity.Orders;
 import com.cloudage.membercenter.entity.Shop;
 import com.cloudage.membercenter.entity.User;
 import com.cloudage.membercenter.service.IBookCommentService;
 import com.cloudage.membercenter.service.ICommentService;
 import com.cloudage.membercenter.service.IGoodsService;
+import com.cloudage.membercenter.service.IOrdersService;
 import com.cloudage.membercenter.service.IShopService;
 
 @RestController
@@ -37,6 +39,12 @@ public class GoodsController {
 
 	@Autowired
 	ShopController shopController;
+	
+	@Autowired 
+	OrderController orderControal;
+	
+	@Autowired
+	IOrdersService ordersService;
 
 	@RequestMapping(value = "/goods", method = RequestMethod.POST)
 	public Goods addGoods(@RequestParam String goodsName,
@@ -189,7 +197,7 @@ public class GoodsController {
 	}
 	
 
-	//商品评论
+	//查找商品评论
 	@RequestMapping("/goods/{goods_id}/comments")
 	public Page<BookComment> getCommentByGoodsId(
 			@PathVariable int goods_id,
@@ -198,7 +206,13 @@ public class GoodsController {
 	}
 
 	@RequestMapping(value="/goods/{goods_id}/addcomments", method = RequestMethod.POST)
-	public void addComment(@PathVariable int goods_id, @RequestParam String commentText,
+	public void addComment(@PathVariable int goods_id, 
+			@RequestParam String commentText,
+			@RequestParam float goodsDescribe,
+			@RequestParam float sellerAttitute,
+			@RequestParam float sendSpeed,
+			@RequestParam int state,
+			@RequestParam String ordersId,
 			HttpServletRequest request) {
 		BookComment comment = new BookComment();
 		Goods goods = goodsService.findById(goods_id);
@@ -207,6 +221,15 @@ public class GoodsController {
 		comment.setText(commentText);
 		comment.setGoods(goods);
 		bookCommentService.save(comment);
+		
+		Orders orders=orderControal.getOrdersOfOrdersID(ordersId);
+		     //修改订单状态
+				orders.setOrdersState(state);
+			//添加评价
+				orders.setGoodsDescribe(goodsDescribe);
+				orders.setSellerAttitute(sellerAttitute);
+				orders.setSendSpeed(sendSpeed);
+				ordersService.save(orders);
 	}
 
 	@RequestMapping("/goods/setonsale/{goods_id}")
