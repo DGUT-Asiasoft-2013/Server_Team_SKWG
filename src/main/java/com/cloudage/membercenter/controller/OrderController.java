@@ -2,6 +2,7 @@ package com.cloudage.membercenter.controller;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -164,40 +165,45 @@ public class OrderController {
 			HttpServletRequest request) {
 		// 判断余额是否足够支付
 
-		Orders orders = getOrdersOfOrdersID(orders_id);
+		List<Orders> ordersList = ordersService.findAllByOrdersId(orders_id);
+		//				getOrdersOfOrdersID(orders_id);
 		User me = userController.getCurrentUser(request);
-		if (me.getMoney() < orders.getGoodsSum()) {
+
+		if (me.getMoney() < ordersList.get(0).getGoodsSum()) {
 			return false;     
 		} else {
-			 // 修改订单状态
-			 orders.setOrdersState(state);
-			 orders.setPayDate(new Date());
-			 ordersService.save(orders);
-			 //修改用户余额
-			me.setMoney(me.getMoney() - orders.getGoodsSum());
+			for(int i = 0; i < ordersList.size(); i++) {
+				// 修改订单状态
+				ordersList.get(i).setOrdersState(state);
+				ordersList.get(i).setPayDate(new Date());
+				ordersService.save(ordersList.get(i));
+				// 修改商品库存
+				Goods goods = ordersList.get(i).getGoods();
+				goods.setGoodsCount(goods.getGoodsCount() - ordersList.get(i).getGoodsQTY());
+				goods.setGoodsSales(goods.getGoodsSales()+ordersList.get(i).getGoodsQTY());
+				goodsService.save(goods);
+			}
+			//修改用户余额
+			me.setMoney(me.getMoney() - ordersList.get(0).getGoodsSum());
 			userService.save(me);
-			// 修改商品库存
-			Goods goods = orders.getGoods();
-			goods.setGoodsCount(goods.getGoodsCount() - orders.getGoodsQTY());
-			goods.setGoodsSales(goods.getGoodsSales()+orders.getGoodsQTY());
-			goodsService.save(goods);
 			// 添加支出
 			Bill bill = new Bill();
 			bill.setBillNumber(uuid);
 			bill.setBillState(0);
-			bill.setItem(orders.getGoodsSum());
+			bill.setItem(ordersList.get(0).getGoodsSum());
 			bill.setMoney(me.getMoney());
 			bill.setUser(me);
-			bill.setDetial("从" + orders.getGoods().getShop().getShopName() + "买了" + orders.getGoodsQTY() + "件"
-					+ orders.getGoods().getGoodsName());
+			bill.setDetial("从" + ordersList.get(0).getGoods().getShop().getShopName() + "买了" + ordersList.get(0).getGoodsQTY() + "件"
+					+ ordersList.get(0).getGoods().getGoodsName());
 			billService.save(bill);
 
-			if (orders.getOrdersState() == 3) {
+			if (ordersList.get(0).getOrdersState() == 3) {
 				return true;
 			} else {
 				return false;
 			}
 		}
+
 	}
 
 }

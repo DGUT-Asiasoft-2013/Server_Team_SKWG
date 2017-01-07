@@ -1,6 +1,9 @@
 package com.cloudage.membercenter.repository;
 
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,4 +40,7 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
 
         @Query("from Orders orders where orders.goods.shop.owner.id = ?1 and orders.ordersState = ?2")
         Page<Orders> findBySellerWithState(int userId, int state, Pageable page);
+        
+        @Query("from Orders orders where orders.ordersID = ?1")
+        List<Orders> findAllByOrdersId(String ordersId);
 }
