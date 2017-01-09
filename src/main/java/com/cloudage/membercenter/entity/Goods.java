@@ -22,6 +22,7 @@ public class Goods extends DateRecord {
 	String pritime;
 	User seller;
 	Shop shop;
+	String goodsDetail;
 
 	@Column(nullable = false)
 	public String getGoodsName() {
@@ -133,4 +134,13 @@ public class Goods extends DateRecord {
 		this.isOnSale = isOnSale;
 	}
 
+	public String getGoodsDetail() {
+		return goodsDetail;
+	}
+
+	public void setGoodsDetail(String goodsDetail) {
+		this.goodsDetail = goodsDetail;
+	}
+
+	
 }

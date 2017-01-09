@@ -55,6 +55,7 @@ public class GoodsController {
 			@RequestParam String author,
 			@RequestParam String pubDate,
 			@RequestParam String pritime,
+			@RequestParam String goodsDetail,
 			MultipartFile goodsImage,
 			HttpServletRequest request) {
 		Goods goods = new Goods();
@@ -72,6 +73,7 @@ public class GoodsController {
 		goods.setPritime(pritime);
 		goods.setSeller(seller);
 		goods.setShop(shop);
+		goods.setGoodsDetail(goodsDetail);
 		if (goodsImage != null) {
 			try {
 				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
