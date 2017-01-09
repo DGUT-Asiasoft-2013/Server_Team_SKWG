@@ -241,7 +241,41 @@ public class GoodsController {
 		goodsService.save(goods);
 	}
 	
-	
+	//修改商品信息
+	@RequestMapping(value = "/goods/change/{goods_id}", method = RequestMethod.POST)
+	public Goods ChangeGoods(@RequestParam String goodsName,
+			@RequestParam String goodsType,
+			@RequestParam double goodsPrice,
+			@RequestParam int goodsCount,
+			@RequestParam String publisher,
+			@RequestParam String author,
+			@RequestParam String pubDate,
+			@RequestParam String pritime,
+			@RequestParam String goodsDetail,
+			@PathVariable int goods_id,
+			MultipartFile goodsImage,
+			HttpServletRequest request) {
+		Goods goods = goodsService.findById(goods_id);
+		goods.setGoodsName(goodsName);
+		goods.setGoodsType(goodsType);
+		goods.setGoodsPrice(goodsPrice);
+		goods.setGoodsCount(goodsCount);
+		goods.setPublisher(publisher);
+		goods.setAuthor(author);
+		goods.setPubDate(pubDate);
+		goods.setPritime(pritime);
+		goods.setGoodsDetail(goodsDetail);
+		if (goodsImage != null) {
+			try {
+				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+				FileUtils.copyInputStreamToFile(goodsImage.getInputStream(), new File(realPath, goodsName + ".png"));
+				goods.setGoodsImage("upload/" + goodsName + ".png");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return goodsService.save(goods);
+	}
 
 	//	@RequestMapping("/goods/{goods_name}/comments")
 	//	public Page<BookComment> getCommentByGoodsName(
