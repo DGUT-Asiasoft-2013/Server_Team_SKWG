@@ -97,6 +97,12 @@ public class OrderController {
 		return ordersService.findOrdersByOrdersID(orders_id);
 	}
 
+	@RequestMapping(value = "orders/findall/myrefund/{page}")
+	public Page<Orders> getRefundOrderOfBuyer(@PathVariable int page, HttpServletRequest request) {
+		User seller = userController.getCurrentUser(request);
+		return ordersService.findAllRefundOfSeller(seller.getId(), page);
+	}
+	
 	// 根据订单状态获取当前用户的订单
 	@RequestMapping(value = "/orders/findall/{state}")
 	public Page<Orders> getOrdersOfMeWithOrdersState(@PathVariable int state, @RequestParam int page,
