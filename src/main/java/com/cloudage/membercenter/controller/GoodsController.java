@@ -1,6 +1,7 @@
 package com.cloudage.membercenter.controller;
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -207,31 +208,33 @@ public class GoodsController {
 		return bookCommentService.findAllCommentsByBookId(goods_id,page);
 	}
 
-	@RequestMapping(value="/goods/{goods_id}/addcomments", method = RequestMethod.POST)
-	public void addComment(@PathVariable int goods_id, 
+	@RequestMapping(value="/goods/addcomments", method = RequestMethod.POST)
+	public void addComment(@RequestParam String orderId, 
 			@RequestParam String commentText,
-			@RequestParam float goodsDescribe,
-			@RequestParam float sellerAttitute,
-			@RequestParam float sendSpeed,
 			@RequestParam int state,
-			@RequestParam String ordersId,
 			HttpServletRequest request) {
-		BookComment comment = new BookComment();
-		Goods goods = goodsService.findById(goods_id);
-		User me = userController.getCurrentUser(request);
-		comment.setAuthor(me);
-		comment.setText(commentText);
-		comment.setGoods(goods);
-		bookCommentService.save(comment);
+		List<Orders> orderList = ordersService.findAllByOrdersId(orderId);
+		for(int i = 0; i < orderList.size(); i++) {
+			BookComment comment = new BookComment();
+			Goods goods = orderList.get(i).getGoods();
+			User me = userController.getCurrentUser(request);
+			comment.setAuthor(me);
+			comment.setText(commentText);
+			comment.setGoods(goods);
+			bookCommentService.save(comment);
+			orderList.get(i).setOrdersState(state);
+			ordersService.save(orderList.get(i));
+		}
 		
-		Orders orders=orderControal.getOrdersOfOrdersID(ordersId);
-		     //修改订单状态
-				orders.setOrdersState(state);
-			//添加评价
-				orders.setGoodsDescribe(goodsDescribe);
-				orders.setSellerAttitute(sellerAttitute);
-				orders.setSendSpeed(sendSpeed);
-				ordersService.save(orders);
+//		
+//		Orders orders=orderControal.getOrdersOfOrdersID(ordersId);
+//		     //修改订单状态
+//				orders.setOrdersState(state);
+//			//添加评价
+////				orders.setGoodsDescribe(goodsDescribe);
+////				orders.setSellerAttitute(sellerAttitute);
+////				orders.setSendSpeed(sendSpeed);
+				
 	}
 
 	@RequestMapping("/goods/setonsale/{goods_id}")

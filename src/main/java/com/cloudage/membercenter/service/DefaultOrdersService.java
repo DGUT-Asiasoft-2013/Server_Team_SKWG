@@ -87,10 +87,17 @@ public class DefaultOrdersService implements IOrdersService{
 
 		// 获取买家全部退货订单
 		@Override
-		public Page<Orders> findAllRefundOfSeller(int userId, int page) {
+		public Page<Orders> findAllRefundOfBuyer(int userId, int page) {
 			Sort sort=new Sort(Direction.DESC,"createDate");
 			PageRequest pageRequest=new PageRequest(page, 10,sort);
 			return ordersRepo.findAllRefundOfBuyer(userId, pageRequest);
+		}
+
+		@Override
+		public Page<Orders> findAllRefundOfSeller(int userId, int page) {
+			Sort sort=new Sort(Direction.DESC,"createDate");
+			PageRequest pageRequest=new PageRequest(page, 10,sort);
+			return ordersRepo.findAllRefundOfSeller(userId, pageRequest);
 		}
         
 

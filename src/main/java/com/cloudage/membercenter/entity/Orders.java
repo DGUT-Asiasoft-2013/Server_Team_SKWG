@@ -29,39 +29,39 @@ public class Orders extends DateRecord {
         Date payDate;		// 付款时间
         Date completeDate;	// 订单完成时间
         
-        float goodsDescribe; //商品描述评分
-    	float sellerAttitute;//卖家态度
-		float sendSpeed;//发货速度
+//        float goodsDescribe; //商品描述评分
+//    	float sellerAttitute;//卖家态度
+//		float sendSpeed;//发货速度
         
 	
-		@JsonIgnore
-		public float getGoodsDescribe() {
-			return goodsDescribe;
-		}
-
-		public void setGoodsDescribe(float goodsDescribe) {
-			this.goodsDescribe = goodsDescribe;
-		}
-
-		
-		@JsonIgnore
-		public float getSellerAttitute() {
-			return sellerAttitute;
-		}
-
-		public void setSellerAttitute(float sellerAttitute) {
-			this.sellerAttitute = sellerAttitute;
-		}
-
-		
-		@JsonIgnore
-		public float getSendSpeed() {
-			return sendSpeed;
-		}
-
-		public void setSendSpeed(float sendSpeed) {
-			this.sendSpeed = sendSpeed;
-		}
+//		@JsonIgnore
+//		public float getGoodsDescribe() {
+//			return goodsDescribe;
+//		}
+//
+//		public void setGoodsDescribe(float goodsDescribe) {
+//			this.goodsDescribe = goodsDescribe;
+//		}
+//
+//		
+//		@JsonIgnore
+//		public float getSellerAttitute() {
+//			return sellerAttitute;
+//		}
+//
+//		public void setSellerAttitute(float sellerAttitute) {
+//			this.sellerAttitute = sellerAttitute;
+//		}
+//
+//		
+//		@JsonIgnore
+//		public float getSendSpeed() {
+//			return sendSpeed;
+//		}
+//
+//		public void setSendSpeed(float sendSpeed) {
+//			this.sendSpeed = sendSpeed;
+//		}
 
 	
         //订单号
