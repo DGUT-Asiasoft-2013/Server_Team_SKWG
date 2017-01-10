@@ -131,32 +131,35 @@ public class OrderController {
 	@RequestMapping(value = "/order/{orders_id}")
 	public void changeStateByOrdersId(@PathVariable String orders_id, @RequestParam int state,
 			HttpServletRequest request) {
-		Orders orders = getOrdersOfOrdersID(orders_id);
-		orders.setOrdersState(state);
-		switch (state) {
-		case 3:
-			orders.setPayDate(new Date());
-			break;
-		case 4:
-			orders.setDeliverDate(new Date());
-			break;
-		case 5:
-			orders.setCompleteDate(new Date());
-			User seller = orders.getGoods().getShop().getOwner();
-			UUID uuid = UUID.randomUUID();
-			Bill bill = new Bill();
-			bill.setBillNumber(uuid);
-			bill.setBillState(1);
-			bill.setItem(orders.getGoodsSum());
-			bill.setMoney(seller.getMoney());
-			bill.setUser(seller);
-			bill.setDetial("卖出" + orders.getGoods().getGoodsName());
-			billService.save(bill);
-			break;
-		default:
-			break;
+		List<Orders> ordersList = ordersService.findAllByOrdersId(orders_id);
+		for(int i = 0; i < ordersList.size(); i++) {
+			ordersList.get(i).setOrdersState(state);
+			switch (state) {
+			case 3:
+				ordersList.get(i).setPayDate(new Date());
+				break;
+			case 4:
+				ordersList.get(i).setDeliverDate(new Date());
+				break;
+			case 5:
+				ordersList.get(i).setCompleteDate(new Date());
+				User seller = ordersList.get(i).getGoods().getShop().getOwner();
+				UUID uuid = UUID.randomUUID();
+				Bill bill = new Bill();
+				bill.setBillNumber(uuid);
+				bill.setBillState(1);
+				bill.setItem(ordersList.get(i).getGoodsSum());
+				bill.setMoney(seller.getMoney());
+				bill.setUser(seller);
+				bill.setDetial("卖出" + ordersList.get(i).getGoods().getGoodsName());
+				billService.save(bill);
+				break;
+			default:
+				break;
+			}
+			ordersService.save(ordersList.get(i));
 		}
-		ordersService.save(orders);
+		
 	}
 
 	// 支付订单

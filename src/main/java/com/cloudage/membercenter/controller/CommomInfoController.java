@@ -36,6 +36,18 @@ public class CommomInfoController {
 		commomInfo.setDefaultInfo(false);
 		return commomInfoService.save(commomInfo);
 	}
+	@RequestMapping(value="/commominfo/change/{info_id}")
+	public CommomInfo editCommomInfo(@PathVariable int info_id,
+			@RequestParam String name, @RequestParam String address,
+			@RequestParam String tel, @RequestParam String postCode
+			) {
+		CommomInfo commomInfo = commomInfoService.findCommomInfoByID(info_id);
+		commomInfo.setName(name);
+		commomInfo.setAddress(address);
+		commomInfo.setTel(tel);
+		commomInfo.setPostCode(postCode);
+		return commomInfoService.save(commomInfo);
+	}
 	
 	// 设置默认地址
 	@RequestMapping("/commominfo/setdefault/{infoId}")
