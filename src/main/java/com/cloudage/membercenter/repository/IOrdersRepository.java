@@ -39,8 +39,12 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
         Page<Orders> findAllOfMineWithState(int userId, int state, Pageable page);
 
         // 获取买家退款订单
-        @Query("from Orders orders where orders.buyer.id = ?1 and (orders.ordersState = 6 or orders.ordersState = 7)")
+        @Query("from Orders orders where orders.buyer.id = ?1 and (orders.ordersState = '6' or orders.ordersState = '7')")
         Page<Orders> findAllRefundOfBuyer(int userId, Pageable page);
+        
+        // 获取商家全部退款订单
+        @Query("from Orders orders where orders.goods.shop.owner.id = ?1 and (orders.ordersState = '6' or orders.ordersState = '7')")
+        Page<Orders> findAllRefundOfSeller(int userId, Pageable page);
         
         @Query("from Orders orders where orders.goods.shop.owner.id = ?1 and orders.ordersState = ?2")
         Page<Orders> findBySellerWithState(int userId, int state, Pageable page);

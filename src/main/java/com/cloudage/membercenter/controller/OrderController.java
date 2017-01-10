@@ -104,8 +104,16 @@ public class OrderController {
 		return ordersService.findAllByOrdersId(orders_id, page);
 	}
 	
+	// 获取买家全部退货订单
 	@RequestMapping(value = "orders/findall/myrefund/{page}")
 	public Page<Orders> getRefundOrderOfBuyer(@PathVariable int page, HttpServletRequest request) {
+		User buyer = userController.getCurrentUser(request);
+		return ordersService.findAllRefundOfBuyer(buyer.getId(), page);
+	}
+	
+	// 获取商家全部退货订单
+	@RequestMapping(value = "orders/findall/managerefund/{page}")
+	public Page<Orders> getRefundOrderOfSeller(@PathVariable int page, HttpServletRequest request) {
 		User seller = userController.getCurrentUser(request);
 		return ordersService.findAllRefundOfSeller(seller.getId(), page);
 	}
@@ -140,11 +148,20 @@ public class OrderController {
 		return true;
 	}
 
+	@RequestMapping(value = "/order/findall/{order_id}")
+	public List<Orders> findAllByOrderId(@PathVariable String order_id) {
+		return ordersService.findAllByOrdersId(order_id);
+	}
+	
 	// 修改订单状态
 	@RequestMapping(value = "/order/{orders_id}")
 	public void changeStateByOrdersId(@PathVariable String orders_id, @RequestParam int state,
 			HttpServletRequest request) {
+		Bill bill = new Bill();
+		UUID uuid = UUID.randomUUID();
+		Double sum = 0.0;
 		List<Orders> ordersList = ordersService.findAllByOrdersId(orders_id);
+		Orders order = ordersList.get(0);
 		for(int i = 0; i < ordersList.size(); i++) {
 			ordersList.get(i).setOrdersState(state);
 			switch (state) {
@@ -156,21 +173,41 @@ public class OrderController {
 				break;
 			case 5:
 				ordersList.get(i).setCompleteDate(new Date());
-				User seller = ordersList.get(i).getGoods().getShop().getOwner();
-				UUID uuid = UUID.randomUUID();
-				Bill bill = new Bill();
-				bill.setBillNumber(uuid);
-				bill.setBillState(1);
-				bill.setItem(ordersList.get(i).getGoodsSum());
-				bill.setMoney(seller.getMoney());
-				bill.setUser(seller);
-				bill.setDetial("卖出" + ordersList.get(i).getGoods().getGoodsName());
-				billService.save(bill);
+				sum += ordersList.get(i).getGoodsSum();
 				break;
+			case 7:
+				sum += ordersList.get(i).getGoodsSum();
+				break;
+				
 			default:
 				break;
 			}
+			
 			ordersService.save(ordersList.get(i));
+		}
+		
+		switch (state) {
+		case 5:
+			User seller = order.getGoods().getShop().getOwner();
+			bill.setBillNumber(uuid);
+			bill.setBillState(1);
+			bill.setItem(sum);
+			bill.setMoney(seller.getMoney());
+			bill.setUser(seller);
+			bill.setDetial("完成订单" + order.getOrdersID());
+			billService.save(bill);
+			break;
+		case 7:
+			User buyer = order.getBuyer();
+			bill.setBillNumber(uuid);
+			bill.setBillState(1);
+			bill.setItem(sum);
+			bill.setMoney(buyer.getMoney());
+			bill.setUser(buyer);
+			bill.setDetial("订单" + order.getOrdersID() + "退款成功");
+			billService.save(bill);
+		default:
+			break;
 		}
 		
 	}

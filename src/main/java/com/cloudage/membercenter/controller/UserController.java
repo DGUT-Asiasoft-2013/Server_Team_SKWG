@@ -94,13 +94,27 @@ public class UserController {
 			return null;
 		}
 	}
-
+	//修改登录密码
 	@RequestMapping(value = "/change", method = RequestMethod.POST)
 	public boolean changePassword(@RequestParam String passwordHash, @RequestParam String newPasswordHash,
 			HttpServletRequest request) {
 		User user = getCurrentUser(request);
 		if (user.getPasswordHash().equals(passwordHash)) {
 			user.setPasswordHash(newPasswordHash);
+			userService.save(user);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	//修改支付密码
+	@RequestMapping(value = "/changepaypassword", method = RequestMethod.POST)
+	public boolean changePayPassword(@RequestParam String passwordHash, @RequestParam String newPasswordHash,
+			HttpServletRequest request) {
+		User user = getCurrentUser(request);
+		if (user.getPayPassword().equals(passwordHash)) {
+			user.setPayPassword(newPasswordHash);
 			userService.save(user);
 			return true;
 		} else {

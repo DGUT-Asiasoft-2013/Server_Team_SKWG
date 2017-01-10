@@ -55,7 +55,7 @@ public class ShopController {
 			}
 		}
 		// 判断店名是否存在
-		if (isshop.equals("null")) {
+		if (isshop==null) {
 			shop.setShopName(shopName);
 		} else {
 				shop.setDescription("该店名已被注册");
