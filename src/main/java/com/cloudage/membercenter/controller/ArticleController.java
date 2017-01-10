@@ -155,10 +155,13 @@ public class ArticleController {
 	}
 
 	//支付打赏
-	@RequestMapping(value="/article/reward",method=RequestMethod.POST)
+	@RequestMapping(value="/article/reward/{article_id}",method=RequestMethod.POST)
 	public boolean  payForReward(@RequestParam double money,
 			@RequestParam UUID uuid,
+			@RequestParam UUID uuid1,
+			@PathVariable int article_id,
 			HttpServletRequest request) {
+		//当前用户扣费
 		User me=userController.getCurrentUser(request);
 		if(me.getMoney()>=money){
 			me.setMoney(me.getMoney()-money);
@@ -172,6 +175,22 @@ public class ArticleController {
 			bill.setUser(me);
 			bill.setDetial("打赏花费"+money);
 			billService.save(bill);
+
+			//打赏的作者收取打赏费用
+			Article article = articleService.findArticleById(article_id);
+			int authorId=article.getAuthor().getId();
+			User author=userService.findById(authorId);
+			author.setMoney(author.getMoney()+money);
+			userService.save(author);
+			//添加收入
+			Bill bill1=new Bill();
+			bill1.setBillNumber(uuid1);
+			bill1.setBillState(1);
+			bill1.setItem(money);
+			bill1.setMoney(author.getMoney());
+			bill1.setUser(author);
+			bill1.setDetial("用户"+me.getName()+"打赏"+money+"给你");
+			billService.save(bill1);
 			return true;
 		}
 		else{
