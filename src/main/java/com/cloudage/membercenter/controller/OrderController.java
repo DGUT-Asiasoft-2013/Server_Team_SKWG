@@ -141,6 +141,11 @@ public class OrderController {
 		return true;
 	}
 
+	@RequestMapping(value = "/order/findall/{order_id}")
+	public List<Orders> findAllByOrderId(@PathVariable String order_id) {
+		return ordersService.findAllByOrdersId(order_id);
+	}
+	
 	// 修改订单状态
 	@RequestMapping(value = "/order/{orders_id}")
 	public void changeStateByOrdersId(@PathVariable String orders_id, @RequestParam int state,
