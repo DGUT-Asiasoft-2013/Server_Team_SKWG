@@ -48,5 +48,6 @@ public interface IOrdersRepository extends PagingAndSortingRepository<Orders, In
         @Query("from Orders orders where orders.ordersID = ?1")
         List<Orders> findAllByOrdersId(String ordersId);
         
-        
+        @Query("from Orders orders where orders.ordersID = ?1")
+        Page<Orders> findAllByOrdersId(String orderId, Pageable page);
 }

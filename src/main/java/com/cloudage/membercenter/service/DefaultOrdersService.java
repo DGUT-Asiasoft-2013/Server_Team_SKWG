@@ -92,6 +92,13 @@ public class DefaultOrdersService implements IOrdersService{
 			PageRequest pageRequest=new PageRequest(page, 10,sort);
 			return ordersRepo.findAllRefundOfBuyer(userId, pageRequest);
 		}
+
+		@Override
+		public Page<Orders> findAllByOrdersId(String orderId, int page) {
+			Sort sort=new Sort(Direction.DESC,"createDate");
+			PageRequest pageRequest=new PageRequest(page, 6,sort);
+			return ordersRepo.findAllByOrdersId(orderId, pageRequest);
+		}
         
 
 }

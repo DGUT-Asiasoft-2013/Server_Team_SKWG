@@ -14,6 +14,7 @@ public interface IOrdersService {
         void deleteOrders(Orders orders);
         Orders findPreOrderByID(int buyerId, int goodsId);
         List<Orders> findAllByOrdersId(String ordersId);
+        Page<Orders> findAllByOrdersId(String orderId, int page);
         // 获取买家全部退货订单
         Page<Orders> findAllRefundOfSeller(int userId, int page);
         //获取当前用户的订单

@@ -96,7 +96,14 @@ public class OrderController {
 	public Orders getOrdersOfOrdersID(@RequestParam String orders_id) {
 		return ordersService.findOrdersByOrdersID(orders_id);
 	}
-
+	
+	// 返回相同订单号的数据（多个商品）
+	@RequestMapping(value = "/orders/getordersofid/{orders_id}")
+	public Page<Orders> getOrdersOfOrdersId(@PathVariable String orders_id,
+			@RequestParam(defaultValue = "0") int page) {
+		return ordersService.findAllByOrdersId(orders_id, page);
+	}
+	
 	@RequestMapping(value = "orders/findall/myrefund/{page}")
 	public Page<Orders> getRefundOrderOfBuyer(@PathVariable int page, HttpServletRequest request) {
 		User seller = userController.getCurrentUser(request);
