@@ -44,9 +44,8 @@ public class DefaultGoodsService implements IGoodsService{
 	public Page<Goods> findAll(int page) {
 		// TODO Auto-generated method stub
 		Sort sort=new Sort(Direction.DESC,"createDate");
-
 		PageRequest pageRequest=new PageRequest(page,6,sort);
-		return goodsRepo.findAll(pageRequest);
+		return goodsRepo.findAllOnSale(pageRequest);
 	}
 
 //排序
@@ -57,6 +56,15 @@ public class DefaultGoodsService implements IGoodsService{
 		PageRequest pageRequest=new PageRequest(page,6,sort);
 		return goodsRepo.findAll(pageRequest);
 	}
+	
+	@Override
+	public Page<Goods> sortGoodsSales(int page) {
+		// TODO Auto-generated method stub
+		Sort sort=new Sort(Direction.DESC,"goodsSales");
+		PageRequest pageRequest=new PageRequest(page,6,sort);
+		return goodsRepo.findAll(pageRequest);
+	}
+	
 	@Override
 	public Page<Goods> findAllByShopId(int shopId, int page) {
 		Sort sort=new Sort(Direction.ASC, "goodsName");

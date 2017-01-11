@@ -40,10 +40,10 @@ public class GoodsController {
 
 	@Autowired
 	ShopController shopController;
-	
+
 	@Autowired 
 	OrderController orderControal;
-	
+
 	@Autowired
 	IOrdersService ordersService;
 
@@ -98,13 +98,13 @@ public class GoodsController {
 			) {
 		return goodsService.findAll(page);
 	}
-//	@RequestMapping(value = "/goods/s/{sort_style}")
-//	public Page<Goods> getGoodsBySellerID( 
-//			@RequestParam(defaultValue="0") int page,
-//			@PathVariable String sort_style
-//			) {
-//		return goodsService.findAllWithSortStyle(sort_style,page);
-//	}
+	//	@RequestMapping(value = "/goods/s/{sort_style}")
+	//	public Page<Goods> getGoodsBySellerID( 
+	//			@RequestParam(defaultValue="0") int page,
+	//			@PathVariable String sort_style
+	//			) {
+	//		return goodsService.findAllWithSortStyle(sort_style,page);
+	//	}
 
 
 	// 通过店铺id查询商品
@@ -128,15 +128,15 @@ public class GoodsController {
 		Shop shop=shopController.findByUserId(request);
 		return goodsService.findAllOnSaleByShopId(shop.getId(),page);
 	}
-	
+
 	//返回当前用户店铺已下架的商品
-		@RequestMapping("/goods/mygoods/offsale")
-		public Page<Goods> searchOffSaleGoodsOfMine(HttpServletRequest request,
-				@RequestParam(defaultValue="0") int page){
-			Shop shop=shopController.findByUserId(request);
-			return goodsService.findAllOffSaleByShopId(shop.getId(),page);
-		}
-	
+	@RequestMapping("/goods/mygoods/offsale")
+	public Page<Goods> searchOffSaleGoodsOfMine(HttpServletRequest request,
+			@RequestParam(defaultValue="0") int page){
+		Shop shop=shopController.findByUserId(request);
+		return goodsService.findAllOffSaleByShopId(shop.getId(),page);
+	}
+
 
 	//商品搜索
 	@RequestMapping("/goods/search/{keyword}")
@@ -161,6 +161,14 @@ public class GoodsController {
 
 		return goodsService.sortGoodsBySortStyle(sortStyle,page);
 	}
+
+	//商品销量排序高到低
+	@RequestMapping("/goods/sort/goodsSales")
+	public Page<Goods> sortGoodsSales(
+			@RequestParam(defaultValue="0") int page){
+		return goodsService.sortGoodsSales(page);
+	}
+
 	//商品分类
 	@RequestMapping("/goods/classify/{type}")
 	public Page<Goods> classifyGoods(
@@ -198,7 +206,7 @@ public class GoodsController {
 			@RequestParam(defaultValue="0") int page){
 		return goodsService.searchAndClassifyAndSort(keyword,goodsType,sortStyle,page);
 	}
-	
+
 
 	//查找商品评论
 	@RequestMapping("/goods/{goods_id}/comments")
@@ -225,16 +233,16 @@ public class GoodsController {
 			orderList.get(i).setOrdersState(state);
 			ordersService.save(orderList.get(i));
 		}
-		
-//		
-//		Orders orders=orderControal.getOrdersOfOrdersID(ordersId);
-//		     //修改订单状态
-//				orders.setOrdersState(state);
-//			//添加评价
-////				orders.setGoodsDescribe(goodsDescribe);
-////				orders.setSellerAttitute(sellerAttitute);
-////				orders.setSendSpeed(sendSpeed);
-				
+
+		//		
+		//		Orders orders=orderControal.getOrdersOfOrdersID(ordersId);
+		//		     //修改订单状态
+		//				orders.setOrdersState(state);
+		//			//添加评价
+		////				orders.setGoodsDescribe(goodsDescribe);
+		////				orders.setSellerAttitute(sellerAttitute);
+		////				orders.setSendSpeed(sendSpeed);
+
 	}
 
 	@RequestMapping("/goods/setonsale/{goods_id}")
@@ -243,7 +251,7 @@ public class GoodsController {
 		goods.setOnSale(state);
 		goodsService.save(goods);
 	}
-	
+
 	//修改商品信息
 	@RequestMapping(value = "/goods/change/{goods_id}", method = RequestMethod.POST)
 	public Goods ChangeGoods(@RequestParam String goodsName,

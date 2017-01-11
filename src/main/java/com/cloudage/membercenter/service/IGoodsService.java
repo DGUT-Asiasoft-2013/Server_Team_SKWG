@@ -12,6 +12,8 @@ public interface IGoodsService {
 	Page<Goods> findAll(int page);
 	//排序
 	Page<Goods> sortGoodsBySortStyle(String sortStyle, int page);
+	//按销量高到低排序
+	Page<Goods> sortGoodsSales(int page);
 	
 	Page<Goods> findAllByShopId(int shopId, int page);
 	Page<Goods> findAllOnSaleByShopId(int shopId, int page);
