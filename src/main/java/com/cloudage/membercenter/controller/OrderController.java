@@ -221,7 +221,7 @@ public class OrderController {
 		List<Orders> ordersList = ordersService.findAllByOrdersId(orders_id);
 		//				getOrdersOfOrdersID(orders_id);
 		User me = userController.getCurrentUser(request);
-
+		Double sum = 0.0;
 		if (me.getMoney() < ordersList.get(0).getGoodsSum()) {
 			return false;     
 		} else {
@@ -235,6 +235,7 @@ public class OrderController {
 				goods.setGoodsCount(goods.getGoodsCount() - ordersList.get(i).getGoodsQTY());
 				goods.setGoodsSales(goods.getGoodsSales()+ordersList.get(i).getGoodsQTY());
 				goodsService.save(goods);
+				sum += ordersList.get(i).getGoodsSum();
 			}
 			//修改用户余额
 			me.setMoney(me.getMoney() - ordersList.get(0).getGoodsSum());
@@ -243,12 +244,10 @@ public class OrderController {
 			Bill bill = new Bill();
 			bill.setBillNumber(uuid);
 			bill.setBillState(0);
-			bill.setItem(ordersList.get(0).getGoodsSum());
+			bill.setItem(sum);
 			bill.setMoney(me.getMoney());
 			bill.setUser(me);
-			bill.setDetial("从" + ordersList.get(0).getGoods().getShop().getShopName() + "买了" + ordersList.get(0).getGoodsQTY() + "件"
-					+ ordersList.get(0).getGoods().getGoodsName());
-			billService.save(bill);
+			bill.setDetial("支付订单" + ordersList.get(0).getOrdersID());
 
 			if (ordersList.get(0).getOrdersState() == 3) {
 				return true;
