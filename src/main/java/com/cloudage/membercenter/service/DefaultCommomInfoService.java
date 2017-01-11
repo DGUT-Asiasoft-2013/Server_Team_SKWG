@@ -31,7 +31,7 @@ public class DefaultCommomInfoService implements ICommomInfoService{
 
 	@Override
 	public Page<CommomInfo> findAllOfUser(int userId, int page) {
-		Sort sort = new Sort(Direction.DESC, "createDate");
+		Sort sort = new Sort(Direction.ASC, "createDate");
         PageRequest pageRequest = new PageRequest(page, 6, sort);
 		return commomInfoRepo.findAllOfUser(userId, pageRequest);
 	}
